@@ -18,7 +18,7 @@ layout_mode = 2
 texture = ExtResource("1_7eo66")
 stretch_mode = 1
 
-[node name="Label" type="Label" parent="ResourceDisplay/HBoxContainer"]
+[node name="StoneCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
@@ -29,7 +29,7 @@ layout_mode = 2
 texture = ExtResource("1_7eo66")
 stretch_mode = 1
 
-[node name="Label2" type="Label" parent="ResourceDisplay/HBoxContainer"]
+[node name="WoodCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
@@ -40,7 +40,7 @@ layout_mode = 2
 texture = ExtResource("1_7eo66")
 stretch_mode = 1
 
-[node name="Label3" type="Label" parent="ResourceDisplay/HBoxContainer"]
+[node name="FoodCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
@@ -51,7 +51,7 @@ layout_mode = 2
 texture = ExtResource("1_7eo66")
 stretch_mode = 1
 
-[node name="Label4" type="Label" parent="ResourceDisplay/HBoxContainer"]
+[node name="PopCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
