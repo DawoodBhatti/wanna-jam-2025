@@ -7,6 +7,7 @@ current controls:
 
 1 : select stone tile  
 g : toggle grid visibility  
+f: test resource tracker
 
 left mouse click: place tile  
 right mouse click: delete tile  
