@@ -10,7 +10,7 @@ const ZOOM_SMOOTH := 0.18       # 0..1, how quickly we approach target zoom
 # --- Pan settings ---
 const PAN_SPEED := 900.0        # pixels per second at zoom = 1
 
-var target_zoom: Vector2 = Vector2.ONE
+var target_zoom: Vector2 = Vector2(2.011357, 2.011357)
 var dragging := false
 
 # TODO:
@@ -57,3 +57,4 @@ func _process(delta: float) -> void:
 func _set_zoom(next: Vector2) -> void:
 	var z := clampf(next.x, MIN_ZOOM, MAX_ZOOM)
 	target_zoom = Vector2(z, z)
+	print(target_zoom)

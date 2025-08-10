@@ -37,10 +37,10 @@ func _draw() -> void:
 		# If Tile Origin = Center, uncomment next line:
 		# map_origin += Vector2(TILE_SIZE / 2.0, TILE_SIZE / 2.0)
 
-		var start_x: float = floor((top_left.x - map_origin.x) / TILE_SIZE) * TILE_SIZE + map_origin.x
-		var end_x: float   = ceil((bottom_right.x - map_origin.x) / TILE_SIZE) * TILE_SIZE + map_origin.x
-		var start_y: float = floor((top_left.y - map_origin.y) / TILE_SIZE) * TILE_SIZE + map_origin.y
-		var end_y: float   = ceil((bottom_right.y - map_origin.y) / TILE_SIZE) * TILE_SIZE + map_origin.y
+		var start_x: float = floor((top_left.x - map_origin.x) / TILE_SIZE) * TILE_SIZE * 100 + map_origin.x
+		var end_x: float   = ceil((bottom_right.x - map_origin.x) / TILE_SIZE) * TILE_SIZE * 100 + map_origin.x
+		var start_y: float = floor((top_left.y - map_origin.y) / TILE_SIZE) * TILE_SIZE * 100 + map_origin.y
+		var end_y: float   = ceil((bottom_right.y - map_origin.y) / TILE_SIZE) * TILE_SIZE * 100 + map_origin.y
 
 		# Vertical lines
 		for x in range(int(start_x), int(end_x) + 1, int(TILE_SIZE)):
@@ -74,8 +74,8 @@ func _input(event: InputEvent) -> void:
 func fade_out_grid() -> void:
 	await get_tree().process_frame
 	while grid_color_major.a > 0.01:
-		grid_color_major.a *= 0.90
-		grid_color_minor.a *= 0.90
+		grid_color_major.a *= 0.96
+		grid_color_minor.a *= 0.96
 		queue_redraw()
 		await get_tree().process_frame
 
@@ -83,7 +83,7 @@ func fade_out_grid() -> void:
 func fade_in_grid() -> void:
 	await get_tree().process_frame
 	while grid_color_major.a < 0.49:
-		grid_color_major.a *= 1.05
-		grid_color_minor.a *= 1.05
+		grid_color_major.a *= 1.04
+		grid_color_minor.a *= 1.04
 		queue_redraw()
 		await get_tree().process_frame
