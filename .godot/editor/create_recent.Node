@@ -1,3 +1,8 @@
+Label
+TextureRect
+HBoxContainer
+VBoxContainer
+CanvasLayer
 Camera2D
 TileMapLayer
 Node2D
