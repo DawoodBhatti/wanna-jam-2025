@@ -1,17 +1,22 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1754824582
-basegrid.tscn::PackedScene::7038505280058733303::1754824582::0::1::::<><><>0<>0<><>::uid://0q8tqvte2nu::::res://basegrid.gd<>uid://cnyaoikqx4tcg::::res://grid_layer.gd<>uid://lx6vmomr3jxm::::res://assets/prototyping/forest_.png<>uid://bo8v5whxffj3k::::res://assets/prototyping/forest_ [bridgeAnimatedTiles].png
-grid_layer.gd::GDScript::5734866838286435950::1754818032::0::1::::<>Node2D<><>0<>0<><>::
-icon.svg::CompressedTexture2D/CompressedTexture2D::1845372276089169344::1754760790::1754760797::1::::<><><>0<>0<>2d654540cfff6f75d495edef8d8483b9<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
-basegrid.gd::GDScript::52640870574865962::1754824416::0::1::::<>Node2D<><>0<>0<><>::
-structures.tres::TileSet::8192800180061830240::1754824901::0::1::::<><><>0<>0<><>::uid://bo8v5whxffj3k::::res://assets/prototyping/forest_ [bridgeAnimatedTiles].png
-::res://assets/::1754822451
-::res://assets/prototyping/::1754772391
-forestPath_.png::CompressedTexture2D/CompressedTexture2D::3951000228738618731::1754764276::1754772391::1::::<><><>0<>0<>e9cae77ff5b3f8fefcc99763243ff71a<>res://.godot/imported/forestPath_.png-4af93fc5fa01b6ab540cb0da305fadc1.ctex::
-forest_ [bridgeAnimatedTiles].png::CompressedTexture2D/CompressedTexture2D::3438518758554008062::1754764276::1754772391::1::::<><><>0<>0<>7fd6158c1997a80455a2fdd9bc36d711<>res://.godot/imported/forest_ [bridgeAnimatedTiles].png-897ed84ccd5f88fbdd21a15892584124.ctex::
-forest_ [bridgeHorizontal].png::CompressedTexture2D/CompressedTexture2D::6390997513679984288::1754764276::1754772391::1::::<><><>0<>0<>643f977ef18d4aac8bb993d2524c9e95<>res://.godot/imported/forest_ [bridgeHorizontal].png-82602e23bdd9c487c36f0be0342be226.ctex::
-forest_ [bridgeVertical].png::CompressedTexture2D/CompressedTexture2D::8964376428043349525::1754764276::1754772391::1::::<><><>0<>0<>afe132d219b470580dcc6fadec4d8a73<>res://.godot/imported/forest_ [bridgeVertical].png-00496b8f3e9fe49be82356455425332f.ctex::
-forest_ [fencesAndWalls].png::CompressedTexture2D/CompressedTexture2D::214899450018643395::1754764276::1754772391::1::::<><><>0<>0<>847c8bac38f3448bc821e9f28ab2b200<>res://.godot/imported/forest_ [fencesAndWalls].png-726a3e38b58b9aa12e0cb394878c7770.ctex::
-forest_ [fountain].png::CompressedTexture2D/CompressedTexture2D::7638881512899637317::1754764276::1754772391::1::::<><><>0<>0<>09ec4845b9bc231b5c0e3795b4e2ec87<>res://.godot/imported/forest_ [fountain].png-52834d0ba74717ae89cdca821636de50.ctex::
-forest_ [resources].png::CompressedTexture2D/CompressedTexture2D::8116558082732354419::1754764276::1754772391::1::::<><><>0<>0<>1508b6a9c4483797f6ad116cf7d60711<>res://.godot/imported/forest_ [resources].png-f33787ea48475e0972f444ff29f10103.ctex::
-forest_.png::CompressedTexture2D/CompressedTexture2D::821478349286012334::1754764276::1754772391::1::::<><><>0<>0<>7585d56eea7c600974179fa172b39893<>res://.godot/imported/forest_.png-e7cfe4cb02dfeff9e0482c0941fe1a97.ctex::
+::res://::1754841342
+README.md::TextFile/TextFile::-1::1754831783::0::1::::<><><>0<>0<><>::
+resource_control.tscn::PackedScene::1367006763901760742::1754841342::0::1::::<><><>0<>0<><>::uid://bok0j5o721s4g::::res://scenes + scripts/resource_control.gd
+::res://assets/::1754831294
+::res://assets/prototyping/::1754831495
+forestPath_.png::CompressedTexture2D/CompressedTexture2D::3951000228738618731::1754831294::1754831294::1::::<><><>0<>0<>e9cae77ff5b3f8fefcc99763243ff71a<>res://.godot/imported/forestPath_.png-4af93fc5fa01b6ab540cb0da305fadc1.ctex::
+forest_ [bridgeAnimatedTiles].png::CompressedTexture2D/CompressedTexture2D::3438518758554008062::1754831294::1754831294::1::::<><><>0<>0<>7fd6158c1997a80455a2fdd9bc36d711<>res://.godot/imported/forest_ [bridgeAnimatedTiles].png-897ed84ccd5f88fbdd21a15892584124.ctex::
+forest_ [bridgeHorizontal].png::CompressedTexture2D/CompressedTexture2D::6390997513679984288::1754831294::1754831294::1::::<><><>0<>0<>643f977ef18d4aac8bb993d2524c9e95<>res://.godot/imported/forest_ [bridgeHorizontal].png-82602e23bdd9c487c36f0be0342be226.ctex::
+forest_ [bridgeVertical].png::CompressedTexture2D/CompressedTexture2D::8964376428043349525::1754831294::1754831294::1::::<><><>0<>0<>afe132d219b470580dcc6fadec4d8a73<>res://.godot/imported/forest_ [bridgeVertical].png-00496b8f3e9fe49be82356455425332f.ctex::
+forest_ [fencesAndWalls].png::CompressedTexture2D/CompressedTexture2D::214899450018643395::1754831294::1754831294::1::::<><><>0<>0<>847c8bac38f3448bc821e9f28ab2b200<>res://.godot/imported/forest_ [fencesAndWalls].png-726a3e38b58b9aa12e0cb394878c7770.ctex::
+forest_ [fountain].png::CompressedTexture2D/CompressedTexture2D::7638881512899637317::1754831294::1754831294::1::::<><><>0<>0<>09ec4845b9bc231b5c0e3795b4e2ec87<>res://.godot/imported/forest_ [fountain].png-52834d0ba74717ae89cdca821636de50.ctex::
+forest_ [resources].png::CompressedTexture2D/CompressedTexture2D::8116558082732354419::1754831294::1754831294::1::::<><><>0<>0<>1508b6a9c4483797f6ad116cf7d60711<>res://.godot/imported/forest_ [resources].png-f33787ea48475e0972f444ff29f10103.ctex::
+forest_.png::CompressedTexture2D/CompressedTexture2D::821478349286012334::1754831294::1754831294::1::::<><><>0<>0<>7585d56eea7c600974179fa172b39893<>res://.godot/imported/forest_.png-e7cfe4cb02dfeff9e0482c0941fe1a97.ctex::
+structures.tres::TileSet/TileSet::8192800180061830240::1754831495::0::1::::<><><>0<>0<><>::uid://bo8v5whxffj3k::::res://assets/prototyping/forest_ [bridgeAnimatedTiles].png
+::res://scenes + scripts/::1754841342
+basegrid.gd::GDScript/GDScript::52640870574865962::1754831294::0::1::::<>Node2D<><>0<>0<><>::
+basegrid.tscn::PackedScene/PackedScene::7038505280058733303::1754841337::0::1::::<><><>0<>0<><>::uid://0q8tqvte2nu::::res://scenes + scripts/basegrid.gd<>uid://cnyaoikqx4tcg::::res://scenes + scripts/grid_layer.gd<>uid://lx6vmomr3jxm::::res://assets/prototyping/forest_.png<>uid://doywhsu2ipm7y::::res://assets/prototyping/structures.tres
+camera_2d.gd::GDScript/GDScript::3782544480301681820::1754840561::0::1::::<>Camera2D<><>0<>0<><>::
+grid_layer.gd::GDScript/GDScript::5734866838286435950::1754840448::0::1::::<>Node2D<><>0<>0<><>::
+main.tscn::PackedScene::2886480279506729239::1754841335::0::1::::<><><>0<>0<><>::uid://bt5j7p6rjr1ym::::res://scenes + scripts/camera_2d.gd<>uid://c7jrfhubnbn7l::::res://scenes + scripts/basegrid.tscn
+resource_control.gd::GDScript::3391243867949282344::1754841298::0::1::::<>Node2D<><>0<>0<><>::

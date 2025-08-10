@@ -13,7 +13,6 @@ config_version=5
 config/name="wanna_jam_2025"
 run/main_scene="uid://bheh55hbd2ieh"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
 
 [display]
 

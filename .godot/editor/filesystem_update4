@@ -4,3 +4,10 @@ res://basegrid.gd
 res://main.tscn
 res://camera_2d.gd
 res://assets/prototyping/structures.tres
+res://resource_control.gd
+res://scenes + scripts/basegrid.tscn
+res://resource_control.tscn
+res://scenes + scripts/main.tscn
+res://scenes + scripts/resource_control.tscn
+res://scenes + scripts/grid_layer.gd
+res://scenes + scripts/camera_2d.gd

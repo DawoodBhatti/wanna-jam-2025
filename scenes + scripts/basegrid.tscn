@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=4 uid="uid://c7jrfhubnbn7l"]
 
-[ext_resource type="Script" uid="uid://0q8tqvte2nu" path="res://basegrid.gd" id="1_ihbwe"]
-[ext_resource type="Script" uid="uid://cnyaoikqx4tcg" path="res://grid_layer.gd" id="1_ru8gl"]
+[ext_resource type="Script" uid="uid://0q8tqvte2nu" path="res://scenes + scripts/basegrid.gd" id="1_ihbwe"]
+[ext_resource type="Script" uid="uid://cnyaoikqx4tcg" path="res://scenes + scripts/grid_layer.gd" id="1_ru8gl"]
 [ext_resource type="Texture2D" uid="uid://lx6vmomr3jxm" path="res://assets/prototyping/forest_.png" id="1_v2xdr"]
 [ext_resource type="TileSet" uid="uid://doywhsu2ipm7y" path="res://assets/prototyping/structures.tres" id="3_ihbwe"]
 

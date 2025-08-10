@@ -21,8 +21,6 @@ const MAJOR_LINE_EVERY : int = 10
 
 func _draw() -> void:
 	if grid_color_major.a > 0.01:
-		print("grid state: ", grid_state)
-
 		var cam: Camera2D = get_viewport().get_camera_2d()
 		if cam == null:
 			return
