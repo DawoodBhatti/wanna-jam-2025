@@ -57,7 +57,7 @@ size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
 text = " 0"
 
-[node name="Label" type="Label" parent="ResourceDisplay"]
+[node name="templabel" type="Label" parent="ResourceDisplay"]
 offset_left = 32.0
 offset_top = 72.0
 offset_right = 115.0
@@ -65,7 +65,7 @@ offset_bottom = 107.0
 theme_override_font_sizes/font_size = 25
 text = "(stone)"
 
-[node name="Label2" type="Label" parent="ResourceDisplay"]
+[node name="templabel2" type="Label" parent="ResourceDisplay"]
 offset_left = 240.0
 offset_top = 72.0
 offset_right = 322.0
@@ -73,7 +73,7 @@ offset_bottom = 107.0
 theme_override_font_sizes/font_size = 25
 text = "(wood)"
 
-[node name="Label3" type="Label" parent="ResourceDisplay"]
+[node name="templabel3" type="Label" parent="ResourceDisplay"]
 offset_left = 632.0
 offset_top = 72.0
 offset_right = 780.0
@@ -81,7 +81,7 @@ offset_bottom = 107.0
 theme_override_font_sizes/font_size = 25
 text = "(population)"
 
-[node name="Label4" type="Label" parent="ResourceDisplay"]
+[node name="templabel4" type="Label" parent="ResourceDisplay"]
 offset_left = 448.0
 offset_top = 72.0
 offset_right = 519.0
