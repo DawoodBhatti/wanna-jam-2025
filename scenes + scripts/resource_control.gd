@@ -60,6 +60,6 @@ func pop_change(amount):
 func test_random_resource_change() -> void:
 	var signals = ["stone_changed", "wood_changed", "food_changed", "pop_changed"]
 	var chosen_signal = signals[randi() % signals.size()]
-	var amount = randi() % 21 - 10  # Random number between -10 and +10
+	var amount = randi() % 21 - 4  # restrict integer to between 0 and 20 and subtract 4 resulting in random number between -4 and +16
 	print("Emitting signal: ", chosen_signal, " with amount: ", amount)
 	emit_signal(chosen_signal, amount)

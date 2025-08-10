@@ -13,3 +13,4 @@ res://scenes + scripts/grid_layer.gd
 res://scenes + scripts/camera_2d.gd
 res://scenes + scripts/resource_control.gd
 res://scenes + scripts/hud.tscn
+res://scenes + scripts/basegrid.gd

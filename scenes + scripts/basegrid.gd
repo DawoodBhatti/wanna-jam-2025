@@ -72,6 +72,7 @@ func _process(_delta):
 		_update_ghost()
 
 
+# here we convert the global mouse position to a grid position 
 func _get_tile_pos_under_mouse() -> Vector2i:
 	var mouse_global := get_global_mouse_position()
 	var local_pos := structures_layer.to_local(mouse_global)

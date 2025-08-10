@@ -19,6 +19,7 @@ const TILE_SIZE : float = 16.0
 # Major line frequency (every N tiles draw a bigger box line)
 const MAJOR_LINE_EVERY : int = 10
 
+
 func _draw() -> void:
 	if grid_color_major.a > 0.01:
 		var cam: Camera2D = get_viewport().get_camera_2d()
@@ -57,8 +58,8 @@ func _draw() -> void:
 			grid_start = Vector2(start_x, y)
 			grid_end   = Vector2(end_x, y)
 			draw_line(grid_start, grid_end, color, grid_halfwidth)
-			
-			
+
+
 func _input(event: InputEvent) -> void: 
 	# Toggle grid visibility with fade
 	if event.is_action_pressed("toggle_grid"):
@@ -67,6 +68,7 @@ func _input(event: InputEvent) -> void:
 			fade_in_grid()
 		else:
 			fade_out_grid()
+
 
 #fade out coroutine (await can't be used in _input) 
 func fade_out_grid() -> void:
