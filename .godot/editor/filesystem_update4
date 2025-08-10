@@ -1,0 +1,5 @@
+res://basegrid.tscn
+res://grid_layer.gd
+res://basegrid.gd
+res://main.tscn
+res://camera_2d.gd
