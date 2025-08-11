@@ -1,5 +1,8 @@
 extends Node2D
 
+#TODO should this become a singleton?
+
+
 #also possible to emit signals with arguments
 signal stone_changed(amount: int)
 signal wood_changed(amount: int)
