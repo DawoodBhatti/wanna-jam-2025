@@ -1,18 +1,22 @@
 extends Node2D
 
-#TODO should this become a singleton?
+#TODO should this become an autoload singleton?
+#doesn't need to be in the scene
+#it is designed to be accessed through things that need to change the resource count
+#e.g. by cardcontrol and turncontrol
 
-
-#also possible to emit signals with arguments
+#possible to emit signals with arguments
 signal stone_changed(amount: int)
 signal wood_changed(amount: int)
 signal food_changed(amount: int)
 signal pop_changed(amount: int)
 
+
 var stone_count : int = 0
 var wood_count : int = 0
 var food_count : int = 0
 var pop_count : int = 0
+
 
 @onready var stone_label: Label = get_node("../HUD/ResourceDisplay/HBoxContainer/StoneCount")
 @onready var wood_label: Label = get_node("../HUD/ResourceDisplay/HBoxContainer/WoodCount")
@@ -27,18 +31,20 @@ func _ready() -> void:
 	print("wood: ", wood_count)
 	print("wood: ", food_count)
 	print("population: ", pop_count)
+	print("")
 	
 	
 	stone_changed.connect(stone_change)
 	wood_changed.connect(wood_change)
 	food_changed.connect(food_change)
 	pop_changed.connect(pop_change)
-	
+
 
 func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F:
 		print("f key was pressed")
 		test_random_resource_change()
+
 
 func stone_change(amount):
 	stone_count += amount

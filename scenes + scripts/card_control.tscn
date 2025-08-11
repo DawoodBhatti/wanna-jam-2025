@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b61djmkqqjbe4"]
+
+[ext_resource type="Script" uid="uid://baydf6qopfv76" path="res://scenes + scripts/card_control.gd" id="1_sx15g"]
+
+[node name="CardControl" type="Node2D"]
+script = ExtResource("1_sx15g")

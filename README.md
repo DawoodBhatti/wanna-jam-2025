@@ -6,7 +6,9 @@ current controls:
 
 1 : select stone tile  
 g : toggle grid visibility  
-f: test resource tracker
+f : test resource tracker
+
+h : test turn phase
 
 left mouse click: place tile
 right mouse click: delete tile
@@ -14,3 +16,4 @@ right mouse click: delete tile
 mousewheel up : zoom in
 mousewheel down : zoom out
 mousewheel click + move : scroll
+
