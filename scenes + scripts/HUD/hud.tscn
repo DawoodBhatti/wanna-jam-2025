@@ -1,10 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bx2agddqlala4"]
+[gd_scene load_steps=6 format=3 uid="uid://bx2agddqlala4"]
 
 [ext_resource type="Texture2D" uid="uid://bwj5nqm1tn2x0" path="res://assets/prototyping/forestPath_.png" id="1_7eo66"]
+[ext_resource type="Script" uid="uid://bb0q3ujtmfw4w" path="res://scenes + scripts/HUD/hud.gd" id="1_k4j4e"]
+[ext_resource type="Script" uid="uid://jrwa870ukak8" path="res://scenes + scripts/HUD/card_template.gd" id="2_g7xeb"]
+[ext_resource type="Script" uid="uid://3f2doxyjyx44" path="res://scenes + scripts/HUD/card_ui.gd" id="3_af4rg"]
+[ext_resource type="Script" uid="uid://bl8wgbcjrsla7" path="res://scenes + scripts/HUD/instructions.gd" id="5_58rnq"]
 
-[node name="HUD" type="Node2D"]
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_k4j4e")
 
-[node name="ResourceDisplay" type="CanvasLayer" parent="."]
+[node name="ResourceDisplay" type="Node2D" parent="."]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ResourceDisplay"]
 offset_left = 10.0
@@ -19,6 +24,7 @@ texture = ExtResource("1_7eo66")
 stretch_mode = 1
 
 [node name="StoneCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
@@ -30,6 +36,7 @@ texture = ExtResource("1_7eo66")
 stretch_mode = 1
 
 [node name="WoodCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
@@ -41,6 +48,7 @@ texture = ExtResource("1_7eo66")
 stretch_mode = 1
 
 [node name="FoodCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
@@ -52,6 +60,7 @@ texture = ExtResource("1_7eo66")
 stretch_mode = 1
 
 [node name="PopCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
@@ -88,3 +97,43 @@ offset_right = 519.0
 offset_bottom = 107.0
 theme_override_font_sizes/font_size = 25
 text = "(food)"
+
+[node name="Instructions" type="Label" parent="."]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -327.0
+offset_top = 50.0
+offset_bottom = 182.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 30
+text = "hi :)
+i've got lots to share :))
+"
+script = ExtResource("5_58rnq")
+
+[node name="DeckDisplay" type="HBoxContainer" parent="."]
+offset_left = -168.0
+offset_top = 248.0
+offset_right = 744.0
+offset_bottom = 528.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+script = ExtResource("2_g7xeb")
+
+[node name="Card" type="Node2D" parent="DeckDisplay"]
+script = ExtResource("3_af4rg")
+
+[node name="CardImage" type="ColorRect" parent="DeckDisplay/Card"]
+offset_left = 288.0
+offset_top = -72.0
+offset_right = 696.0
+offset_bottom = 176.0
+
+[node name="CardText" type="Label" parent="DeckDisplay/Card"]
+offset_left = 96.0
+offset_top = 16.0
+offset_right = 256.0
+offset_bottom = 96.0

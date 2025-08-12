@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b61djmkqqjbe4"]
+
+[ext_resource type="Script" uid="uid://baydf6qopfv76" path="res://scenes + scripts/CardControl/card_control.gd" id="1_sx15g"]
+[ext_resource type="Script" uid="uid://bl7rd6bxxq0ry" path="res://scenes + scripts/CardControl/deck.gd" id="2_dm4n2"]
+
+[node name="CardControl" type="Node2D"]
+script = ExtResource("1_sx15g")
+
+[node name="Deck" type="Node2D" parent="."]
+script = ExtResource("2_dm4n2")

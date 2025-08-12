@@ -1,10 +1,24 @@
 res://scenes + scripts/main.tscn
 res://assets/prototyping/structures.tres
+res://scenes + scripts/card_control.gd
 res://scenes + scripts/basegrid.tscn
 res://scenes + scripts/resource_control.tscn
 res://scenes + scripts/hud.tscn
-res://scenes + scripts/resource_control.gd
 res://scenes + scripts/turn_control.tscn
-res://scenes + scripts/turn_control.gd
 res://scenes + scripts/card_control.tscn
-res://scenes + scripts/card_control.gd
+res://scenes + scripts/resource_control.gd
+res://scenes + scripts/turn_control.gd
+res://scenes + scripts/deck.gd
+res://scenes + scripts/card_template.gd
+res://singletons/game_state.gd
+res://scenes + scripts/ResourceControl/resource_control.tscn
+res://scenes + scripts/HUD/hud.tscn
+res://scenes + scripts/CardControl/card_control.tscn
+res://scenes + scripts/Tiles/basegrid.tscn
+res://scenes + scripts/CardControl/card_control.gd
+res://scenes + scripts/TurnControl/turn_control.gd
+res://scenes + scripts/CardControl/deck.gd
+res://singletons/resources.gd
+res://scenes + scripts/ResourceControl/resource_control.gd
+res://scenes + scripts/HUD/hud.gd
+res://scenes + scripts/HUD/instructions.gd

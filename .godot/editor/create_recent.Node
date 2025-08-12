@@ -1,8 +1,9 @@
 Node2D
-Label
-TextureRect
-HBoxContainer
-VBoxContainer
 CanvasLayer
+Label
+ColorRect
+HBoxContainer
+TextureRect
+VBoxContainer
 Camera2D
 TileMapLayer
