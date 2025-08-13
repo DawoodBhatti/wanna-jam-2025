@@ -6,6 +6,7 @@ signal wood_changed(amount: int)
 signal food_changed(amount: int)
 signal pop_changed(amount: int)
 
+
 var stone_count: int = 0
 var wood_count: int = 0
 var food_count: int = 0

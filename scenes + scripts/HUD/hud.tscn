@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bx2agddqlala4"]
+[gd_scene load_steps=8 format=3 uid="uid://bx2agddqlala4"]
 
 [ext_resource type="Texture2D" uid="uid://bwj5nqm1tn2x0" path="res://assets/prototyping/forestPath_.png" id="1_7eo66"]
 [ext_resource type="Script" uid="uid://bb0q3ujtmfw4w" path="res://scenes + scripts/HUD/hud.gd" id="1_k4j4e"]
-[ext_resource type="Script" uid="uid://jrwa870ukak8" path="res://scenes + scripts/HUD/card_template.gd" id="2_g7xeb"]
-[ext_resource type="Script" uid="uid://3f2doxyjyx44" path="res://scenes + scripts/HUD/card_ui.gd" id="3_af4rg"]
+[ext_resource type="Script" uid="uid://p4m3fk6paiw8" path="res://scenes + scripts/HUD/hand_display.gd" id="4_k4j4e"]
+[ext_resource type="PackedScene" uid="uid://cx5lhhchrujom" path="res://scenes + scripts/CardTemplate/card_template.tscn" id="5_52xwl"]
 [ext_resource type="Script" uid="uid://bl8wgbcjrsla7" path="res://scenes + scripts/HUD/instructions.gd" id="5_58rnq"]
+[ext_resource type="Script" uid="uid://dh7m55h51dvxu" path="res://scenes + scripts/HUD/draw_pile.gd" id="5_ra8vo"]
+[ext_resource type="Script" uid="uid://bnoxxb1vb7bxp" path="res://scenes + scripts/HUD/discard_pile.gd" id="6_ra8vo"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_k4j4e")
@@ -113,27 +115,43 @@ i've got lots to share :))
 "
 script = ExtResource("5_58rnq")
 
-[node name="DeckDisplay" type="HBoxContainer" parent="."]
-offset_left = -168.0
-offset_top = 248.0
-offset_right = 744.0
-offset_bottom = 528.0
-size_flags_horizontal = 3
+[node name="HandDisplay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -456.0
+offset_top = -280.0
+offset_right = 456.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 6
 size_flags_vertical = 3
-alignment = 1
-script = ExtResource("2_g7xeb")
+mouse_filter = 2
+script = ExtResource("4_k4j4e")
+card_template_scene = ExtResource("5_52xwl")
 
-[node name="Card" type="Node2D" parent="DeckDisplay"]
-script = ExtResource("3_af4rg")
+[node name="DrawPile" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -272.0
+offset_right = 336.0
+grow_vertical = 0
+script = ExtResource("5_ra8vo")
 
-[node name="CardImage" type="ColorRect" parent="DeckDisplay/Card"]
-offset_left = 288.0
-offset_top = -72.0
-offset_right = 696.0
-offset_bottom = 176.0
-
-[node name="CardText" type="Label" parent="DeckDisplay/Card"]
-offset_left = 96.0
-offset_top = 16.0
-offset_right = 256.0
-offset_bottom = 96.0
+[node name="DiscardPile" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -336.0
+offset_top = -272.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("6_ra8vo")

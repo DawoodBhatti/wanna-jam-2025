@@ -1,9 +1,11 @@
+Control
+ColorRect
+Label
+TextureRect
+NinePatchRect
 Node2D
 CanvasLayer
-Label
-ColorRect
 HBoxContainer
-TextureRect
 VBoxContainer
 Camera2D
 TileMapLayer
