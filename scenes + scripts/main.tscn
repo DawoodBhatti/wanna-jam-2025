@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bheh55hbd2ieh"]
+[gd_scene load_steps=6 format=3 uid="uid://bheh55hbd2ieh"]
 
 [ext_resource type="Script" uid="uid://bt5j7p6rjr1ym" path="res://scenes + scripts/Camera2D/camera_2d.gd" id="1_omw12"]
 [ext_resource type="PackedScene" uid="uid://c7jrfhubnbn7l" path="res://scenes + scripts/Tiles/basegrid.tscn" id="2_63egc"]
 [ext_resource type="PackedScene" uid="uid://h770wwlc3bfy" path="res://scenes + scripts/DeckManager/deck_manager.tscn" id="4_7axa7"]
 [ext_resource type="PackedScene" uid="uid://bx2agddqlala4" path="res://scenes + scripts/HUD/hud.tscn" id="4_63egc"]
+[ext_resource type="PackedScene" uid="uid://majnldhjep8k" path="res://scenes + scripts/StructureManager/structure_manager.tscn" id="5_7axa7"]
 
 [node name="main" type="Node2D"]
 
@@ -15,3 +16,5 @@ script = ExtResource("1_omw12")
 [node name="HUD" parent="." instance=ExtResource("4_63egc")]
 
 [node name="DeckManager" parent="." instance=ExtResource("4_7axa7")]
+
+[node name="StructureManager" parent="." instance=ExtResource("5_7axa7")]

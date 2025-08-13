@@ -146,4 +146,33 @@ func load_example_cards() -> void:
 			else:
 				print("Wooden Barricade failed: not enough wood"),
 	},
+	{
+	"name": "Place Stone",
+	"description": "Spend 1 stone to place a stone structure.",
+	"cost": { "stone": 1 },
+	"image_path": "",
+	"background_style": "stone",
+	"builds_structure": true,
+	# Tile info for StructureManager/BaseGrid
+	"source_id": 0,
+	"atlas_coords": Vector2i(8, 2),
+	"on_play": func():
+		if resource_controller.stone_count >= 1:
+			print("Place Stone: -1 stone, enter placement")
+			resource_controller.add_stone(-1)
+			# GameState will emit structure_placement_requested from play_card based on builds_structure flag.
+		else:
+			print("Place Stone failed: not enough stone")
+	},
+	{
+		"name": "Recycle Structure",
+		"description": "Enter recycle mode. Right-click a structure to reclaim 1 stone.",
+		"cost": 0,
+		"image_path": "",
+		"background_style": "stone",
+		"recycle_mode": true,
+		"on_play": func():
+			print("Recycle Structure: enter recycle mode")
+			# GameState will set a short sub-phase; StructureManager toggles BaseGrid to recycle.
+	},
 ]

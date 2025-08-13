@@ -1,36 +1,61 @@
 extends Node
 class_name GameState
 
-# --- Signals ---
+# -----------------
+# Signals
+# -----------------
 signal game_started
 signal turn_ended(turn_number : int)
 signal phase_changed(new_phase : String)
 signal play_phase_ended
-signal hand_drawn(cards : Array)  # consider renaming to hand_updated
+signal hand_drawn(cards : Array) # could rename to hand_updated
 signal card_played(card_data : Dictionary)
 signal play_phase_state_changed(state : String)
 signal piles_changed(deck_size : int, hand_size : int, discard_size : int)
+signal recycle_mode_requested
 
-# --- Card Data ---
+# Structure placement integration
+signal structure_placement_requested(structure_info: Dictionary)
+
+# -----------------
+# Constants
+# -----------------
+const PLAY_PHASE_STATE_IDLE := "Idle"
+const PLAY_PHASE_STATE_DRAWING := "Drawing"
+const PLAY_PHASE_STATE_PLAYING := "Playing"
+const PLAY_PHASE_STATE_RESOLVING := "Resolving"
+const PLAY_PHASE_STATE_PLACING_STRUCTURE := "PlacingStructure"
+const PLAY_PHASE_STATE_RECYCLE := "RecycleMode"
+
+# -----------------
+# Card Data
+# -----------------
 var deck: Array = []
 var hand: Array = []
 var discard_pile: Array = []
 
-# --- Game State ---
+# -----------------
+# Game State
+# -----------------
 var current_turn: int = 0
 var current_phase: String = "None"
-var play_phase_state: String = "Idle"
+var play_phase_state: String = PLAY_PHASE_STATE_IDLE
 
+# -----------------
+# Lifecycle
+# -----------------
 func _ready() -> void:
 	print("[GameState] Ready")
 	connect("play_phase_ended", Callable(self, "_on_play_phase_ended"))
 	call_deferred("start_game")
 
-# --- Turn control ---
+# -----------------
+# Turn control
+# -----------------
 func start_game() -> void:
 	current_turn = 0
 	current_phase = "Play"
-	play_phase_state = "Idle"
+	play_phase_state = PLAY_PHASE_STATE_IDLE
 	call_deferred("_emit_game_started")
 
 func _emit_game_started() -> void:
@@ -45,6 +70,7 @@ func advance_phase() -> void:
 		resolve_hand()
 		current_phase = "Tile Effects"
 		emit_signal("phase_changed", current_phase)
+
 	elif current_phase == "Tile Effects":
 		print("[GameState] Advancing from Tile Effects → Play (next turn)")
 		current_turn += 1
@@ -56,14 +82,17 @@ func _on_play_phase_ended() -> void:
 	print("[GameState] Play phase ended — advancing phase")
 	advance_phase()
 
-# --- Card pile manipulation ---
+# -----------------
+# Card pile manipulation
+# -----------------
 func shuffle_deck() -> void:
 	deck.shuffle()
 	_broadcast_piles()
 
 func draw_cards(count: int) -> void:
-	set_play_phase_state("Drawing")
+	set_play_phase_state(PLAY_PHASE_STATE_DRAWING)
 	print("[GameState] Drawing ", count, " cards")
+
 	for i in range(count):
 		if deck.is_empty():
 			if discard_pile.is_empty():
@@ -73,50 +102,64 @@ func draw_cards(count: int) -> void:
 			deck.shuffle()
 		var card = deck.pop_front()
 		hand.append(card)
-	emit_signal("hand_drawn", hand)  # ✅ correct usage
+
+	emit_signal("hand_drawn", hand)
 	_broadcast_piles()
-	set_play_phase_state("Idle")
+	set_play_phase_state(PLAY_PHASE_STATE_IDLE)
 
 func request_play_card(card: Dictionary) -> void:
 	if current_phase != "Play":
 		print("[Card] Play rejected: not in Play phase")
 		return
-	if play_phase_state != "Idle":
+	if play_phase_state != PLAY_PHASE_STATE_IDLE:
 		print("[Card] Play rejected: busy state: ", play_phase_state)
 		return
 	if not hand.has(card):
 		print("[Card] Play rejected: card not in hand: ", card.get("name", "Unknown"))
 		return
 	play_card(card)
-	
-	
-func play_card(card: Dictionary) -> void:
-	set_play_phase_state("Playing")
 
+func play_card(card: Dictionary) -> void:
+	set_play_phase_state(PLAY_PHASE_STATE_PLAYING)
+
+	# Side effects defined by the card
 	if card.has("on_play"):
 		card["on_play"].call()
 
-	emit_signal("card_played", card)  # 🔹 UI will handle visuals
+	# Sub-phase routing (build or recycle)
+	if card.get("builds_structure", false):
+		set_play_phase_state(PLAY_PHASE_STATE_PLACING_STRUCTURE)
+		emit_signal("structure_placement_requested", {
+			"source_id": card.source_id,
+			"atlas_coords": card.atlas_coords
+		})
+	elif card.get("recycle_mode", false):
+		set_play_phase_state(PLAY_PHASE_STATE_RECYCLE)
+		emit_signal("recycle_mode_requested")
+	else:
+		set_play_phase_state(PLAY_PHASE_STATE_IDLE)
+
+	# Notify UI and move card once
+	emit_signal("card_played", card)
 	print("Played card: ", card.name)
 
 	discard_pile.append(card)
 	hand.erase(card)
 	_broadcast_piles()
 
-	set_play_phase_state("Idle")
-	
-	
 func resolve_hand() -> void:
-	set_play_phase_state("Resolving")
+	set_play_phase_state(PLAY_PHASE_STATE_RESOLVING)
 	for card in hand:
 		if card.has("on_end"):
 			card["on_end"].call()
 		discard_pile.append(card)
 	hand.clear()
 	_broadcast_piles()
-	set_play_phase_state("Idle")
+	set_play_phase_state(PLAY_PHASE_STATE_IDLE)
 
-# --- Utility ---
+# -----------------
+# Utility
+# -----------------
 func _broadcast_piles() -> void:
 	emit_signal("piles_changed", deck.size(), hand.size(), discard_pile.size())
 

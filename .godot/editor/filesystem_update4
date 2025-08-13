@@ -18,3 +18,7 @@ res://scenes + scripts/HUD/discard_pile.gd
 res://singletons/debug.gd
 res://scenes + scripts/HUD/end_turn.gd
 res://scenes + scripts/HUD/turn_display.gd
+res://scenes + scripts/StructureManager/structure_manager.tscn
+res://scenes + scripts/StructureManager/structure_manager.gd
+res://scenes + scripts/Tiles/basegrid.gd
+res://scenes + scripts/Tiles/basegrid.tscn
