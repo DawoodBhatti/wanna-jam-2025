@@ -76,7 +76,7 @@ func load_example_cards() -> void:
 	},
 
 	{
-		"name": "Campfire Cooking",
+		"name": "Campfire",
 		"description": "Spend 2 wood to gain 3 food.",
 		"cost": { "wood": 2 },
 		"image_path": "",

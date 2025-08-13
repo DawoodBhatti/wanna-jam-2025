@@ -1,6 +1,7 @@
+Label
+Button
 Control
 ColorRect
-Label
 TextureRect
 NinePatchRect
 Node2D

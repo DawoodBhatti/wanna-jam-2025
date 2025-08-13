@@ -1,5 +1,5 @@
-res://scenes + scripts/DeckManager
 res://singletons
+res://scenes + scripts/DeckManager
 res://scenes + scripts
 res://
 res://assets

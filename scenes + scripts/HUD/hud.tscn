@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bx2agddqlala4"]
+[gd_scene load_steps=10 format=3 uid="uid://bx2agddqlala4"]
 
 [ext_resource type="Texture2D" uid="uid://bwj5nqm1tn2x0" path="res://assets/prototyping/forestPath_.png" id="1_7eo66"]
 [ext_resource type="Script" uid="uid://bb0q3ujtmfw4w" path="res://scenes + scripts/HUD/hud.gd" id="1_k4j4e"]
@@ -7,6 +7,10 @@
 [ext_resource type="Script" uid="uid://bl8wgbcjrsla7" path="res://scenes + scripts/HUD/instructions.gd" id="5_58rnq"]
 [ext_resource type="Script" uid="uid://dh7m55h51dvxu" path="res://scenes + scripts/HUD/draw_pile.gd" id="5_ra8vo"]
 [ext_resource type="Script" uid="uid://bnoxxb1vb7bxp" path="res://scenes + scripts/HUD/discard_pile.gd" id="6_ra8vo"]
+[ext_resource type="Script" uid="uid://cwvi4nwn1ny8l" path="res://scenes + scripts/HUD/turn_display.gd" id="8_lepeq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_63m42"]
+bg_color = Color(0.666667, 0, 0.027451, 0.890196)
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_k4j4e")
@@ -102,13 +106,16 @@ text = "(food)"
 
 [node name="Instructions" type="Label" parent="."]
 unique_name_in_owner = true
-anchors_preset = 1
+anchors_preset = 6
 anchor_left = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
+anchor_bottom = 0.5
 offset_left = -327.0
-offset_top = 50.0
-offset_bottom = 182.0
+offset_top = -66.0
+offset_bottom = 66.0
 grow_horizontal = 0
+grow_vertical = 2
 theme_override_font_sizes/font_size = 30
 text = "hi :)
 i've got lots to share :))
@@ -133,25 +140,58 @@ mouse_filter = 2
 script = ExtResource("4_k4j4e")
 card_template_scene = ExtResource("5_52xwl")
 
-[node name="DrawPile" type="Control" parent="."]
-layout_mode = 3
+[node name="DrawPile" type="Label" parent="."]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -272.0
-offset_right = 336.0
+offset_left = 24.0
+offset_top = -72.0
+offset_right = 142.0
+offset_bottom = -23.0
 grow_vertical = 0
+theme_override_font_sizes/font_size = 35
+text = "deck: 0"
 script = ExtResource("5_ra8vo")
 
-[node name="DiscardPile" type="Control" parent="."]
-layout_mode = 3
+[node name="DiscardPile" type="Label" parent="."]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -336.0
-offset_top = -272.0
+offset_left = -184.0
+offset_top = -72.0
+offset_right = -22.0
+offset_bottom = -23.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_font_sizes/font_size = 35
+text = "discard: 0"
 script = ExtResource("6_ra8vo")
+
+[node name="EndTurn" type="Button" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -168.0
+offset_top = 24.0
+offset_right = -22.0
+offset_bottom = 96.0
+grow_horizontal = 0
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_63m42")
+text = "End turn"
+
+[node name="TurnDisplay" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -168.0
+offset_top = 112.0
+offset_right = -50.0
+offset_bottom = 161.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 35
+text = "Turn: 0"
+script = ExtResource("8_lepeq")

@@ -1,4 +1,3 @@
-# HandDisplay.gd
 extends Control
 
 # Responsible for rendering the current hand based on signals
@@ -11,8 +10,12 @@ extends Control
 var accepting_input: bool = true  # simple guard to avoid double plays
 
 func _ready() -> void:
+	# Listen to when the hand is drawn (replace all cards)
 	game_state.connect("hand_drawn", Callable(self, "_on_hand_drawn"))
+	# Listen to when the play phase changes (disable/enable interaction)
 	game_state.connect("play_phase_state_changed", Callable(self, "_on_play_phase_state_changed"))
+	# 🔹 NEW: Listen for played cards so we can fade/remove them
+	game_state.connect("card_played", Callable(self, "_on_card_played"))
 
 func _on_hand_drawn(hand: Array) -> void:
 	# Clear previous cards
@@ -52,3 +55,11 @@ func _set_hand_interactable(enabled: bool) -> void:
 				child.mouse_filter = Control.MOUSE_FILTER_PASS
 			else:
 				child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+# 🔹 NEW: Fades and removes the card that was just played
+func _on_card_played(card_data: Dictionary) -> void:
+	for child in get_children():
+		# Compare by dictionary reference – not value – so don’t duplicate card_data anywhere
+		if child.has_method("fade_out") and child.card_data == card_data:
+			child.fade_out()
+			break

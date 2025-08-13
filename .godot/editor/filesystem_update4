@@ -15,3 +15,6 @@ res://singletons/game_state.gd
 res://scenes + scripts/HUD/hand_display.gd
 res://scenes + scripts/HUD/draw_pile.gd
 res://scenes + scripts/HUD/discard_pile.gd
+res://singletons/debug.gd
+res://scenes + scripts/HUD/end_turn.gd
+res://scenes + scripts/HUD/turn_display.gd
