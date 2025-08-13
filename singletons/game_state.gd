@@ -12,10 +12,11 @@ signal hand_drawn(cards : Array) # could rename to hand_updated
 signal card_played(card_data : Dictionary)
 signal play_phase_state_changed(state : String)
 signal piles_changed(deck_size : int, hand_size : int, discard_size : int)
-signal recycle_mode_requested
-
-# Structure placement integration
+signal recycle_mode_requested(data : Dictionary)
 signal structure_placement_requested(structure_info: Dictionary)
+
+# Optional: allow StructureManager/BaseGrid to cancel when phase changes
+signal cancel_active_modes
 
 # -----------------
 # Constants
@@ -65,6 +66,9 @@ func _emit_game_started() -> void:
 	_broadcast_piles()
 
 func advance_phase() -> void:
+	# Optional: cancel any active placement/removal mode on phase change
+	emit_signal("cancel_active_modes")
+
 	if current_phase == "Play":
 		print("[GameState] Advancing from Play → Tile Effects")
 		resolve_hand()
@@ -126,16 +130,19 @@ func play_card(card: Dictionary) -> void:
 	if card.has("on_play"):
 		card["on_play"].call()
 
-	# Sub-phase routing (build or recycle)
+	# Sub-phase routing (build or recycle) with budget forwarding
 	if card.get("builds_structure", false):
 		set_play_phase_state(PLAY_PHASE_STATE_PLACING_STRUCTURE)
 		emit_signal("structure_placement_requested", {
 			"source_id": card.source_id,
-			"atlas_coords": card.atlas_coords
+			"atlas_coords": card.atlas_coords,
+			"amount": card.get("place_amount", 1) # default 1
 		})
 	elif card.get("recycle_mode", false):
 		set_play_phase_state(PLAY_PHASE_STATE_RECYCLE)
-		emit_signal("recycle_mode_requested")
+		emit_signal("recycle_mode_requested", {
+			"amount": card.get("remove_amount", 1) # default 1
+		})
 	else:
 		set_play_phase_state(PLAY_PHASE_STATE_IDLE)
 

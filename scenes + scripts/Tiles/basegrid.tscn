@@ -254,6 +254,12 @@ script = ExtResource("1_ihbwe")
 z_index = 5
 script = ExtResource("1_ru8gl")
 
+[node name="EraseOverlayLayer" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.470588)
+z_index = 4
+tile_set = ExtResource("3_ihbwe")
+
 [node name="GhostLayer" type="TileMapLayer" parent="."]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.470588)

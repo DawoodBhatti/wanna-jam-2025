@@ -67,12 +67,7 @@ func load_example_cards() -> void:
 		"image_path": "",
 		"background_style": "population",
 		"on_play": func():
-			if resource_controller.food_count >= 2:
-				print("Village Growth played: -2 food, +2 population")
-				resource_controller.add_food(-2)
 				resource_controller.add_pop(2)
-			else:
-				print("Village Growth failed: not enough food"),
 	},
 
 	{

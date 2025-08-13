@@ -12,6 +12,7 @@
 script = ExtResource("1_omw12")
 
 [node name="Tiles" parent="." instance=ExtResource("2_63egc")]
+unique_name_in_owner = true
 
 [node name="HUD" parent="." instance=ExtResource("4_63egc")]
 
