@@ -19,7 +19,6 @@ const TILE_SIZE : float = 16.0
 # Major line frequency (every N tiles draw a bigger box line)
 const MAJOR_LINE_EVERY : int = 10
 
-
 func _draw() -> void:
 	if grid_color_major.a > 0.01:
 		var cam: Camera2D = get_viewport().get_camera_2d()
@@ -68,7 +67,6 @@ func _input(event: InputEvent) -> void:
 			fade_in_grid()
 		else:
 			fade_out_grid()
-
 
 #fade out coroutine (await can't be used in _input) 
 func fade_out_grid() -> void:

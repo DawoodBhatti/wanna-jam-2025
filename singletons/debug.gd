@@ -113,3 +113,50 @@ func _unhandled_input(event: InputEvent) -> void:
 				state2 = "on"
 			print("[Debug] toggle_instructions -> %s" % state2)
 		return
+		
+	if Input.is_action_just_pressed("list_basegrid_tiles"):
+		var base_grid := get_node_or_null("/root/main/Tiles")
+		if base_grid:
+			print_all_tile_layers(base_grid)
+		else:
+			print("[Debug] list_basegrid_tiles -> BaseGrid not found")
+		return
+
+
+func print_all_tile_layers(base_grid: Node) -> void:
+	print("\n=== BASEGRID TILE LAYERS ===")
+
+	var filter_layers := ["StructuresLayer"]  # ← Change this to filter by layer names
+	# Leave empty to inspect all layers:
+	# var filter_layers := []
+
+	if filter_layers.is_empty():
+		print("Inspecting: all layers")
+	else:
+		print("Inspecting: ", filter_layers)
+
+	for layer_node in base_grid.get_children():
+		if not layer_node is TileMapLayer:
+			continue
+
+		var layer: TileMapLayer = layer_node
+		var layer_name := layer.name
+
+		if not filter_layers.is_empty() and not filter_layers.has(layer_name):
+			continue  # Skip layers not in the filter
+
+		var used_cells := layer.get_used_cells()
+		var tile_count := used_cells.size()
+
+		print("\n[Layer] %s — %s tile(s)" % [layer_name, tile_count])
+
+		if tile_count == 0:
+			print("  (No tiles placed)")
+			continue
+
+		for cell_pos in used_cells:
+			var source_id := layer.get_cell_source_id(cell_pos)
+			var atlas_coords := layer.get_cell_atlas_coords(cell_pos)
+
+			print("  • Pos: %s | Source ID: %s | Atlas: %s" %
+				[cell_pos, source_id, atlas_coords])

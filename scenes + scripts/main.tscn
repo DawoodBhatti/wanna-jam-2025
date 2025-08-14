@@ -17,5 +17,6 @@ unique_name_in_owner = true
 [node name="HUD" parent="." instance=ExtResource("4_63egc")]
 
 [node name="DeckManager" parent="." instance=ExtResource("4_7axa7")]
+visible = true
 
 [node name="StructureManager" parent="." instance=ExtResource("5_7axa7")]

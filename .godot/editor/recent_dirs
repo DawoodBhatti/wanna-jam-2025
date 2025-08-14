@@ -1,4 +1,6 @@
 res://singletons
+res://scenes + scripts/StructureManager/data
+res://scenes + scripts/StructureManager/specs
 res://scenes + scripts/DeckManager
 res://scenes + scripts
 res://
