@@ -1,18 +1,8 @@
-res://scenes + scripts/Tiles/basegrid.tscn
-res://scenes + scripts/StructureManager/data/medusa_resource.tres
-res://assets/prototyping/structures.tres
-res://scenes + scripts/HUD/hud.gd
-res://scenes + scripts/CardTemplate/border_shader.gdshader
 res://scenes + scripts/main.tscn
 res://scenes + scripts/StructureManager/data/structures.tres
-res://scenes + scripts/Tiles/basegrid.gd
-res://scenes + scripts/StructureManager/structure_manager.tscn
-res://scenes + scripts/DeckManager/deck.gd
-res://scenes + scripts/StructureManager/structure_manager.gd
-res://singletons/tile_catalog.gd
-res://scenes + scripts/StructureManager/effects/medusa_effect.gd
-res://singletons/game_state.gd
-res://scenes + scripts/DeckManager/deck_manager.gd
+res://scenes + scripts/HUD/hud.gd
+res://scenes + scripts/CardTemplate/border_shader.gdshader
 res://scenes + scripts/StructureManager/specs/structure_spec.gd
+res://scenes + scripts/Tiles/basegrid.tscn
+res://scenes + scripts/StructureManager/structure_manager.tscn
 res://scenes + scripts/DeckManager/deck_manager.tscn
-res://scenes + scripts/StructureManager/specs/effect_context.gd

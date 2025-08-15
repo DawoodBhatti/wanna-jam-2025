@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1755178916
+::res://::1755242369
 README.md::TextFile/TextFile::-1::1755014897::0::1::::<><><>0<>0<><>::
 sources.txt::TextFile/TextFile::-1::1754851994::0::1::::<><><>0<>0<><>::
 ::res://assets/::1754846762
@@ -17,18 +17,18 @@ forest_.png::CompressedTexture2D/CompressedTexture2D::821478349286012334::175483
 medusa1.png::CompressedTexture2D/CompressedTexture2D::6166416717915922157::1755170834::1755170834::1::::<><><>0<>0<>248434c588ce216e9fde5f877b77f6a6<>res://.godot/imported/medusa1.png-cc5f402a26ae47561ea8323e2038db39.ctex::
 medusa.png::CompressedTexture2D/CompressedTexture2D::3724162250574218627::1755170809::1755170809::1::::<><><>0<>0<>057ad9f9cfbdbd3a62463e278b5825ba<>res://.godot/imported/medusa.png-36bae118619795337949a4091751909e.ctex::
 rock-7562944_640.png::CompressedTexture2D/CompressedTexture2D::8912591525064388603::1754851994::1754851994::1::::<><><>0<>0<>145463d3c22c029242d45cbfe7ab3e1e<>res://.godot/imported/rock-7562944_640.png-8ca14fabce0fed36daa60099d29032f8.ctex::
-::res://scenes + scripts/::1755179028
-main.tscn::PackedScene::2886480279506729239::1755179028::0::1::::<><><>0<>0<><>::uid://bt5j7p6rjr1ym::::res://scenes + scripts/Camera2D/camera_2d.gd<>uid://c7jrfhubnbn7l::::res://scenes + scripts/Tiles/basegrid.tscn<>uid://h770wwlc3bfy::::res://scenes + scripts/DeckManager/deck_manager.tscn<>uid://bx2agddqlala4::::res://scenes + scripts/HUD/hud.tscn<>uid://majnldhjep8k::::res://scenes + scripts/StructureManager/structure_manager.tscn
+::res://scenes + scripts/::1755195311
+main.tscn::PackedScene::2886480279506729239::1755195311::0::1::::<><><>0<>0<><>::uid://bt5j7p6rjr1ym::::res://scenes + scripts/Camera2D/camera_2d.gd<>uid://c7jrfhubnbn7l::::res://scenes + scripts/Tiles/basegrid.tscn<>uid://h770wwlc3bfy::::res://scenes + scripts/DeckManager/deck_manager.tscn<>uid://bx2agddqlala4::::res://scenes + scripts/HUD/hud.tscn<>uid://majnldhjep8k::::res://scenes + scripts/StructureManager/structure_manager.tscn
 ::res://scenes + scripts/Camera2D/::1755005905
 camera_2d.gd::GDScript/GDScript::3782544480301681820::1754842372::0::1::::<>Camera2D<><>0<>0<><>::
-::res://scenes + scripts/CardTemplate/::1755179028
-border_shader.gdshader::Shader::17152739806075943::1755179028::0::1::::<><><>0<>0<><>::
+::res://scenes + scripts/CardTemplate/::1755195344
+border_shader.gdshader::Shader::17152739806075943::1755195344::0::1::::<><><>0<>0<><>::
 card_template.gd::GDScript/GDScript::668131572269471653::1755105180::0::1::::<>Control<><>0<>0<><>::
 card_template.tscn::PackedScene/PackedScene::6449796862255128092::1755105104::0::1::::<><><>0<>0<><>::uid://jrwa870ukak8::::res://scenes + scripts/CardTemplate/card_template.gd<>uid://ikrdutpcmp0::::res://scenes + scripts/CardTemplate/border_shader.gdshader<>uid://dnvyr42g5073t::::res://assets/prototyping/forest_ [resources].png
-::res://scenes + scripts/DeckManager/::1755178991
-deck.gd::GDScript::3225597228945182414::1755178991::0::1::::<>Node2D<><>0<>0<><>::
-deck_manager.gd::GDScript/GDScript::2436158483335447563::1755105180::0::1::::<>Control<><>0<>0<><>::
-deck_manager.tscn::PackedScene/PackedScene::559370772215253286::1755105104::0::1::::<><><>0<>0<><>::uid://baydf6qopfv76::::res://scenes + scripts/DeckManager/deck_manager.gd<>uid://bl7rd6bxxq0ry::::res://scenes + scripts/DeckManager/deck.gd
+::res://scenes + scripts/DeckManager/::1755195311
+deck.gd::GDScript::3225597228945182414::1755186033::0::1::::<>Node2D<><>0<>0<><>::
+deck_manager.gd::GDScript::2436158483335447563::1755183506::0::1::::<>Control<><>0<>0<><>::
+deck_manager.tscn::PackedScene::559370772215253286::1755195311::0::1::::<><><>0<>0<><>::uid://baydf6qopfv76::::res://scenes + scripts/DeckManager/deck_manager.gd<>uid://bl7rd6bxxq0ry::::res://scenes + scripts/DeckManager/deck.gd
 ::res://scenes + scripts/HUD/::1755178975
 card_ui.gd::GDScript/GDScript::1977254998782466531::1755105180::0::1::::<>Node2D<><>0<>0<><>::
 discard_pile.gd::GDScript/GDScript::3329214597282805073::1755105180::0::1::::<>Label<><>0<>0<><>::
@@ -38,23 +38,23 @@ hud.gd::GDScript::2509241510546003024::1755178975::0::1::::<>Node<><>0<>0<><>::
 hud.tscn::PackedScene/PackedScene::4056513164437032121::1755105104::0::1::::<><><>0<>0<><>::uid://bwj5nqm1tn2x0::::res://assets/prototyping/forestPath_.png<>uid://bb0q3ujtmfw4w::::res://scenes + scripts/HUD/hud.gd<>uid://p4m3fk6paiw8::::res://scenes + scripts/HUD/hand_display.gd<>uid://cx5lhhchrujom::::res://scenes + scripts/CardTemplate/card_template.tscn<>uid://bl8wgbcjrsla7::::res://scenes + scripts/HUD/instructions.gd<>uid://dh7m55h51dvxu::::res://scenes + scripts/HUD/draw_pile.gd<>uid://bnoxxb1vb7bxp::::res://scenes + scripts/HUD/discard_pile.gd<>uid://cwvi4nwn1ny8l::::res://scenes + scripts/HUD/turn_display.gd
 instructions.gd::GDScript/GDScript::3227968974245037196::1755105181::0::1::::<>Label<><>0<>0<><>::
 turn_display.gd::GDScript/GDScript::6360886101638737653::1755105181::0::1::::<>Label<><>0<>0<><>::
-::res://scenes + scripts/StructureManager/::1755179028
-structure_manager.gd::GDScript::3881211044016711328::1755178991::0::1::::StructureManager<>Node<><>0<>0<><>::
-structure_manager.tscn::PackedScene::842836374633565944::1755179028::0::1::::<><><>0<>0<><>::uid://bvkc8jspblgfw::::res://scenes + scripts/StructureManager/structure_manager.gd
+::res://scenes + scripts/StructureManager/::1755195311
+structure_manager.gd::GDScript::3881211044016711328::1755195304::0::1::::StructureManager<>Node<><>0<>0<><>::
+structure_manager.tscn::PackedScene::842836374633565944::1755195311::0::1::::<><><>0<>0<><>::uid://bvkc8jspblgfw::::res://scenes + scripts/StructureManager/structure_manager.gd
 ::res://scenes + scripts/StructureManager/data/::1755178151
 medusa_resource.tres::Resource/StructureSpec::7057848788505547074::1755177720::0::1::::<><><>0<>0<><>::uid://dck3nmwsjtrlo::::res://scenes + scripts/StructureManager/effects/medusa_effect.gd<>uid://b5fo2s4puewj0::::res://scenes + scripts/StructureManager/specs/structure_spec.gd
 structures.tres::TileSet::8192800180061830240::1755178151::0::1::::<><><>0<>0<><>::uid://bo8v5whxffj3k::::res://assets/prototyping/forest_ [bridgeAnimatedTiles].png<>uid://ct4b8nxakikmn::::res://assets/prototyping/medusa1.png
-::res://scenes + scripts/StructureManager/effects/::1755171166
-medusa_effect.gd::GDScript/GDScript::7322007472110720688::1755171166::0::1::::TilePlacingEffect<>RefCounted<><>0<>0<><>::
-::res://scenes + scripts/StructureManager/specs/::1755171790
-effect_context.gd::GDScript/GDScript::677167989569721821::1755170049::0::1::::EffectContext<>RefCounted<><>0<>0<><>::
-structure_spec.gd::GDScript/GDScript::4503307126866605859::1755171790::0::1::::StructureSpec<>Resource<><>0<>0<><>::
-::res://scenes + scripts/Tiles/::1755179028
-basegrid.gd::GDScript::52640870574865962::1755178780::0::1::::<>Node2D<><>0<>0<><>::
-basegrid.tscn::PackedScene::7038505280058733303::1755179028::0::1::::<><><>0<>0<><>::uid://0q8tqvte2nu::::res://scenes + scripts/Tiles/basegrid.gd<>uid://cnyaoikqx4tcg::::res://scenes + scripts/Tiles/grid_layer.gd<>uid://lx6vmomr3jxm::::res://assets/prototyping/forest_.png<>uid://doywhsu2ipm7y::::res://scenes + scripts/StructureManager/data/structures.tres
+::res://scenes + scripts/StructureManager/effects/::1755195304
+medusa_effect.gd::GDScript::7322007472110720688::1755195304::0::1::::TilePlacingEffect<>RefCounted<><>0<>0<><>::
+::res://scenes + scripts/StructureManager/specs/::1755195304
+effect_context.gd::GDScript::677167989569721821::1755195304::0::1::::EffectContext<>RefCounted<><>0<>0<><>::
+structure_spec.gd::GDScript::4503307126866605859::1755184345::0::1::::StructureSpec<>Resource<><>0<>0<><>::
+::res://scenes + scripts/Tiles/::1755195311
+basegrid.gd::GDScript::52640870574865962::1755184627::0::1::::<>Node2D<><>0<>0<><>::
+basegrid.tscn::PackedScene::7038505280058733303::1755195311::0::1::::<><><>0<>0<><>::uid://0q8tqvte2nu::::res://scenes + scripts/Tiles/basegrid.gd<>uid://cnyaoikqx4tcg::::res://scenes + scripts/Tiles/grid_layer.gd<>uid://lx6vmomr3jxm::::res://assets/prototyping/forest_.png<>uid://doywhsu2ipm7y::::res://scenes + scripts/StructureManager/data/structures.tres
 grid_layer.gd::GDScript/GDScript::5734866838286435950::1755171413::0::1::::<>Node2D<><>0<>0<><>::
-::res://singletons/::1755178904
+::res://singletons/::1755195304
 debug.gd::GDScript/GDScript::7317595045563517758::1755159033::0::1::::<>Node<><>0<>0<><>::
-game_resources.gd::GDScript::6897241177958697495::1755015566::0::1::::<>Node<><>0<>0<><>::
-game_state.gd::GDScript/GDScript::9128041216393965928::1755105180::0::1::::GameState<>Node<><>0<>0<><>::
-TileCatalog.gd::GDScript::5353594491410816461::1755179624::0::1::::<>Node<><>0<>0<><>::
+game_resources.gd::GDScript::6897241177958697495::1755195304::0::1::::<>Node<><>0<>0<><>::
+game_state.gd::GDScript::9128041216393965928::1755195304::0::1::::GameState<>Node<><>0<>0<><>::
+tile_catalog.gd::GDScript::5353594491410816461::1755195304::0::1::::TileCatalog<>Node<><>0<>0<><>::
