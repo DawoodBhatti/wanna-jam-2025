@@ -22,6 +22,7 @@ CardCatalogue="*res://new/singletons/card_catalogue.gd"
 DeckState="*res://new/singletons/deck_state.gd"
 EffectsQueue="*res://new/singletons/effects_queue.gd"
 ResourceState="*res://new/singletons/resource_state.gd"
+BuildCatalogue="*res://new/singletons/build_catalogue.gd"
 
 [display]
 

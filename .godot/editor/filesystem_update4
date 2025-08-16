@@ -25,3 +25,9 @@ res://new/singletons/turn_effects_queue.gd
 res://new/managers/turn effects manager/effect_runner.gd
 res://new/managers/turn effects manager/effects_runner.gd
 res://new/managers/turn effects manager/effects_manager.gd
+res://new/managers/deck manager/structure_specs.gd
+res://new/singletons/build_catalogue.gd
+res://new/managers/structure manager/structure_manager.gd
+res://new/managers/structure manager/placement_handler.gd
+res://new/managers/structure manager/painting_handler.gd
+res://new/managers/structure manager/removal_handler.gd

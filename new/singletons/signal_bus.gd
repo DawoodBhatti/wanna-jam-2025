@@ -37,18 +37,26 @@ signal cards_drawn(cards: Array)
 signal card_discarded(card_data: Dictionary)
 
 # ----------------------------
+# 🏗 Building Placement Signals
+# ----------------------------
+## NOTE: "building" here means *any* placeable from BuildCatalogue — 
+## includes structures, tiles, etc.
+signal building_placed(tile_info: Dictionary)   # emitted per placed building
+signal building_erased(tile_info: Dictionary)   # emitted per removed building
+signal place_mode_completed                           # emitted when place budget is consumed
+signal remove_mode_completed                          # emitted when remove budget is consumed
+signal start_paint_mode_request(mode: String, data: Dictionary, count: int) #emitted to begin paint mode
+# ----------------------------
 # 🔊 Signal Logging
 # ----------------------------
 var print_signals: bool = false
 
+
+#emits signal with print statement to help debugging
 func emit_logged(name: String, arg: Variant = null) -> void:
 	if print_signals:
 		var arg_str: String = ""
-		if arg == null:
-			arg_str = ""
-		elif arg is Array:
-			arg_str = str(arg)
-		else:
+		if arg != null:
 			arg_str = str(arg)
 		print("[Signal] %s(%s)" % [name, arg_str])
 
