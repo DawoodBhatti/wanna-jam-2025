@@ -9,3 +9,19 @@ res://new/singletons/SignalBus.gd
 res://scenes + scripts/StructureManager/structure_manager.tscn
 res://new/singletons/game_state.gd
 res://scenes + scripts/StructureManager/structure_manager.gd
+res://singletons/game_state.gd
+res://new/singletons/signal_bus.gd
+res://new/singletons/turn_effects.gd
+res://new/singletons/resource_control.gd
+res://new/singletons/card_catalogue.gd
+res://new/singletons/deck_state.gd
+res://new/managers/deck_manager.gd
+res://new/managers/deck manager/effect_runner.gd
+res://new/singletons/resource_state.gd
+res://new/managers/deck manager/deck_manager.gd
+res://scenes + scripts/HUD/hud.tscn
+res://new/managers/turn effects manager/turn_effects_manager.gd
+res://new/singletons/turn_effects_queue.gd
+res://new/managers/turn effects manager/effect_runner.gd
+res://new/managers/turn effects manager/effects_runner.gd
+res://new/managers/turn effects manager/effects_manager.gd

@@ -3,6 +3,7 @@ extends Node
 # ----------------------------
 # 🪵 Resource Signals
 # ----------------------------
+signal resource_delta(resource: String, delta: int)
 signal stone_changed(amount: int)
 signal wood_changed(amount: int)
 signal food_changed(amount: int)
@@ -16,59 +17,52 @@ signal turn_ended(turn_number: int)
 signal phase_changed(new_phase: String)
 signal play_phase_state_changed(state: String)
 signal cancel_active_modes
+signal end_turn_effects_started
+signal effect_done
+signal end_turn_effects_finished
+signal resource_count_started
+
+signal instant_effect_resolved(effect: Dictionary)
 
 # ----------------------------
 # 🃏 Card & Hand Signals
 # ----------------------------
 signal hand_drawn(cards: Array)
+signal hand_resolved
 signal card_played(card_data: Dictionary)
 signal card_clicked(card_data: Dictionary)
 signal piles_changed(deck_size: int, hand_size: int, discard_size: int)
 
-# ----------------------------
-# 🏗️ Structure & Tile Signals
-# ----------------------------
-signal structure_placement_requested(structure_info: Dictionary)
-signal structure_placed(data)
-signal structure_recycled(data)
-signal tile_effects_done
-signal recycle_mode_requested(data: Dictionary)
+signal cards_drawn(cards: Array)
+signal card_discarded(card_data: Dictionary)
 
 # ----------------------------
 # 🔊 Signal Logging
 # ----------------------------
-var print_signals := false  # Toggle manually to enable/disable logging
+var print_signals: bool = false
 
-# Custom signal emitter with optional logging
-# Usage: SignalBus.emit_logged("signal_name", arg)
 func emit_logged(name: String, arg: Variant = null) -> void:
 	if print_signals:
-		var arg_str := ""
+		var arg_str: String = ""
 		if arg == null:
 			arg_str = ""
-		elif typeof(arg) == TYPE_ARRAY:
+		elif arg is Array:
 			arg_str = str(arg)
 		else:
 			arg_str = str(arg)
-		print("[Signal] " + name + "(" + arg_str + ")")
+		print("[Signal] %s(%s)" % [name, arg_str])
 
-	# Emit signal based on argument type
 	match typeof(arg):
 		TYPE_NIL:
 			emit_signal(name)
 		TYPE_ARRAY:
-			match arg.size():
-				0:
-					emit_signal(name)
-				1:
-					emit_signal(name, arg[0])
-				2:
-					emit_signal(name, arg[0], arg[1])
-				3:
-					emit_signal(name, arg[0], arg[1], arg[2])
-				_:
-					print("SignalBus.emit_logged: Too many arguments in array")
-					push_error("SignalBus.emit_logged: Too many arguments in array")
-		#if arg is not null or an array
+			var arr: Array = arg as Array
+			match arr.size():
+				0: emit_signal(name)
+				1: emit_signal(name, arr[0])
+				2: emit_signal(name, arr[0], arr[1])
+				3: emit_signal(name, arr[0], arr[1], arr[2])
+				4: emit_signal(name, arr[0], arr[1], arr[2], arr[3])
+				_: push_error("SignalBus.emit_logged: Too many arguments in array")
 		_:
 			emit_signal(name, arg)
