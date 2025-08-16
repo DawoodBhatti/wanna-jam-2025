@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StructureSpec" load_steps=3 format=3 uid="uid://c7s40dtmstts1"]
+
+[ext_resource type="Script" uid="uid://dck3nmwsjtrlo" path="res://scenes + scripts/StructureManager/effects/medusa_effect.gd" id="1_2rerf"]
+[ext_resource type="Script" uid="uid://b5fo2s4puewj0" path="res://scenes + scripts/StructureManager/specs/structure_spec.gd" id="1_05f0q"]
+
+[resource]
+script = ExtResource("1_05f0q")
+id = "medusa"
+name = "medusa"
+priority = 1
+effect_script = ExtResource("1_2rerf")
+aoe_shape = "self"
+metadata/_custom_type_script = "uid://b5fo2s4puewj0"

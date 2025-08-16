@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bx2agddqlala4"]
 
-[ext_resource type="Texture2D" uid="uid://bwj5nqm1tn2x0" path="res://assets/prototyping/forestPath_.png" id="1_7eo66"]
+[ext_resource type="Texture2D" path="res://old/assets/prototyping/forestPath_.png" id="1_7eo66"]
 
 [node name="HUD" type="Node2D"]
 

@@ -1,0 +1,18 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://doywhsu2ipm7y"]
+
+[ext_resource type="Texture2D" path="res://old/assets/prototyping/forest_ [bridgeAnimatedTiles].png" id="1_h4dii"]
+[ext_resource type="Texture2D" uid="uid://ct4b8nxakikmn" path="res://assets/prototyping/medusa1.png" id="2_tn1p7"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cjpsi"]
+resource_name = "Stone"
+texture = ExtResource("1_h4dii")
+8:2/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_47rsr"]
+resource_name = "Medusa"
+texture = ExtResource("2_tn1p7")
+3:7/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_cjpsi")
+sources/1 = SubResource("TileSetAtlasSource_47rsr")

@@ -1,6 +1,11 @@
 res://scenes + scripts/main.tscn
-res://assets/prototyping/structures.tres
+res://scenes + scripts/HUD/hud.gd
+res://scenes + scripts/StructureManager/specs/structure_spec.gd
+res://scenes + scripts/StructureManager/data/structures.tres
 res://scenes + scripts/basegrid.tscn
 res://scenes + scripts/resource_control.tscn
 res://scenes + scripts/hud.tscn
-res://scenes + scripts/resource_control.gd
+res://new/singletons/SignalBus.gd
+res://scenes + scripts/StructureManager/structure_manager.tscn
+res://new/singletons/game_state.gd
+res://scenes + scripts/StructureManager/structure_manager.gd
