@@ -14,7 +14,6 @@
 [node name="HUD" parent="." instance=ExtResource("3_h2yge")]
 
 [node name="Tiles" parent="." instance=ExtResource("2_s6e2t")]
-position = Vector2(384, 120)
 
 [node name="StructureManager" parent="." instance=ExtResource("1_1bvp3")]
 

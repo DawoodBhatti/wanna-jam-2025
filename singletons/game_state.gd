@@ -29,16 +29,22 @@ var play_phase_state: String = PLAY_PHASE_STATE_IDLE  # Inner play sub-phase
 func _ready() -> void:
 	print("[GameState] Ready")
 
-	if SignalBus:
-		# Hook game flow
-		SignalBus.connect("hand_resolved", Callable(self, "_on_hand_resolved"))
-		SignalBus.connect("end_turn_effects_finished", Callable(self, "_on_end_turn_effects_finished"))
-		SignalBus.connect("resource_count_started", Callable(self, "_on_resource_count_started"))
-	else:
-		push_warning("[GameState] no signal bus found")
 
-	if ResourceState == null:
-		push_warning("[GameState] ResourceState singleton not found")
+	SignalBus.connect("hand_resolved", Callable(self, "_on_hand_resolved"))
+	SignalBus.connect("end_turn_effects_finished", Callable(self, "_on_end_turn_effects_finished"))
+	SignalBus.connect("resource_count_started", Callable(self, "_on_resource_count_started"))
+
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
 	
 	call_deferred("start_game")
 

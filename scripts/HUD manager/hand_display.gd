@@ -5,16 +5,11 @@ extends Control
 @export var x_shift: float = -485.0
 
 var accepting_input: bool = true
-var card_template: Control  # prototype fetched from DeckManager
+var CardTemplateScene: PackedScene   # holds the compiled scene resource
 
 func _ready() -> void:
-	await get_tree().process_frame
-	#allow frame to pass so we completely load CardTemplate's children
-	
-	# Fetch the template via DeckManager's API
-	var deck_manager = get_node("../../DeckManager")
-	card_template = deck_manager.get_card_template()
-
+	# Preload the card scene once — path to your .tscn file
+	CardTemplateScene = preload("res://scenes/deck/card_template.tscn")
 
 	# Connect signals
 	SignalBus.connect("hand_drawn", Callable(self, "_on_hand_drawn"))
@@ -24,14 +19,16 @@ func _ready() -> void:
 	print("[HandDisplay] ready!")
 
 func _on_hand_drawn(hand: Array) -> void:
-	# Clear previous hand
+	# Optional: Clear previous hand
 	for child in get_children():
 		child.queue_free()
 
-	# Spawn cards from prototype
+	print("[HandDisplay] hand cleared:", hand.size(), "cards")
+
+	# Spawn cards from scene
 	for i in range(hand.size()):
 		var card_data: Dictionary = hand[i]
-		var card_instance := card_template.duplicate()
+		var card_instance: Control = CardTemplateScene.instantiate()
 
 		if card_instance.has_method("populate"):
 			card_instance.populate(card_data)

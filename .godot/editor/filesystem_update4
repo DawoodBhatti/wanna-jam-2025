@@ -1,42 +1,13 @@
-res://new/scenes/basegrid.tscn
-res://scenes + scripts/HUD/hud.gd
-res://scenes + scripts/StructureManager/data/structures.tres
-res://assets/prototyping/structures.tres
-res://scenes + scripts/HUD/hud.tscn
-res://scenes + scripts/StructureManager/specs/structure_spec.gd
-res://scenes + scripts/HUD/hand_display.gd
-res://old/scenes + scripts/StructureManager/data/structures.tres
-res://new/tilesets/ground.tres
-res://new/scripts/structure manager/structure_manager.gd
-res://new/scenes/camera/camera.tscn
-res://new/scenes/HUD/hud.tscn
-res://new/scenes/structures/structures.tscn
-res://new/main.tscn
-res://new/scripts/HUD manager/turn_display.gd
-res://main.tscn
+res://scenes/deck/deck manager.tscn
+res://scripts/deck manager/card_template.gd
+res://scripts/HUD manager/draw_pile.gd
 res://tilesets/structures.tres
 res://tilesets/ground.tres
 res://tilesets/water.tres
-res://scenes/camera/camera.tscn
-res://singletons/build_catalogue.gd
-res://scenes/levels/basegrid.tscn
 res://scenes/HUD/hud.tscn
-res://scripts/HUD manager/hand_display.gd
-res://scripts/HUD manager/draw_pile.gd
-res://scripts/HUD manager/hud.gd
-res://scripts/HUD manager/discard_pile.gd
-res://scripts/HUD manager/turn_display.gd
-res://tilesets/resource_placeholder.tres
-res://singletons/debug.gd
-res://singletons/game_state.gd
-res://singletons/signal_bus.gd
-res://scenes/structures/structure manager.tscn
-res://scripts/structure manager/structure_manager.gd
-res://scripts/deck manager/card_template.tscn
-res://scripts/deck manager/card_template.gd
-res://scenes/deck/deck manager.tscn
-res://scripts/deck manager/deck_manager.gd
-res://scenes/effects/effects manager.tscn
-res://scripts/turn effects manager/effects_manager.gd
-res://scripts/turn effects manager/effects_runner.gd
 res://scenes/deck/card_template.tscn
+res://scenes/camera/camera.tscn
+res://scenes/levels/basegrid.tscn
+res://main.tscn
+res://scripts/HUD manager/hand_display.gd
+res://scripts/deck manager/deck_manager.gd

@@ -1,63 +1,63 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1755442809
-main.tscn::PackedScene::680676541340629141::1755442809::0::1::::<><><>0<>0<><>::uid://ctdn6dk585exp::::res://scenes/structures/structure manager.tscn<>uid://by5ljgo7fvchd::::res://scenes/camera/camera.tscn<>uid://btr0hna4378gm::::res://scenes/levels/basegrid.tscn<>uid://cqsiov6wcgkiw::::res://scenes/HUD/hud.tscn<>uid://d4hmqpiijxkfs::::res://scenes/deck/deck manager.tscn<>uid://jburlgiwfsb6::::res://scenes/effects/effects manager.tscn
+::res://::1755454413
+main.tscn::PackedScene::680676541340629141::1755451268::0::1::::<><><>0<>0<><>::uid://ctdn6dk585exp::::res://scenes/structures/structure manager.tscn<>uid://by5ljgo7fvchd::::res://scenes/camera/camera.tscn<>uid://btr0hna4378gm::::res://scenes/levels/basegrid.tscn<>uid://cqsiov6wcgkiw::::res://scenes/HUD/hud.tscn<>uid://d4hmqpiijxkfs::::res://scenes/deck/deck manager.tscn<>res://scenes/effects/effects manager.tscn
 README.md::TextFile/TextFile::-1::1755014897::0::1::::<><><>0<>0<><>::
 sources.txt::TextFile/TextFile::-1::1754851994::0::1::::<><><>0<>0<><>::
-::res://assets/::1755430517
-forest_ [bridgeVertical].png::CompressedTexture2D/CompressedTexture2D::8964376428043349525::1754831294::1755430517::1::::<><><>0<>0<>ce61ffea3fb0343e0e7c979f90872b14<>res://.godot/imported/forest_ [bridgeVertical].png-4fbb4e7d5b99eed14b6ac1c6824943d8.ctex::
-forest_ [resources].png::CompressedTexture2D/CompressedTexture2D::8312863688342182975::1754831294::1755422283::1::::<><><>0<>0<>5e028a7ee1ad840d32b9cf1f1a2ecb22<>res://.godot/imported/forest_ [resources].png-21f483565fb417c5875228873fb24319.ctex::
-forest_.png::CompressedTexture2D/CompressedTexture2D::821478349286012334::1754831294::1755430220::1::::<><><>0<>0<>6d9755b1eba7fe93d19c9325f9281883<>res://.godot/imported/forest_.png-5e5181681e20e873c17a7ecc56383a36.ctex::
-::res://scenes/::1755440348
-::res://scenes/camera/::1755423851
-camera.tscn::PackedScene/PackedScene::4133568560922052593::1755423851::0::1::::<><><>0<>0<><>::uid://bt5j7p6rjr1ym::::res://scripts/camera/camera_2d.gd
-::res://scenes/deck/::1755442809
-deck manager.tscn::PackedScene::9209947138061450284::1755442809::0::1::::<><><>0<>0<><>::uid://dda0ui62gyw46::::res://scripts/deck manager/deck_manager.gd<>uid://jrwa870ukak8::::res://scripts/deck manager/card_template.gd
-::res://scenes/effects/::1755440627
-effects manager.tscn::PackedScene::635009256266842001::1755440627::0::1::::<><><>0<>0<><>::uid://mpg4c4woj1x8::::res://scripts/turn effects manager/effects_manager.gd<>uid://dk3hjcx2k1xcm::::res://scripts/turn effects manager/effects_runner.gd
-::res://scenes/HUD/::1755442810
-hud.tscn::PackedScene::5933533554106386078::1755442810::0::1::::<><><>0<>0<><>::uid://c218dapxoh5tq::::res://scripts/HUD manager/hud.gd<>uid://dqo2wd5g5a7a6::::res://assets/forest_ [resources].png<>uid://d2yrsb7d7wt7v::::res://scripts/HUD manager/instructions.gd<>uid://bhxppwsaltwwv::::res://scripts/HUD manager/hand_display.gd<>uid://b25si24s1nrc5::::res://scripts/HUD manager/draw_pile.gd<>uid://yfl2ykihvov0::::res://scripts/HUD manager/discard_pile.gd<>uid://bllf7vaufcfq4::::res://scripts/HUD manager/turn_display.gd
-::res://scenes/levels/::1755441052
-basegrid.tscn::PackedScene::3756634244171121084::1755441052::0::1::::<><><>0<>0<><>::uid://0q8tqvte2nu::::res://scripts/level manager/basegrid.gd<>uid://cnyaoikqx4tcg::::res://scripts/level manager/grid_layer.gd<>uid://d0w01bed4kded::::res://tilesets/structures.tres<>uid://dmb2jq1rygqi0::::res://tilesets/ground.tres<>uid://bo4fhcajdmg81::::res://tilesets/water.tres
-::res://scenes/structures/::1755439715
-structure manager.tscn::PackedScene::6113467384714453485::1755439715::0::1::::<><><>0<>0<><>::uid://ij68vke3trpk::::res://scripts/structure manager/structure_manager.gd<>uid://ha23ukcsotpe::::res://scripts/structure manager/painting_handler.gd<>uid://d0y7by4psugy4::::res://scripts/structure manager/removal_handler.gd<>uid://dxtv4r4gwtihl::::res://scripts/structure manager/placement_handler.gd
-::res://scripts/::1755418551
-::res://scripts/camera/::1755418493
-camera_2d.gd::GDScript/GDScript::3782544480301681820::1754842372::0::1::::<>Camera2D<><>0<>0<><>::
-::res://scripts/deck manager/::1755442660
-border_shader.gdshader::Shader/Shader::17152739806075943::1755242387::0::1::::<><><>0<>0<><>::
-card_template.gd::GDScript::668131572269471653::1755441503::0::1::::<>Control<><>0<>0<><>::
-card_template.tscn::PackedScene::6449796862255128092::1755439715::0::1::::<><><>0<>0<><>::uid://jrwa870ukak8::::res://scripts/deck manager/card_template.gd<>uid://ikrdutpcmp0::::res://scripts/deck manager/border_shader.gdshader<>uid://dqo2wd5g5a7a6::::res://assets/forest_ [resources].png
-deck_manager.gd::GDScript::7371382692002142097::1755442660::0::1::::DeckManager<>Node2D<><>0<>0<><>::
-::res://scripts/HUD manager/::1755442809
-discard_pile.gd::GDScript/GDScript::1695571515821067059::1755424683::0::1::::<>Label<><>0<>0<><>::
-draw_pile.gd::GDScript/GDScript::4344559450545699246::1755424683::0::1::::<>Label<><>0<>0<><>::
-hand_display.gd::GDScript::2926162002638428321::1755442809::0::1::::<>Control<><>0<>0<><>::
-hud.gd::GDScript/GDScript::6723623009597738822::1755429344::0::1::::<>Node<><>0<>0<><>::
-instructions.gd::GDScript/GDScript::9104970330707978417::1755342866::0::1::::<>Label<><>0<>0<><>::
-turn_display.gd::GDScript/GDScript::3181567953280731953::1755422447::0::1::::<>Label<><>0<>0<><>::
-::res://scripts/level manager/::1755417212
-basegrid.gd::GDScript/GDScript::52640870574865962::1755330858::0::1::::<>Node2D<><>0<>0<><>::
-grid_layer.gd::GDScript/GDScript::5734866838286435950::1755330858::0::1::::<>Node2D<><>0<>0<><>::
-::res://scripts/structure manager/::1755432136
-painting_handler.gd::GDScript/GDScript::493012332530802974::1755362929::0::1::::PaintingHandler<>Node<><>0<>0<><>::
-placement_handler.gd::GDScript/GDScript::8814156414951570193::1755362967::0::1::::PlacementHandler<>Node<><>0<>0<><>::
-removal_handler.gd::GDScript/GDScript::8965474243756089925::1755362977::0::1::::RemovalHandler<>Node<><>0<>0<><>::
-structure_manager.gd::GDScript::582032425523742244::1755432136::0::1::::<>Node<><>0<>0<><>::
-structure_specs.gd::GDScript/GDScript::441749372253807425::1755358275::0::1::::StructureSpecs<>RefCounted<><>0<>0<><>::
-::res://scripts/turn effects manager/::1755440625
-effects_manager.gd::GDScript::873648030811827007::1755440625::0::1::::<>Node<><>0<>0<><>::
-effects_runner.gd::GDScript::7919394297486180284::1755440515::0::1::::<>Node<><>0<>0<><>::
-::res://singletons/::1755441048
-build_catalogue.gd::GDScript/GDScript::5732773707103536764::1755421030::0::1::::<>Node<><>0<>0<><>::
-card_catalogue.gd::GDScript/GDScript::1790157447645294627::1755338149::0::1::::<>Node<><>0<>0<><>::
-debug.gd::GDScript/GDScript::7317595045563517758::1755428652::0::1::::<>Node<><>0<>0<><>::
-deck_state.gd::GDScript/GDScript::879300272849362165::1755339617::0::1::::<>Node<><>0<>0<><>::
-effects_queue.gd::GDScript/GDScript::6496421754963645247::1755344697::0::1::::<>Node<><>0<>0<><>::
-game_state.gd::GDScript/GDScript::734657614677613817::1755429371::0::1::::<>Node<><>0<>0<><>::
-resource_state.gd::GDScript/GDScript::8323106753299973407::1755340035::0::1::::<>Node<><>0<>0<><>::
-signal_bus.gd::GDScript::7146401469992841511::1755441048::0::1::::<>Node<><>0<>0<><>::
-::res://tilesets/::1755441011
-ground.tres::TileSet::8005248864782836153::1755441011::0::1::::<><><>0<>0<><>::uid://lx6vmomr3jxm::::res://assets/forest_.png
-resource_placeholder.tres::AtlasTexture/AtlasTexture::3079441357439541651::1755422930::0::1::::<><><>0<>0<><>::
-structures.tres::TileSet::8960963866958141207::1755441011::0::1::::<><><>0<>0<><>::uid://d0yn78nfsqh8x::::res://assets/forest_ [bridgeVertical].png
-water.tres::TileSet/TileSet::3429247640474562372::1755430289::0::1::::<><><>0<>0<><>::uid://lx6vmomr3jxm::::res://assets/forest_.png
+::res://assets/::1755446747
+forest_ [bridgeVertical].png::CompressedTexture2D/CompressedTexture2D::8964376428043349525::1755446747::1755446747::1::::<><><>0<>0<>ce61ffea3fb0343e0e7c979f90872b14<>res://.godot/imported/forest_ [bridgeVertical].png-4fbb4e7d5b99eed14b6ac1c6824943d8.ctex::
+forest_ [resources].png::CompressedTexture2D/CompressedTexture2D::8312863688342182975::1755446747::1755446747::1::::<><><>0<>0<>5e028a7ee1ad840d32b9cf1f1a2ecb22<>res://.godot/imported/forest_ [resources].png-21f483565fb417c5875228873fb24319.ctex::
+forest_.png::CompressedTexture2D/CompressedTexture2D::821478349286012334::1755446747::1755446747::1::::<><><>0<>0<>6d9755b1eba7fe93d19c9325f9281883<>res://.godot/imported/forest_.png-5e5181681e20e873c17a7ecc56383a36.ctex::
+::res://scenes/::1755446747
+::res://scenes/camera/::1755451268
+camera.tscn::PackedScene::4133568560922052593::1755451268::0::1::::<><><>0<>0<><>::uid://bt5j7p6rjr1ym::::res://scripts/camera/camera_2d.gd
+::res://scenes/deck/::1755451268
+card_template.tscn::PackedScene::6449796862255128092::1755451268::0::1::::<><><>0<>0<><>::uid://jrwa870ukak8::::res://scripts/deck manager/card_template.gd<>uid://ikrdutpcmp0::::res://scripts/deck manager/border_shader.gdshader<>uid://dqo2wd5g5a7a6::::res://assets/forest_ [resources].png
+deck manager.tscn::PackedScene::9209947138061450284::1755451268::0::1::::<><><>0<>0<><>::uid://dda0ui62gyw46::::res://scripts/deck manager/deck_manager.gd<>uid://jrwa870ukak8::::res://scripts/deck manager/card_template.gd
+::res://scenes/effects/::1755447815
+effects manager.tscn::PackedScene::635009256266842001::1755447815::0::1::::<><><>0<>0<><>::uid://mpg4c4woj1x8::::res://scripts/turn effects manager/effects_manager.gd<>uid://dk3hjcx2k1xcm::::res://scripts/turn effects manager/effects_runner.gd
+::res://scenes/HUD/::1755451268
+hud.tscn::PackedScene::5933533554106386078::1755451268::0::1::::<><><>0<>0<><>::uid://c218dapxoh5tq::::res://scripts/HUD manager/hud.gd<>uid://dqo2wd5g5a7a6::::res://assets/forest_ [resources].png<>uid://d2yrsb7d7wt7v::::res://scripts/HUD manager/instructions.gd<>uid://bhxppwsaltwwv::::res://scripts/HUD manager/hand_display.gd<>uid://b25si24s1nrc5::::res://scripts/HUD manager/draw_pile.gd<>uid://yfl2ykihvov0::::res://scripts/HUD manager/discard_pile.gd<>uid://bllf7vaufcfq4::::res://scripts/HUD manager/turn_display.gd
+::res://scenes/levels/::1755451268
+basegrid.tscn::PackedScene::3756634244171121084::1755451268::0::1::::<><><>0<>0<><>::uid://0q8tqvte2nu::::res://scripts/level manager/basegrid.gd<>uid://cnyaoikqx4tcg::::res://scripts/level manager/grid_layer.gd<>uid://d0w01bed4kded::::res://tilesets/structures.tres<>uid://dmb2jq1rygqi0::::res://tilesets/ground.tres<>uid://bo4fhcajdmg81::::res://tilesets/water.tres
+::res://scenes/structures/::1755446747
+structure manager.tscn::PackedScene::6113467384714453485::1755446747::0::1::::<><><>0<>0<><>::uid://ij68vke3trpk::::res://scripts/structure manager/structure_manager.gd<>uid://ha23ukcsotpe::::res://scripts/structure manager/painting_handler.gd<>uid://d0y7by4psugy4::::res://scripts/structure manager/removal_handler.gd<>uid://dxtv4r4gwtihl::::res://scripts/structure manager/placement_handler.gd
+::res://scripts/::1755446747
+::res://scripts/camera/::1755446747
+camera_2d.gd::GDScript::3782544480301681820::1755446747::0::1::::<>Camera2D<><>0<>0<><>::
+::res://scripts/deck manager/::1755451268
+border_shader.gdshader::Shader::17152739806075943::1755446747::0::1::::<><><>0<>0<><>::
+card_template.gd::GDScript::668131572269471653::1755451268::0::1::::<>Control<><>0<>0<><>::
+deck_manager.gd::GDScript::7371382692002142097::1755450908::0::1::::DeckManager<>Node2D<><>0<>0<><>::
+::res://scripts/HUD manager/::1755451268
+discard_pile.gd::GDScript::1695571515821067059::1755446747::0::1::::<>Label<><>0<>0<><>::
+draw_pile.gd::GDScript::4344559450545699246::1755451268::0::1::::<>Label<><>0<>0<><>::
+hand_display.gd::GDScript::2926162002638428321::1755450516::0::1::::<>Control<><>0<>0<><>::
+hud.gd::GDScript::6723623009597738822::1755446747::0::1::::<>Node<><>0<>0<><>::
+instructions.gd::GDScript::9104970330707978417::1755446747::0::1::::<>Label<><>0<>0<><>::
+turn_display.gd::GDScript::3181567953280731953::1755446747::0::1::::<>Label<><>0<>0<><>::
+::res://scripts/level manager/::1755446747
+basegrid.gd::GDScript::52640870574865962::1755446747::0::1::::<>Node2D<><>0<>0<><>::
+grid_layer.gd::GDScript::5734866838286435950::1755446747::0::1::::<>Node2D<><>0<>0<><>::
+::res://scripts/structure manager/::1755446747
+painting_handler.gd::GDScript::493012332530802974::1755446747::0::1::::PaintingHandler<>Node<><>0<>0<><>::
+placement_handler.gd::GDScript::8814156414951570193::1755446747::0::1::::PlacementHandler<>Node<><>0<>0<><>::
+removal_handler.gd::GDScript::8965474243756089925::1755446747::0::1::::RemovalHandler<>Node<><>0<>0<><>::
+structure_manager.gd::GDScript::582032425523742244::1755446747::0::1::::<>Node<><>0<>0<><>::
+structure_specs.gd::GDScript::441749372253807425::1755446747::0::1::::StructureSpecs<>RefCounted<><>0<>0<><>::
+::res://scripts/turn effects manager/::1755446747
+effects_manager.gd::GDScript::873648030811827007::1755446747::0::1::::<>Node<><>0<>0<><>::
+effects_runner.gd::GDScript::7919394297486180284::1755446747::0::1::::<>Node<><>0<>0<><>::
+::res://singletons/::1755449569
+build_catalogue.gd::GDScript::5732773707103536764::1755446747::0::1::::<>Node<><>0<>0<><>::
+card_catalogue.gd::GDScript::1790157447645294627::1755446747::0::1::::<>Node<><>0<>0<><>::
+debug.gd::GDScript::7317595045563517758::1755446747::0::1::::<>Node<><>0<>0<><>::
+deck_state.gd::GDScript::879300272849362165::1755446747::0::1::::<>Node<><>0<>0<><>::
+effects_queue.gd::GDScript::6496421754963645247::1755446747::0::1::::<>Node<><>0<>0<><>::
+game_state.gd::GDScript::734657614677613817::1755449569::0::1::::<>Node<><>0<>0<><>::
+resource_state.gd::GDScript::8323106753299973407::1755446747::0::1::::<>Node<><>0<>0<><>::
+signal_bus.gd::GDScript::7146401469992841511::1755447813::0::1::::<>Node<><>0<>0<><>::
+::res://tilesets/::1755447822
+ground.tres::TileSet::8005248864782836153::1755447822::0::1::::<><><>0<>0<><>::uid://lx6vmomr3jxm::::res://assets/forest_.png
+resource_placeholder.tres::AtlasTexture::3079441357439541651::1755446747::0::1::::<><><>0<>0<><>::
+structures.tres::TileSet::8960963866958141207::1755447822::0::1::::<><><>0<>0<><>::uid://d0yn78nfsqh8x::::res://assets/forest_ [bridgeVertical].png
+water.tres::TileSet::3429247640474562372::1755447822::0::1::::<><><>0<>0<><>::uid://lx6vmomr3jxm::::res://assets/forest_.png

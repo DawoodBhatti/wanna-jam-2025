@@ -8,6 +8,7 @@ var original_position: Vector2 = Vector2.ZERO
 var tween: Tween
 var interactable: bool = true
 
+
 func _ready() -> void:
 
 	original_position = position
@@ -16,11 +17,12 @@ func _ready() -> void:
 	connect("mouse_exited", Callable(self, "_on_mouse_exited"))
 	connect("gui_input", Callable(self, "_on_gui_input"))
 
-func populate(data: Dictionary) -> void:
-	card_data = data
+	print("[CardTemplate] ready!")
 
-	$CardTitle.text = data.name
-	$CardDescription.text = data.description
+func populate(data: Dictionary) -> void:
+
+	get_node("CardTitle").text = data.name
+	get_node("CardDescription").text = data.description
 
 	if typeof(data.cost) == TYPE_INT:
 		if data.cost == 0:
@@ -38,8 +40,6 @@ func populate(data: Dictionary) -> void:
 	if $CardImage.material is ShaderMaterial:
 		var sm: ShaderMaterial = $CardImage.material
 		$CardImage.material = sm.duplicate(true)
-
-	print("Card populated:", data.name)
 
 func _on_mouse_entered() -> void:
 	if tween:

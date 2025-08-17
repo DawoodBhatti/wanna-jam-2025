@@ -33,18 +33,17 @@ var effects_manager : Node2D
 
 func _ready() -> void:
 	
-	
 	effects_manager = get_node("../EffectsManager")
 	
 	if DeckState.deck.is_empty():
 		DeckState.deck.append_array(CardCatalogue.deck.duplicate(true))
 		DeckState.shuffle_deck()
-
 	
 	SignalBus.connect("phase_changed", Callable(self, "_on_phase_changed"))
 	SignalBus.connect("card_clicked", Callable(self, "_on_card_clicked"))
 
 	print("[DeckManager] ready!")
+
 
 # In DeckManager.gd
 func get_card_template() -> Control:
