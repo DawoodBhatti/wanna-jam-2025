@@ -38,16 +38,15 @@ func _refresh_all() -> void:
 	food_label.text  = str(ResourceState.food_count)
 	pop_label.text   = str(ResourceState.pop_count)
 
-
 func _on_end_turn_pressed() -> void:
-	SignalBus.emit_logged("end_turn_requested")
+	print("[HUD] end turn pressed")
+	SignalBus.emit_logged("resolve_hand_requested")
 
 #not needed
 #func _on_phase_changed(new_phase: String) -> void:
 	#var is_play := (new_phase == "Play")
 	#end_turn_button.visible = is_play
 	#end_turn_button.disabled = not is_play
-
 
 func _apply_end_turn_button_style() -> void:
 	end_turn_button.theme = null

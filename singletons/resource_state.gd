@@ -61,12 +61,7 @@ func _emit_resource_signal(res_type: String, amount: int) -> void:
 	var sig_name := "%s_changed" % res_type
 	SignalBus.emit_logged(sig_name, [amount])
 
-func _on_resource_count_requested() -> void:
+#placeholder function for future complicated logic?
+func _on_resource_count_started() -> void:
 	# Step 1: Emit outcome that counting has started/completed for any listeners
 	SignalBus.emit_logged("resource_count_finished")
-
-	# Step 2: Push current values
-	SignalBus.emit_logged("stone_changed", [stone_count])
-	SignalBus.emit_logged("wood_changed", [wood_count])
-	SignalBus.emit_logged("food_changed", [food_count])
-	SignalBus.emit_logged("pop_changed", [pop_count])

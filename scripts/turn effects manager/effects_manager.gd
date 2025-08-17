@@ -3,21 +3,16 @@ extends Node
 @onready var effects_runner: Node2D = $EffectsRunner
 
 func _ready() -> void:
-	
-	#TODO! this might need fixing
-	# Discoverable for DeckManager.resolve
-	
-	# Chain-advance the turn queue when a queued effect finishes
-	SignalBus.connect("effect_done", Callable(self, "_process_next"))
+	# Trigger end-of-turn effect draining when signaled by GameState
 	SignalBus.connect("end_turn_effects_started", Callable(self, "run_end_turn_effects"))
-
 	print("[EffectsManager] ready!")
 
 
-# Single entry point. The ONLY routing rule:
-# - If effect.instant == true → run immediately
-# - Else → enqueue for turn-ordered resolution
-# ctx (e.g., {"card": card, "timing": "play"|"end"}) is passed through untouched for consumers.
+# Single entry point for all effect routing
+# Rule:
+# - If effect.instant == true → run immediately# - Else → enqueue (bypass queue)
+# for turn-ordered resolution
+# ctx (e.g., {"card": card, "timing": through untouched "play"|"end"}) passes for consumers
 func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
 	if not effect.has("type"):
 		push_error("[EffectsManager] effect missing 'type': %s" % str(effect))
@@ -29,26 +24,28 @@ func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
 		# Immediate execution path — no queue involvement
 		effects_runner.run_instant(effect)
 	else:
-		# Deferred, sequenced execution path
+		# Deferred, sequenced executionQueue.queue_effect path
 		EffectsQueue.queue_effect(
 			func(inner_ctx: Dictionary) -> void:
 				effects_runner.run_queued(inner_ctx.effect, inner_ctx),
 			{
 				"effect": effect,
 				"card": ctx.get("card", null),
-				"timing": String(ctx.get("timing", ""))  # kept for analytics/FX, not for routing
+				"timing": String(ctx.get("timing", ""))  # retained for analytics/FX, not routing
 			}
 		)
 
-# Begin draining the queued turn effects. Emits finished immediately if nothing is queued.
+
+# Begin draining queued end‑turn effects.
+# Emits finished immediately if queue is empty.
 func run_end_turn_effects() -> void:
-	SignalBus.emit_logged("end_turn_effects_started")
 	if not EffectsQueue.has_jobs():
 		SignalBus.emit_logged("end_turn_effects_finished")
 		return
+
 	_process_next()
 
-# Internal: pop next job and execute. effect_done will call this again.
+# Internal: pop next job and execute; 'effect_done' will call this again
 func _process_next() -> void:
 	if not EffectsQueue.has_jobs():
 		SignalBus.emit_logged("end_turn_effects_finished")

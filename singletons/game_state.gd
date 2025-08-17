@@ -63,12 +63,16 @@ func _on_resolve_hand_requested() -> void:
 	current_phase = "Turn Effects"
 	SignalBus.emit_logged("phase_changed", [current_phase])
 
-	# Trigger Turn Effects start — this is a *request* to the Effects manager
-	SignalBus.emit_logged("end_turn_effects_requested")
+	# Trigger Turn Effects start — this is us automatically setting the Effects manager to work 
+	SignalBus.emit_logged("end_turn_effects_started")
 
 func _on_end_turn_effects_finished() -> void:
 	print("[GameState] Turn Effects complete — requesting resource count")
+	current_phase = "Resource Count"
+	# Move to Resource Count phase before requesting = "Resource Count current_phase"
+	SignalBus.emit_logged("phase_changed", [current_phase])
 	SignalBus.emit_logged("resource_count_requested")
+	
 
 func _on_resource_count_finished() -> void:
 	# Complete outer loop: advance to next turn

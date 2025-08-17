@@ -1,13 +1,10 @@
 extends Control
 
-signal card_clicked(card_data: Dictionary)
-
 var card_data: Dictionary
 var hover_offset: Vector2 = Vector2(0, -200)
 var original_position: Vector2 = Vector2.ZERO
 var tween: Tween
 var interactable: bool = true
-
 
 func _ready() -> void:
 
@@ -16,8 +13,6 @@ func _ready() -> void:
 	connect("mouse_entered", Callable(self, "_on_mouse_entered"))
 	connect("mouse_exited", Callable(self, "_on_mouse_exited"))
 	connect("gui_input", Callable(self, "_on_gui_input"))
-
-	print("[CardTemplate] ready!")
 
 func populate(data: Dictionary) -> void:
 
@@ -62,7 +57,7 @@ func _on_gui_input(event: InputEvent) -> void:
 		var mb: InputEventMouseButton = event
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			print("Card clicked:", card_data.name)
-			emit_signal("card_clicked", card_data)
+			SignalBus.emit_signal("card_clicked", card_data)
 
 func set_interactable(value: bool) -> void:
 	interactable = value

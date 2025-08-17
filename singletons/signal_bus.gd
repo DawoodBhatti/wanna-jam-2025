@@ -42,13 +42,16 @@ signal turn_ended(turn_number: int)
 signal end_turn_effects_started
 signal end_turn_effects_finished
 
-signal resource_count_started                  # outcome only
+signal resource_count_requested                 # outcome only
+signal resource_count_finished
 
 signal instant_effect_resolved(effect: Dictionary)  # outcome only
 
 # ----------------------------
 # 🃏 Card & Hand Signals
 # ----------------------------
+signal card_clicked(card_data: Dictionary)
+
 signal draw_cards_requested(count: int)
 signal hand_drawn(cards: Array)
 
@@ -74,9 +77,9 @@ signal building_placed(tile_info: Dictionary)
 signal erase_building_requested(tile_info: Dictionary)
 signal building_erased(tile_info: Dictionary)
 
-signal start_paint_mode_requested(mode: String, data: Dictionary, count: int)
-signal paint_mode_started(mode: String, data: Dictionary, count: int)   # optional outcome
-
+# --- Paint / Build Modes ---
+signal paint_mode_started(mode: String, data: Dictionary, count: int)   # Outcome: we're now in paint mode
+signal paint_mode_completed(mode: String, data: Dictionary, count: int) # Outcome: paint mode has ended
 signal place_mode_completed
 signal remove_mode_completed
 

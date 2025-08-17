@@ -1,37 +1,12 @@
 extends Node2D
 class_name DeckManager
+
 var effects_manager : Node2D
 var _is_ending_turn := false
 
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------- 
 # 🃏 DeckManager — Card lifecycle controller
-#
-# RESPONSIBILITIES:
-# • Owns the lifecycle of cards from draw → play → discard within the "Play" phase.
-# • Listens for high-level phase and card click events via SignalBus.
-# • Delegates effect execution to EffectsManager — never runs effects itself.
-# • During end-of-turn, enqueues "effects_on_end" for cards left in hand.
-# • Resolves structure placement requests from card data (preferring inline structure
-#   definitions from the catalog; falling back to catalogue lookups when needed).
-#
-# KEY INTERACTIONS:
-# • Signals to GameState/SignalBus when:
-#   - Cards are drawn, played, discarded
-#   - Play sub‑phase changes (Drawing / Playing / Resolving / etc.)
-#   - Structure or recycle modes are requested
-# • Works alongside EffectsManager:
-#   - Passes effects with explicit `instant=true` (play‑phase) or `instant=false` (end‑phase)
-#   - Leaves queue processing to EffectsManager / GameState signalling
-# • Cooperates with DeckState to maintain deck, hand, and discard piles.
-#
-# PHASE FLOW IT HANDLES:
-#   Play phase:
-#     1. Drawing: pulls new cards into hand.
-#     2. Playing: responds to card clicks, enforces build/recycle rules,
-#        and delegates effect execution.
-#     3. Resolving: processes unplayed cards' end effects, moves them to discard.
 # -----------------------------------------------------------------------------
-
 func _ready() -> void:
 	effects_manager = get_node("../EffectsManager")
 
@@ -41,26 +16,30 @@ func _ready() -> void:
 
 	SignalBus.connect("phase_changed", Callable(self, "_on_phase_changed"))
 	SignalBus.connect("card_clicked", Callable(self, "_on_card_clicked"))
-	SignalBus.connect("end_turn_requested", Callable(self, "_on_end_turn_requested"))
-	SignalBus.connect("resolve_hand_requested", Callable(self, "_on_resolve_hand_requested")) # NEW
+	SignalBus.connect("resolve_hand_requested", Callable(self, "_on_resolve_hand_requested"))
+
 	print("[DeckManager] ready!")
 
-
-
-# In DeckManager.gd
 func get_card_template() -> Control:
 	return $CardTemplate
 
 # -------------------------
-# Phase orchestration
+# Turn-ending entry point
 # -------------------------
 func end_turn() -> void:
-	_resolve_hand()
+	if _is_ending_turn:
+		return
+	_is_ending_turn = true
 
-func _on_end_turn_effects_finished(turn_number: int = 0) -> void:
-	SignalBus.emit_logged("turn_ended", [turn_number])
-	_is_ending_turn = false
+	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_RESOLVING])
+	initiate_hand_resolve()
 
+func initiate_hand_resolve() -> void:
+	SignalBus.emit_logged("resolve_hand_requested")
+
+# -------------------------
+# Phase handling
+# -------------------------
 func _on_phase_changed(new_phase: String) -> void:
 	if new_phase == "Play":
 		_start_play_cycle()
@@ -72,7 +51,7 @@ func _start_play_cycle() -> void:
 	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLAYING])
 
 # -------------------------
-# Card click/play handling
+# Card clicks
 # -------------------------
 func _on_card_clicked(card_data: Dictionary) -> void:
 	if GameState.play_phase_state != GameState.PLAY_PHASE_STATE_PLAYING:
@@ -83,37 +62,31 @@ func _on_card_clicked(card_data: Dictionary) -> void:
 	_play_card_with_rules(card_data)
 
 	if DeckState.hand.is_empty():
-		_resolve_hand()
+		initiate_hand_resolve()
 
+# -------------------------
+# Playing logic
+# -------------------------
 func _play_card_with_rules(card: Dictionary) -> void:
-	# Make intention explicit (avoid “truthy default” reading).
 	var builds_structure: bool = bool(card.get("builds_structure", false))
 	var recycle_mode: bool = bool(card.get("recycle_mode", false))
 
 	if builds_structure:
 		SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLACING_STRUCTURE])
-
 		var req: Dictionary = _resolve_structure_request(card)
-
-		# Be explicit about affordability; avoid inline negations that hide intent.
 		var cost: Dictionary = req.get("cost", {})
-		var can_afford: bool = DeckState.can_afford(cost)
-		if not can_afford:
+		if not DeckState.can_afford(cost):
 			print("Not enough resources for %s" % card.get("name", "unknown"))
 			SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLAYING])
 			return
 
-		# Effects route through EffectsManager; 'instant' flag decides execution path.
 		_run_on_play_effects(card)
-
 		SignalBus.emit_logged("structure_placement_requested", [req])
 		SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLAYING])
 
 	elif recycle_mode:
 		SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_RECYCLE])
-
 		_run_on_play_effects(card)
-
 		SignalBus.emit_logged("recycle_mode_requested", [{ "amount": int(card.get("remove_amount", 1)) }])
 		SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLAYING])
 
@@ -123,27 +96,9 @@ func _play_card_with_rules(card: Dictionary) -> void:
 	DeckState.move_card_to_discard(card)
 	SignalBus.emit_logged("card_played", [card])
 
-func _on_end_turn_requested() -> void:
-	if _is_ending_turn:
-		return
-	_is_ending_turn = true
-
-	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_RESOLVING])
-	SignalBus.emit_logged("resolve_hand_requested") # instead of calling _resolve_hand() directly
-	
-	
-func _on_resolve_hand_requested() -> void:
-	# local handler for the request
-	_resolve_hand()
-
-
 # -------------------------
-# Structure request resolution
+# Structure resolution
 # -------------------------
-# Fallback lookup when card doesn't have inline 'structure' metadata.
-# Tries two paths:
-#   1. Layer/source_name/tile_name from card
-#   2. source_id/atlas_coords from card
 func _resolve_structure_from_catalog(card: Dictionary) -> Dictionary:
 	var info: Dictionary = DeckState.get_structure_info_from_card(card)
 	var layer_name: String = info.layer
@@ -154,7 +109,6 @@ func _resolve_structure_from_catalog(card: Dictionary) -> Dictionary:
 	var resolved_source_id: int = -1
 	var resolved_atlas: Vector2i = Vector2i(-1, -1)
 
-	# --- Path 1: explicit catalog keys provided on the card ---
 	if source_name != "" and tile_name != "":
 		var source_dict: Dictionary = CardCatalogue.catalog.get(layer_name, {}).get(source_name, {}) as Dictionary
 		if not source_dict.is_empty():
@@ -164,11 +118,9 @@ func _resolve_structure_from_catalog(card: Dictionary) -> Dictionary:
 		else:
 			push_error("[DeckManager] Catalog entry not found for %s/%s" % [source_name, tile_name])
 
-	# --- Path 2: raw IDs present on the card ---
 	elif card.has("source_id") and card.has("atlas_coords"):
 		var sid: int = card.get("source_id", -1)
 		var atlas: Vector2i = card.get("atlas_coords", Vector2i(-1, -1))
-
 		for s_name: String in CardCatalogue.catalog.get(layer_name, {}).keys():
 			var sd: Dictionary = CardCatalogue.catalog[layer_name][s_name]
 			if int(sd.get("source_id", -9999)) == sid:
@@ -182,7 +134,6 @@ func _resolve_structure_from_catalog(card: Dictionary) -> Dictionary:
 				resolved_atlas = atlas
 				break
 
-	# --- Sentinel check ---
 	if resolved_source_id < 0 or resolved_atlas == Vector2i(-1, -1):
 		push_error("[DeckManager] Could not resolve valid tile for card: %s" % card.get("name", ""))
 
@@ -198,7 +149,6 @@ func _resolve_structure_from_catalog(card: Dictionary) -> Dictionary:
 
 func _resolve_structure_request(card: Dictionary) -> Dictionary:
 	if card.get("structure") != null:
-		# Inline metadata path
 		var s: Dictionary = card.structure
 		return {
 			"layer": s.get("layer", ""),
@@ -216,18 +166,14 @@ func _resolve_structure_request(card: Dictionary) -> Dictionary:
 			"amount": int(s.get("place_amount", 1)),
 			"cost": card.get("cost", {})
 		}
-
-	# Fallback to catalog-based resolution
 	return _resolve_structure_from_catalog(card)
 
 # -------------------------
-# Hand Resolution
+# Hand resolution
 # -------------------------
-func _resolve_hand() -> void:
+func _on_resolve_hand_requested() -> void:
 	if effects_manager == null:
 		return
-
-	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_RESOLVING])
 
 	for card: Dictionary in DeckState.hand:
 		for effect: Dictionary in card.get("effects_on_end", []):
@@ -237,17 +183,16 @@ func _resolve_hand() -> void:
 
 	DeckState.move_hand_to_discard()
 
-	# Instead of directly calling effects_manager.run_end_turn_effects()
+	# Only emit outcome; GameState will handle advancing phase & starting effects
 	SignalBus.emit_logged("hand_resolved")
-	
-	
+
 # -------------------------
-# Effect delegation
+# Play-phase effect delegation
 # -------------------------
 func _run_on_play_effects(card: Dictionary) -> void:
 	if effects_manager == null:
 		return
 	for effect: Dictionary in card.get("effects_on_play", []):
 		var e = effect.duplicate(true)
-		e["instant"] = true   # Play-phase effects always instant
+		e["instant"] = true
 		effects_manager.handle_effect(e, { "card": card, "timing": "play" })

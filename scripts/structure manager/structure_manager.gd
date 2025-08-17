@@ -13,7 +13,7 @@ var _by_pos: Dictionary = {}
 @onready var painting_handler: PaintingHandler = $Painting
 
 func _ready() -> void:
-	SignalBus.start_paint_mode_request.connect(_on_start_paint_mode_request)
+	SignalBus.paint_mode_started.connect(_on_start_paint_mode_request)
 	SignalBus.building_placed.connect(_on_building_placed)
 	SignalBus.building_erased.connect(_on_building_removed)
 
