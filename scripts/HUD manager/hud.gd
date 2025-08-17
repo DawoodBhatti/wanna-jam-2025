@@ -40,15 +40,13 @@ func _refresh_all() -> void:
 
 
 func _on_end_turn_pressed() -> void:
-	pass
-	#if deck_manager and deck_manager.has_method("end_turn"):
-		#deck_manager.end_turn()
+	SignalBus.emit_logged("hand_resolved")
 
-
-func _on_phase_changed(new_phase: String) -> void:
-	var is_play := (new_phase == "Play")
-	end_turn_button.visible = is_play
-	end_turn_button.disabled = not is_play
+#not needed
+#func _on_phase_changed(new_phase: String) -> void:
+	#var is_play := (new_phase == "Play")
+	#end_turn_button.visible = is_play
+	#end_turn_button.disabled = not is_play
 
 
 func _apply_end_turn_button_style() -> void:

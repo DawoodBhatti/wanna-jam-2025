@@ -90,22 +90,19 @@ func set_play_phase_state(state: String) -> void:
 
 
 func debug_step() -> void:
-	print("🛠 [DEBUG STEP] Current → Turn:", current_turn, 
-		  "| Phase:", current_phase, 
+	print("🛠 [DEBUG STEP] Current → Turn:", current_turn,
+		  "| Phase:", current_phase,
 		  "| PlayPhase:", play_phase_state)
 
 	match current_phase:
 		"Play":
-			# Step through inner phases if not complete
 			match play_phase_state:
 				PLAY_PHASE_STATE_IDLE:
 					set_play_phase_state(PLAY_PHASE_STATE_DRAWING)
-				PLAY_PHASE_STATE_DRAWING:
-					set_play_phase_state(PLAY_PHASE_STATE_PLAYING)
-				PLAY_PHASE_STATE_PLAYING:
+				PLAY_PHASE_STATE_DRAWING, PLAY_PHASE_STATE_PLACING_STRUCTURE, PLAY_PHASE_STATE_RECYCLE, PLAY_PHASE_STATE_PLAYING:
+					# Treat all as “done playing” → resolve
 					set_play_phase_state(PLAY_PHASE_STATE_RESOLVING)
 				PLAY_PHASE_STATE_RESOLVING:
-					# Inner loop done: go to next outer phase
 					_on_hand_resolved()
 
 		"Turn Effects":
@@ -114,7 +111,7 @@ func debug_step() -> void:
 		"None", "Resource Count":
 			_on_resource_count_started()
 
-	print("➡ [DEBUG STEP] Now     → Turn:", current_turn, 
-		  "| Phase:", current_phase, 
+	print("➡ [DEBUG STEP] Now     → Turn:", current_turn,
+		  "| Phase:", current_phase,
 		  "| PlayPhase:", play_phase_state)
 	print("--------------------------------------------------")

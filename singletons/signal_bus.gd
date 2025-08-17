@@ -1,4 +1,8 @@
 extends Node
+# ----------------------------
+# 🔊 Signal Logging
+# ----------------------------
+var print_signals: bool = false
 
 # ----------------------------
 # 🪵 Resource Signals
@@ -46,10 +50,6 @@ signal building_erased(tile_info: Dictionary)   # emitted per removed building
 signal place_mode_completed                           # emitted when place budget is consumed
 signal remove_mode_completed                          # emitted when remove budget is consumed
 signal start_paint_mode_request(mode: String, data: Dictionary, count: int) #emitted to begin paint mode
-# ----------------------------
-# 🔊 Signal Logging
-# ----------------------------
-var print_signals: bool = true
 
 
 #emits signal with print statement to help debugging
