@@ -1,3 +1,4 @@
-StructureSpec
+AtlasTexture
+TileSet
 GDScript
 Shader

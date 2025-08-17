@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://jxyv4r4ac0yr"]
+
+[ext_resource type="PackedScene" uid="uid://by5ljgo7fvchd" path="res://scenes/camera/camera.tscn" id="1_eabfd"]
+[ext_resource type="PackedScene" uid="uid://btr0hna4378gm" path="res://scenes/levels/basegrid.tscn" id="2_s6e2t"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Camera" parent="." instance=ExtResource("1_eabfd")]
+
+[node name="Tiles" parent="." instance=ExtResource("2_s6e2t")]

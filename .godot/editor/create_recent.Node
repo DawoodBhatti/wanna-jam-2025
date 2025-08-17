@@ -1,12 +1,12 @@
+Camera2D
+Node2D
 Label
 Button
 Control
 ColorRect
 TextureRect
 NinePatchRect
-Node2D
 CanvasLayer
 HBoxContainer
 VBoxContainer
-Camera2D
 TileMapLayer

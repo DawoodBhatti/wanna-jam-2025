@@ -4,11 +4,6 @@ extends Node
 
 @export var enabled: bool = true  # flip off to silence all debug input
 
-@onready var game_state: Node      = get_node_or_null("/root/Gamestate")
-@onready var resources: Node       = get_node_or_null("/root/Resources")
-@onready var hud: Node             = get_node_or_null("/root/main/HUD")
-@onready var deck_manager: Node    = get_node_or_null("/root/main/DeckManager")
-
 func _ready() -> void:
 	print("[DebugInput] Ready (enabled=%s)" % str(enabled))
 
@@ -17,79 +12,75 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if not event.is_pressed():
 		return
-	
-	# --- Hand & phase controls ---
-	if Input.is_action_just_pressed("draw_hand"):
-		if game_state and game_state.has_method("draw_cards"):
-			game_state.draw_cards(5)
-			print("[Debug] draw_hand -> drew 5")
-		return
-
-	if Input.is_action_just_pressed("resolve_hand"):
-		if game_state and game_state.has_method("resolve_hand"):
-			game_state.resolve_hand()
-			print("[Debug] resolve_hand -> resolving")
-		return
+	#
+	## --- Hand & phase controls ---
+	#if Input.is_action_just_pressed("draw_hand"):
+		#GameState.draw_cards(5)
+		#print("[Debug] draw_hand -> drew 5")
+		#return
+#
+	#if Input.is_action_just_pressed("resolve_hand"):
+		#GameState.resolve_hand()
+		#print("[Debug] resolve_hand -> resolving")
+		#return
 
 	if Input.is_action_just_pressed("advance_phase"):
-		if game_state and game_state.has_method("advance_phase"):
-			game_state.advance_phase()
-			print("[Debug] advance_phase -> advancing")
+		GameState.debug_step()
+		print("[Debug] advance_phase -> advancing")
 		return
 
-	if Input.is_action_just_pressed("play_first_card"):
-		if game_state and ("hand" in game_state):
-			var valid_hand := false
-			if game_state.hand is Array:
-				if game_state.hand.size() > 0:
-					valid_hand = true
-			if valid_hand:
-				var card_data = game_state.hand[0]
-				if game_state.has_method("request_play_card"):
-					game_state.request_play_card(card_data)
-					print("[Debug] play_first_card -> requested index 0")
-			else:
-				print("[Debug] play_first_card -> no cards in hand")
-		return
+	#if Input.is_action_just_pressed("play_first_card"):
+		#var valid_hand := false
+		#if GameState.hand is Array:
+			#if GameState.hand.size() > 0:
+				#valid_hand = true
+		#if valid_hand:
+			#var card_data = GameState.hand[0]
+			#if GameState.has_method("request_play_card"):
+				#GameState.request_play_card(card_data)
+				#print("[Debug] play_first_card -> requested index 0")
+		#else:
+			#print("[Debug] play_first_card -> no cards in hand")
+	#return
+#
+	#if Input.is_action_just_pressed("discard_hand"):
+		#if GameState.has_method("discard_hand"):
+			#GameState.discard_hand()
+			#print("[Debug] discard_hand -> discarded")
+		#else:
+			#print("[Debug] discard_hand -> method missing on GameState")
+		#return
 
-	if Input.is_action_just_pressed("discard_hand"):
-		if game_state and game_state.has_method("discard_hand"):
-			game_state.discard_hand()
-			print("[Debug] discard_hand -> discarded")
-		else:
-			print("[Debug] discard_hand -> method missing on GameState")
-		return
-
-	# --- Introspection / logging ---
-	if Input.is_action_just_pressed("print_card_piles"):
-		if game_state:
-			var deck_size := -1
-			var hand_size := -1
-			var discard_size := -1
-
-			if ("deck" in game_state) and (game_state.deck is Array):
-				deck_size = game_state.deck.size()
-
-			if ("hand" in game_state) and (game_state.hand is Array):
-				hand_size = game_state.hand.size()
-
-			if ("discard_pile" in game_state) and (game_state.discard_pile is Array):
-				discard_size = game_state.discard_pile.size()
-
-			print("[Piles] deck=%s hand=%s discard=%s" % [deck_size, hand_size, discard_size])
-		return
+	## --- Introspection / logging ---
+	#if Input.is_action_just_pressed("print_card_piles"):
+		#if GameState:
+			#var deck_size := -1
+			#var hand_size := -1
+			#var discard_size := -1
+#
+			#if ("deck" in GameState) and (GameState.deck is Array):
+				#deck_size = GameState.deck.size()
+#
+			#if ("hand" in GameState) and (GameState.hand is Array):
+				#hand_size = GameState.hand.size()
+#
+			#if ("discard_pile" in GameState) and (GameState.discard_pile is Array):
+				#discard_size = GameState.discard_pile.size()
+#
+			#print("[Piles] deck=%s hand=%s discard=%s" % [deck_size, hand_size, discard_size])
+		#return
 
 	# --- Quick resource poke ---
 	if Input.is_action_just_pressed("test_resource_change"):
-		if resources:
-			if resources.has_method("add_wood"):
-				resources.add_wood(1)
-			if resources.has_method("add_food"):
-				resources.add_food(1)
-			if resources.has_method("add_stone"):
-				resources.add_stone(1)
-			if resources.has_method("add_pop"):
-				resources.add_pop(1)
+		if ResourceState:
+			if ResourceState.has_method("add_resource"):
+				ResourceState.add_resource("stone", 1)
+			if ResourceState.has_method("add_resource"):
+				ResourceState.add_resource("wood", 1)
+			if ResourceState.has_method("add_resource"):
+				ResourceState.add_resource("food", 1)
+			if ResourceState.has_method("add_resource"):
+				ResourceState.add_resource("pop", 1)
 			print("[Debug] test_resource_change -> +1 to all available")
 		return
 
@@ -114,13 +105,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			print("[Debug] toggle_instructions -> %s" % state2)
 		return
 		
-	if Input.is_action_just_pressed("list_basegrid_tiles"):
-		var base_grid := get_node_or_null("/root/main/Tiles")
-		if base_grid:
-			print_all_tile_layers(base_grid)
-		else:
-			print("[Debug] list_basegrid_tiles -> BaseGrid not found")
-		return
+	#if Input.is_action_just_pressed("list_basegrid_tiles"):
+		#var base_grid := get_node_or_null("/root/main/Tiles")
+		#if base_grid:
+			#print_all_tile_layers(base_grid)
+		#else:
+			#print("[Debug] list_basegrid_tiles -> BaseGrid not found")
+		#return
 
 
 func print_all_tile_layers(base_grid: Node) -> void:

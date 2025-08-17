@@ -1,0 +1,218 @@
+[gd_scene load_steps=13 format=3 uid="uid://cqsiov6wcgkiw"]
+
+[ext_resource type="Script" uid="uid://c218dapxoh5tq" path="res://scripts/HUD manager/hud.gd" id="1_ns2t6"]
+[ext_resource type="Texture2D" uid="uid://dqo2wd5g5a7a6" path="res://assets/forest_ [resources].png" id="2_nvqmk"]
+[ext_resource type="Script" uid="uid://d2yrsb7d7wt7v" path="res://scripts/HUD manager/instructions.gd" id="3_613r7"]
+[ext_resource type="Script" uid="uid://bhxppwsaltwwv" path="res://scripts/HUD manager/hand_display.gd" id="4_tghec"]
+[ext_resource type="Script" uid="uid://b25si24s1nrc5" path="res://scripts/HUD manager/draw_pile.gd" id="5_jic85"]
+[ext_resource type="Script" uid="uid://yfl2ykihvov0" path="res://scripts/HUD manager/discard_pile.gd" id="6_7km27"]
+[ext_resource type="Script" uid="uid://bllf7vaufcfq4" path="res://scripts/HUD manager/turn_display.gd" id="7_kc7n4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tbtrp"]
+atlas = ExtResource("2_nvqmk")
+region = Rect2(80.4754, 47.0845, 14.6801, 15.3557)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nvqmk"]
+atlas = ExtResource("2_nvqmk")
+region = Rect2(96.4916, 47.908, 14.6801, 13.6973)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bg0qy"]
+atlas = ExtResource("2_nvqmk")
+region = Rect2(81.4414, 63.078, 13.2674, 14.8644)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_74e12"]
+atlas = ExtResource("2_nvqmk")
+region = Rect2(97.7198, 63.5693, 12.776, 13.7587)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_63m42"]
+bg_color = Color(0.666667, 0, 0.027451, 0.890196)
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_ns2t6")
+
+[node name="ResourceDisplay" type="Node2D" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ResourceDisplay"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 832.0
+offset_bottom = 90.0
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="ResourceDisplay/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_tbtrp")
+
+[node name="StoneCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+theme_override_font_sizes/font_size = 30
+text = "0"
+
+[node name="TextureRect2" type="TextureRect" parent="ResourceDisplay/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_nvqmk")
+stretch_mode = 1
+
+[node name="WoodCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+theme_override_font_sizes/font_size = 30
+text = " 0"
+
+[node name="TextureRect3" type="TextureRect" parent="ResourceDisplay/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_bg0qy")
+stretch_mode = 1
+
+[node name="FoodCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+theme_override_font_sizes/font_size = 30
+text = " 0"
+
+[node name="TextureRect4" type="TextureRect" parent="ResourceDisplay/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_74e12")
+stretch_mode = 1
+
+[node name="PopCount" type="Label" parent="ResourceDisplay/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+theme_override_font_sizes/font_size = 30
+text = " 0"
+
+[node name="templabel" type="Label" parent="ResourceDisplay"]
+offset_left = 32.0
+offset_top = 88.0
+offset_right = 115.0
+offset_bottom = 123.0
+theme_override_font_sizes/font_size = 25
+text = "(stone)"
+
+[node name="templabel2" type="Label" parent="ResourceDisplay"]
+offset_left = 240.0
+offset_top = 88.0
+offset_right = 322.0
+offset_bottom = 123.0
+theme_override_font_sizes/font_size = 25
+text = "(wood)"
+
+[node name="templabel3" type="Label" parent="ResourceDisplay"]
+offset_left = 632.0
+offset_top = 88.0
+offset_right = 780.0
+offset_bottom = 123.0
+theme_override_font_sizes/font_size = 25
+text = "(population)"
+
+[node name="templabel4" type="Label" parent="ResourceDisplay"]
+offset_left = 448.0
+offset_top = 88.0
+offset_right = 519.0
+offset_bottom = 123.0
+theme_override_font_sizes/font_size = 25
+text = "(food)"
+
+[node name="Instructions" type="Label" parent="."]
+unique_name_in_owner = true
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -327.0
+offset_top = -66.0
+offset_bottom = 66.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "hi :)
+i've got lots to share :))
+"
+script = ExtResource("3_613r7")
+
+[node name="HandDisplay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -456.0
+offset_top = -280.0
+offset_right = 456.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 6
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("4_tghec")
+
+[node name="DrawPile" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -72.0
+offset_right = 142.0
+offset_bottom = -23.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 35
+text = "deck: 0"
+script = ExtResource("5_jic85")
+
+[node name="DiscardPile" type="Label" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -184.0
+offset_top = -72.0
+offset_right = -22.0
+offset_bottom = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 35
+text = "discard: 0"
+script = ExtResource("6_7km27")
+
+[node name="EndTurn" type="Button" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -184.0
+offset_top = 24.0
+offset_right = -16.0
+offset_bottom = 96.0
+grow_horizontal = 0
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_63m42")
+text = "End turn"
+
+[node name="TurnDisplay" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -168.0
+offset_top = 112.0
+offset_right = -50.0
+offset_bottom = 161.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 35
+text = "Turn: 0"
+script = ExtResource("7_kc7n4")
