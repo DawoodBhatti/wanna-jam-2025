@@ -2,7 +2,7 @@ extends Node
 # ----------------------------
 # 🔊 Signal Logging
 # ----------------------------
-var print_signals: bool = false
+var print_signals: bool = true
 
 # ----------------------------
 # 🪵 Resource Signals
@@ -56,8 +56,18 @@ signal start_paint_mode_request(mode: String, data: Dictionary, count: int) #emi
 func emit_logged(name: String, arg: Variant = null) -> void:
 	if print_signals:
 		var arg_str: String = ""
-		if arg != null:
+
+		# Special-case: only print card names for hand_drawn
+		if name == "hand_drawn" and typeof(arg) == TYPE_ARRAY:
+			# arg is expected to be Array of Array[Dictionary], from your signal payload
+			var card_names: Array = []
+			for card in arg[0]: # arg[0] is the array of card dictionaries
+				if typeof(card) == TYPE_DICTIONARY and card.has("name"):
+					card_names.append(card["name"])
+			arg_str = str(card_names)
+		elif arg != null:
 			arg_str = str(arg)
+
 		print("[Signal] %s(%s)" % [name, arg_str])
 
 	match typeof(arg):

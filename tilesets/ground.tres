@@ -1,14 +1,13 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dmb2jq1rygqi0"]
 
-[ext_resource type="Texture2D" path="res://assets/prototyping/forest_.png" id="1_xguj4"]
+[ext_resource type="Texture2D" uid="uid://lx6vmomr3jxm" path="res://assets/forest_.png" id="1_kye4i"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d145u"]
-resource_name = "Grass"
-texture = ExtResource("1_xguj4")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ekwrt"]
+texture = ExtResource("1_kye4i")
 10:1/0 = 0
 11:1/0 = 0
 10:2/0 = 0
 11:2/0 = 0
 
 [resource]
-sources/0 = SubResource("TileSetAtlasSource_d145u")
+sources/0 = SubResource("TileSetAtlasSource_ekwrt")

@@ -30,3 +30,13 @@ res://tilesets/resource_placeholder.tres
 res://singletons/debug.gd
 res://singletons/game_state.gd
 res://singletons/signal_bus.gd
+res://scenes/structures/structure manager.tscn
+res://scripts/structure manager/structure_manager.gd
+res://scripts/deck manager/card_template.tscn
+res://scripts/deck manager/card_template.gd
+res://scenes/deck/deck manager.tscn
+res://scripts/deck manager/deck_manager.gd
+res://scenes/effects/effects manager.tscn
+res://scripts/turn effects manager/effects_manager.gd
+res://scripts/turn effects manager/effects_runner.gd
+res://scenes/deck/card_template.tscn

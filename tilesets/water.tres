@@ -1,11 +1,11 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bo4fhcajdmg81"]
 
-[ext_resource type="Texture2D" uid="uid://lx6vmomr3jxm" path="res://old/assets/prototyping/forest_.png" id="1_qau5a"]
+[ext_resource type="Texture2D" uid="uid://lx6vmomr3jxm" path="res://assets/forest_.png" id="1_xmop3"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fqxqj"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qrvyx"]
 resource_name = "Water"
-texture = ExtResource("1_qau5a")
+texture = ExtResource("1_xmop3")
 4:7/0 = 0
 
 [resource]
-sources/0 = SubResource("TileSetAtlasSource_fqxqj")
+sources/0 = SubResource("TileSetAtlasSource_qrvyx")

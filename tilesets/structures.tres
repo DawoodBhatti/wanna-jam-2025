@@ -1,11 +1,31 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://d0w01bed4kded"]
 
-[ext_resource type="Texture2D" uid="uid://bo8v5whxffj3k" path="res://old/assets/prototyping/forest_ [bridgeAnimatedTiles].png" id="1_spitl"]
+[ext_resource type="Texture2D" uid="uid://d0yn78nfsqh8x" path="res://assets/forest_ [bridgeVertical].png" id="1_54kn6"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cjpsi"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_un8go"]
 resource_name = "StoneTile"
-texture = ExtResource("1_spitl")
-8:2/0 = 0
+texture = ExtResource("1_54kn6")
+2:4/0 = 0
+1:0/0 = 0
+1:1/0 = 0
+1:2/0 = 0
+1:3/0 = 0
+1:4/0 = 0
+1:5/0 = 0
+1:8/0 = 0
+2:1/0 = 0
+2:2/0 = 0
+2:3/0 = 0
+2:5/0 = 0
+2:6/0 = 0
+2:8/0 = 0
+3:0/0 = 0
+3:1/0 = 0
+3:2/0 = 0
+3:3/0 = 0
+3:4/0 = 0
+3:5/0 = 0
+3:6/0 = 0
 
 [resource]
-sources/0 = SubResource("TileSetAtlasSource_cjpsi")
+sources/0 = SubResource("TileSetAtlasSource_un8go")

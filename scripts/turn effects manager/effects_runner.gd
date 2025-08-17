@@ -1,5 +1,5 @@
 extends Node
-class_name EffectsRunner
+
 
 func run_instant(effect: Dictionary) -> void:
 	if not effect.has("type"):

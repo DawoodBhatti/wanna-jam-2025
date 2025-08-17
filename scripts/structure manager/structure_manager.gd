@@ -8,14 +8,14 @@ var _by_pos: Dictionary = {}
 @export var place_cost_on_success: bool = true
 @export var refund_on_recycle: bool = true
 
-@onready var placement_handler: PlacementHandler = $PlacementHandler
-@onready var removal_handler: RemovalHandler = $RemovalHandler
-@onready var painting_handler: PaintingHandler = $PaintingHandler
+@onready var placement_handler: PlacementHandler = $Placement
+@onready var removal_handler: RemovalHandler = $Removal
+@onready var painting_handler: PaintingHandler = $Painting
 
 func _ready() -> void:
 	SignalBus.start_paint_mode_request.connect(_on_start_paint_mode_request)
-	SignalBus.tile_placed.connect(_on_building_placed)
-	SignalBus.tile_erased.connect(_on_building_removed)
+	SignalBus.building_placed.connect(_on_building_placed)
+	SignalBus.building_erased.connect(_on_building_removed)
 
 # === Public API ===
 

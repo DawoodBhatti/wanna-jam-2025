@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://cx5lhhchrujom"]
 
-[ext_resource type="Script" uid="uid://jrwa870ukak8" path="res://new/scripts/deck manager/card_template.gd" id="1_r0go3"]
-[ext_resource type="Shader" uid="uid://ikrdutpcmp0" path="res://new/scripts/deck manager/border_shader.gdshader" id="2_805uf"]
-[ext_resource type="Texture2D" uid="uid://dnvyr42g5073t" path="res://old/assets/prototyping/forest_ [resources].png" id="3_pckos"]
+[ext_resource type="Script" uid="uid://jrwa870ukak8" path="res://scripts/deck manager/card_template.gd" id="1_r0go3"]
+[ext_resource type="Shader" uid="uid://ikrdutpcmp0" path="res://scripts/deck manager/border_shader.gdshader" id="2_805uf"]
+[ext_resource type="Texture2D" uid="uid://dqo2wd5g5a7a6" path="res://assets/forest_ [resources].png" id="3_pckos"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_0esha"]
 

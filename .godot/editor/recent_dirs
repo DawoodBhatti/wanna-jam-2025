@@ -1,4 +1,7 @@
-res://singletons
+res://scripts/deck manager
+res://scripts/turn effects manager
+res://scripts
 res://assets
+res://singletons
 res://tilesets
 res://

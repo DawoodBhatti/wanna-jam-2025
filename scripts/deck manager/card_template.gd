@@ -9,6 +9,7 @@ var tween: Tween
 var interactable: bool = true
 
 func _ready() -> void:
+
 	original_position = position
 	set_mouse_filter(Control.MOUSE_FILTER_PASS)
 	connect("mouse_entered", Callable(self, "_on_mouse_entered"))

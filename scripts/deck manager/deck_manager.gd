@@ -1,8 +1,6 @@
-extends Node
+extends Node2D
 class_name DeckManager
-
-@export var effects_manager_path: NodePath
-var effects_manager: EffectsManager
+var effects_manager : Node2D
 
 # -----------------------------------------------------------------------------
 # 🃏 DeckManager — Card lifecycle controller
@@ -34,11 +32,23 @@ var effects_manager: EffectsManager
 # -----------------------------------------------------------------------------
 
 func _ready() -> void:
-	effects_manager = _resolve_effects_manager()
-	if effects_manager == null:
-		push_warning("[DeckManager] EffectsManager not found.")
+	
+	
+	effects_manager = get_node("../EffectsManager")
+	
+	if DeckState.deck.is_empty():
+		DeckState.deck.append_array(CardCatalogue.deck.duplicate(true))
+		DeckState.shuffle_deck()
+
+	
 	SignalBus.connect("phase_changed", Callable(self, "_on_phase_changed"))
 	SignalBus.connect("card_clicked", Callable(self, "_on_card_clicked"))
+
+	print("[DeckManager] ready!")
+
+# In DeckManager.gd
+func get_card_template() -> Control:
+	return $CardTemplate
 
 # -------------------------
 # Phase orchestration
@@ -222,17 +232,3 @@ func _run_on_play_effects(card: Dictionary) -> void:
 		var e = effect.duplicate(true)
 		e["instant"] = true   # Play-phase effects always instant
 		effects_manager.handle_effect(e, { "card": card, "timing": "play" })
-
-
-# -------------------------
-# Lookup
-# -------------------------
-func _resolve_effects_manager() -> EffectsManager:
-	if effects_manager_path != NodePath():
-		var node: Node = get_node_or_null(effects_manager_path)
-		if node is EffectsManager:
-			return node as EffectsManager
-	var candidates: Array = get_tree().get_nodes_in_group("EffectsManager")
-	if candidates.size() > 0 and candidates[0] is EffectsManager:
-		return candidates[0] as EffectsManager
-	return null

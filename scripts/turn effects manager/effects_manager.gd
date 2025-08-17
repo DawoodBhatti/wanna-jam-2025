@@ -1,14 +1,18 @@
 extends Node
-class_name EffectsManager
 
-@onready var effects_runner: EffectsRunner = $EffectsRunner
+@onready var effects_runner: Node2D = $EffectsRunner
 
 func _ready() -> void:
+	
+	#TODO! this might need fixing
 	# Discoverable for DeckManager.resolve
-	add_to_group("EffectsManager")
+	
 	# Chain-advance the turn queue when a queued effect finishes
 	SignalBus.connect("effect_done", Callable(self, "_process_next"))
 	SignalBus.connect("end_turn_effects_started", Callable(self, "run_end_turn_effects"))
+
+	print("[EffectsManager] ready!")
+
 
 # Single entry point. The ONLY routing rule:
 # - If effect.instant == true → run immediately
@@ -26,7 +30,7 @@ func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
 		effects_runner.run_instant(effect)
 	else:
 		# Deferred, sequenced execution path
-		TurnEffectsQueue.queue_effect(
+		EffectsQueue.queue_effect(
 			func(inner_ctx: Dictionary) -> void:
 				effects_runner.run_queued(inner_ctx.effect, inner_ctx),
 			{
@@ -39,18 +43,18 @@ func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
 # Begin draining the queued turn effects. Emits finished immediately if nothing is queued.
 func run_end_turn_effects() -> void:
 	SignalBus.emit_logged("end_turn_effects_started")
-	if not TurnEffectsQueue.has_jobs():
+	if not EffectsQueue.has_jobs():
 		SignalBus.emit_logged("end_turn_effects_finished")
 		return
 	_process_next()
 
 # Internal: pop next job and execute. effect_done will call this again.
 func _process_next() -> void:
-	if not TurnEffectsQueue.has_jobs():
+	if not EffectsQueue.has_jobs():
 		SignalBus.emit_logged("end_turn_effects_finished")
 		return
 
-	var job: Dictionary = TurnEffectsQueue.pop_next()
+	var job: Dictionary = EffectsQueue.pop_next()
 
 	if job.has("callable") and (job["callable"] as Callable).is_valid():
 		var cb: Callable = job["callable"]

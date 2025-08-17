@@ -1,8 +1,8 @@
-Camera2D
 Node2D
+Control
+Camera2D
 Label
 Button
-Control
 ColorRect
 TextureRect
 NinePatchRect
