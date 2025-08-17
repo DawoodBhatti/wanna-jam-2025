@@ -1,6 +1,7 @@
 extends Node2D
 class_name DeckManager
 var effects_manager : Node2D
+var _is_ending_turn := false
 
 # -----------------------------------------------------------------------------
 # 🃏 DeckManager — Card lifecycle controller
@@ -32,17 +33,18 @@ var effects_manager : Node2D
 # -----------------------------------------------------------------------------
 
 func _ready() -> void:
-	
 	effects_manager = get_node("../EffectsManager")
-	
+
 	if DeckState.deck.is_empty():
 		DeckState.deck.append_array(CardCatalogue.deck.duplicate(true))
 		DeckState.shuffle_deck()
-	
+
 	SignalBus.connect("phase_changed", Callable(self, "_on_phase_changed"))
 	SignalBus.connect("card_clicked", Callable(self, "_on_card_clicked"))
-
+	SignalBus.connect("end_turn_requested", Callable(self, "_on_end_turn_requested"))
+	SignalBus.connect("resolve_hand_requested", Callable(self, "_on_resolve_hand_requested")) # NEW
 	print("[DeckManager] ready!")
+
 
 
 # In DeckManager.gd
@@ -55,13 +57,17 @@ func get_card_template() -> Control:
 func end_turn() -> void:
 	_resolve_hand()
 
+func _on_end_turn_effects_finished(turn_number: int = 0) -> void:
+	SignalBus.emit_logged("turn_ended", [turn_number])
+	_is_ending_turn = false
+
 func _on_phase_changed(new_phase: String) -> void:
 	if new_phase == "Play":
 		_start_play_cycle()
 
 func _start_play_cycle() -> void:
 	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_DRAWING])
-	var drawn: Array = DeckState.draw_from_deck(2)
+	var drawn: Array = DeckState.draw_from_deck(5)
 	SignalBus.emit_logged("hand_drawn", [drawn])
 	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLAYING])
 
@@ -116,6 +122,20 @@ func _play_card_with_rules(card: Dictionary) -> void:
 
 	DeckState.move_card_to_discard(card)
 	SignalBus.emit_logged("card_played", [card])
+
+func _on_end_turn_requested() -> void:
+	if _is_ending_turn:
+		return
+	_is_ending_turn = true
+
+	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_RESOLVING])
+	SignalBus.emit_logged("resolve_hand_requested") # instead of calling _resolve_hand() directly
+	
+	
+func _on_resolve_hand_requested() -> void:
+	# local handler for the request
+	_resolve_hand()
+
 
 # -------------------------
 # Structure request resolution

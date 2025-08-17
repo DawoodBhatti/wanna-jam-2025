@@ -11,3 +11,10 @@ res://scenes/levels/basegrid.tscn
 res://main.tscn
 res://scripts/HUD manager/hand_display.gd
 res://scripts/deck manager/deck_manager.gd
+res://singletons/game_state.gd
+res://singletons/signal_bus.gd
+res://scripts/HUD manager/hud.gd
+res://scenes/effects/effects manager.tscn
+res://scripts/turn effects manager/effects_manager.gd
+res://singletons/resource_state.gd
+res://singletons/deck_state.gd

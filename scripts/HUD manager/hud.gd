@@ -40,7 +40,7 @@ func _refresh_all() -> void:
 
 
 func _on_end_turn_pressed() -> void:
-	SignalBus.emit_logged("hand_resolved")
+	SignalBus.emit_logged("end_turn_requested")
 
 #not needed
 #func _on_phase_changed(new_phase: String) -> void:

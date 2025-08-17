@@ -18,8 +18,8 @@ func draw_from_deck(count: int) -> Array[Dictionary]:
 		if deck.is_empty():
 			if discard_pile.is_empty():
 				break
-			deck = discard_pile
-			discard_pile = []
+			deck = discard_pile.duplicate(true)  # prevents reference sharing
+			discard_pile.clear()
 			deck.shuffle()
 		drawn.append(deck.pop_front())
 	hand.append_array(drawn)
