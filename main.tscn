@@ -1,0 +1,23 @@
+[gd_scene load_steps=7 format=3 uid="uid://dbex3egu0d8vy"]
+
+[ext_resource type="PackedScene" path="res://scenes/structures/structure manager.tscn" id="1_1bvp3"]
+[ext_resource type="PackedScene" path="res://scenes/camera/camera.tscn" id="1_eabfd"]
+[ext_resource type="PackedScene" path="res://scenes/levels/basegrid.tscn" id="2_s6e2t"]
+[ext_resource type="PackedScene" path="res://scenes/HUD/hud.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" path="res://scenes/deck/deck manager.tscn" id="5_7mycd"]
+[ext_resource type="PackedScene" path="res://scenes/effects/effects manager.tscn" id="6_272bh"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Camera" parent="." instance=ExtResource("1_eabfd")]
+
+[node name="HUD" parent="." instance=ExtResource("3_h2yge")]
+
+[node name="Tiles" parent="." instance=ExtResource("2_s6e2t")]
+position = Vector2(384, 120)
+
+[node name="StructureManager" parent="." instance=ExtResource("1_1bvp3")]
+
+[node name="DeckManager" parent="." instance=ExtResource("5_7mycd")]
+
+[node name="EffectsManager" parent="." instance=ExtResource("6_272bh")]
