@@ -29,7 +29,8 @@ func _on_hand_drawn(hand: Array) -> void:
 			child.queue_free()
 
 	# Delay spawning to next frame so fade_out can run
-	await get_tree().create_timer(0.5).timeout
+	if GameState.current_turn>0:
+		await get_tree().create_timer(0.7).timeout
 
 	# Spawn new cards
 	for i in range(hand.size()):
