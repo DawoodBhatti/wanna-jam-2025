@@ -12,11 +12,8 @@ var pop_count: int   = 0
 # 🚀 Lifecycle
 # ----------------------------
 func _ready() -> void:
-	if SignalBus:
-		# Listen for request to count resources at end-of-turn
-		SignalBus.connect("resource_count_requested", Callable(self, "_on_resource_count_requested"))
-	else:
-		push_warning("[ResourceState] No SignalBus found")
+	# Listen for request to count resources at end-of-turn
+	SignalBus.connect("resource_count_requested", Callable(self, "_on_resource_count_requested"))
 
 # ----------------------------
 # 🛠 Public API
@@ -33,6 +30,7 @@ func add_resource(res_type: String, amount: int) -> void:
 	
 	_emit_resource_signal(res_type, amount)
 
+
 func set_resource(res_type: String, value: int) -> void:
 	var delta: int
 	match res_type:
@@ -45,6 +43,7 @@ func set_resource(res_type: String, value: int) -> void:
 			return
 
 	_emit_resource_signal(res_type, delta)
+
 
 func get_resource(res_type: String) -> int:
 	match res_type:
@@ -61,7 +60,8 @@ func _emit_resource_signal(res_type: String, amount: int) -> void:
 	var sig_name := "%s_changed" % res_type
 	SignalBus.emit_logged(sig_name, [amount])
 
+
 #placeholder function for future complicated logic?
-func _on_resource_count_started() -> void:
+func _on_resource_count_requested() -> void:
 	# Step 1: Emit outcome that counting has started/completed for any listeners
 	SignalBus.emit_logged("resource_count_finished")

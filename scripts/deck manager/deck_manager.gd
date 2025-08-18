@@ -4,7 +4,7 @@ class_name DeckManager
 var effects_manager : Node2D
 var _is_ending_turn := false
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # 🃏 DeckManager — Card lifecycle controller
 # -----------------------------------------------------------------------------
 func _ready() -> void:
@@ -31,7 +31,7 @@ func end_turn() -> void:
 		return
 	_is_ending_turn = true
 
-	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_RESOLVING])
+	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_RESOLVING)
 	initiate_hand_resolve()
 
 func initiate_hand_resolve() -> void:
@@ -45,10 +45,10 @@ func _on_phase_changed(new_phase: String) -> void:
 		_start_play_cycle()
 
 func _start_play_cycle() -> void:
-	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_DRAWING])
+	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_DRAWING)
 	var drawn: Array = DeckState.draw_from_deck(5)
 	SignalBus.emit_logged("hand_drawn", [drawn])
-	SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLAYING])
+	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
 
 # -------------------------
 # Card clicks
@@ -72,23 +72,23 @@ func _play_card_with_rules(card: Dictionary) -> void:
 	var recycle_mode: bool = bool(card.get("recycle_mode", false))
 
 	if builds_structure:
-		SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLACING_STRUCTURE])
+		GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLACING_STRUCTURE)
 		var req: Dictionary = _resolve_structure_request(card)
 		var cost: Dictionary = req.get("cost", {})
 		if not DeckState.can_afford(cost):
 			print("Not enough resources for %s" % card.get("name", "unknown"))
-			SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLAYING])
+			GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
 			return
 
 		_run_on_play_effects(card)
 		SignalBus.emit_logged("structure_placement_requested", [req])
-		SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLAYING])
+		GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
 
 	elif recycle_mode:
-		SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_RECYCLE])
+		GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_RECYCLE)
 		_run_on_play_effects(card)
 		SignalBus.emit_logged("recycle_mode_requested", [{ "amount": int(card.get("remove_amount", 1)) }])
-		SignalBus.emit_logged("play_phase_state_changed", [GameState.PLAY_PHASE_STATE_PLAYING])
+		GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
 
 	else:
 		_run_on_play_effects(card)

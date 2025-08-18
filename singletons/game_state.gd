@@ -19,9 +19,9 @@ const PLAY_PHASE_STATE_RECYCLE           := "RecycleMode"
 # ----------------------------
 # 📊 Game State
 # ----------------------------
-var current_turn: int    = 0
-var current_phase: String = "None"  # Outer phase
-var play_phase_state: String = PLAY_PHASE_STATE_IDLE  # Inner play sub-phase
+var current_turn: int = 0
+var current_phase: String = "None"
+var play_phase_state: String = PLAY_PHASE_STATE_IDLE
 
 # ----------------------------
 # 🚀 Lifecycle
@@ -29,7 +29,6 @@ var play_phase_state: String = PLAY_PHASE_STATE_IDLE  # Inner play sub-phase
 func _ready() -> void:
 	print("[GameState] Ready")
 
-	# Listen to *requests* that drive the loop
 	SignalBus.connect("resolve_hand_requested", Callable(self, "_on_resolve_hand_requested"))
 	SignalBus.connect("end_turn_effects_finished", Callable(self, "_on_end_turn_effects_finished"))
 	SignalBus.connect("resource_count_finished", Callable(self, "_on_resource_count_finished"))
@@ -48,40 +47,28 @@ func start_game() -> void:
 func _emit_game_started() -> void:
 	SignalBus.emit_logged("game_started")
 	SignalBus.emit_logged("phase_changed", [current_phase])
-	SignalBus.emit_logged("play_phase_state_changed", [play_phase_state])
+	# No idle emit here — DeckManager will set Drawing/Playing
 
 # ----------------------------
 # ⏩ Phase Transitions
 # ----------------------------
 func _on_resolve_hand_requested() -> void:
-	# GameState decides if/when the hand should resolve
-	if current_phase != "Play" or play_phase_state != PLAY_PHASE_STATE_RESOLVING:
-		push_warning("[GameState] Ignoring resolve hand request — not in correct state")
-		return
-
 	print("[GameState] Resolving hand → moving to Turn Effects")
 	current_phase = "Turn Effects"
 	SignalBus.emit_logged("phase_changed", [current_phase])
-
-	# Trigger Turn Effects start — this is us automatically setting the Effects manager to work 
 	SignalBus.emit_logged("end_turn_effects_started")
 
 func _on_end_turn_effects_finished() -> void:
 	print("[GameState] Turn Effects complete — requesting resource count")
 	current_phase = "Resource Count"
-	# Move to Resource Count phase before requesting = "Resource Count current_phase"
 	SignalBus.emit_logged("phase_changed", [current_phase])
 	SignalBus.emit_logged("resource_count_requested")
-	
 
 func _on_resource_count_finished() -> void:
-	# Complete outer loop: advance to next turn
 	current_turn += 1
 	SignalBus.emit_logged("turn_ended", [current_turn - 1])
 	current_phase = "Play"
-	play_phase_state = PLAY_PHASE_STATE_IDLE
-	SignalBus.emit_logged("phase_changed", [current_phase])
-	SignalBus.emit_logged("play_phase_state_changed", [play_phase_state])
+	set_play_phase_state(PLAY_PHASE_STATE_IDLE) # explicit call now
 
 # ----------------------------
 # 🛠 Utility
@@ -90,17 +77,31 @@ func set_play_phase_state(state: String) -> void:
 	play_phase_state = state
 	SignalBus.emit_logged("play_phase_state_changed", [state])
 
+func _is_transition_allowed(from_state: String, to_state: String) -> bool:
+	var allowed: Dictionary = {
+		PLAY_PHASE_STATE_IDLE:              [PLAY_PHASE_STATE_DRAWING],
+		PLAY_PHASE_STATE_DRAWING:           [PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_PLAYING:           [PLAY_PHASE_STATE_PLACING_STRUCTURE, PLAY_PHASE_STATE_RECYCLE, PLAY_PHASE_STATE_RESOLVING, PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_PLACING_STRUCTURE: [PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_RECYCLE:           [PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_RESOLVING:         [PLAY_PHASE_STATE_IDLE] # after turn end
+	}
+	return allowed.has(from_state) and to_state in allowed[from_state]
+
+
 func debug_step() -> void:
+	print("\n")
 	print("🛠 [DEBUG STEP] Current → Turn:", current_turn,
 		  "| Phase:", current_phase,
 		  "| PlayPhase:", play_phase_state)
-
 	match current_phase:
 		"Play":
 			match play_phase_state:
 				PLAY_PHASE_STATE_IDLE:
 					set_play_phase_state(PLAY_PHASE_STATE_DRAWING)
-				PLAY_PHASE_STATE_DRAWING, PLAY_PHASE_STATE_PLACING_STRUCTURE, PLAY_PHASE_STATE_RECYCLE, PLAY_PHASE_STATE_PLAYING:
+				PLAY_PHASE_STATE_DRAWING:
+					set_play_phase_state(PLAY_PHASE_STATE_PLAYING)
+				PLAY_PHASE_STATE_PLAYING, PLAY_PHASE_STATE_PLACING_STRUCTURE, PLAY_PHASE_STATE_RECYCLE:
 					set_play_phase_state(PLAY_PHASE_STATE_RESOLVING)
 				PLAY_PHASE_STATE_RESOLVING:
 					_on_resolve_hand_requested()
@@ -115,3 +116,4 @@ func debug_step() -> void:
 		  "| Phase:", current_phase,
 		  "| PlayPhase:", play_phase_state)
 	print("--------------------------------------------------")
+	print("\n")

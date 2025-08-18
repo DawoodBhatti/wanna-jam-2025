@@ -3,7 +3,8 @@ extends Node
 # ----------------------------
 # 🔊 Signal Logging
 # ----------------------------
-var print_signals: bool = true
+# 0 = silent, 1 =  names and arguments, 2 = names, arguments and call stack
+var signal_detail: int = 1
 
 # ----------------------------
 # 🪵 Resource Signals
@@ -28,10 +29,7 @@ signal pop_changed(amount: int)
 # ----------------------------
 signal game_started
 
-signal phase_change_requested(new_phase: String)
 signal phase_changed(new_phase: String)
-
-signal play_phase_state_change_requested(state: String)
 signal play_phase_state_changed(state: String)
 
 signal cancel_active_modes_requested
@@ -87,13 +85,13 @@ signal remove_mode_completed
 # 📣 Emit wrapper with debug logging
 # ----------------------------
 func emit_logged(name: String, arg: Variant = null) -> void:
-	if print_signals:
+	if signal_detail >= 1:
 		var arg_str: String = ""
 
 		# Special-case: only print card names for hand_drawn
 		if name == "hand_drawn" and typeof(arg) == TYPE_ARRAY:
 			var card_names: Array = []
-			for card in arg[0]: # arg[0] is the array of card dictionaries
+			for card in arg[0]:
 				if typeof(card) == TYPE_DICTIONARY and card.has("name"):
 					card_names.append(card["name"])
 			arg_str = str(card_names)
@@ -102,6 +100,12 @@ func emit_logged(name: String, arg: Variant = null) -> void:
 
 		print("[Signal] %s(%s)" % [name, arg_str])
 
+		if signal_detail >= 2:
+			print("--- Signal emit call stack ---")
+			print_stack()
+			print("------------------------------")
+
+	# Actual emit
 	match typeof(arg):
 		TYPE_NIL:
 			emit_signal(name)

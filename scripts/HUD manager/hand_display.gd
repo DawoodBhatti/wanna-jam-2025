@@ -4,7 +4,7 @@ extends Control
 @export var spacing: float = 380.0
 @export var x_shift: float = -485.0
 
-var accepting_input: bool = true
+var accepting_input: bool = true #boolean to protect against double clicking to play cards
 var CardTemplateScene: PackedScene   # holds the compiled scene resource
 
 func _ready() -> void:
@@ -19,11 +19,8 @@ func _ready() -> void:
 	print("[HandDisplay] ready!")
 
 func _on_hand_drawn(hand: Array) -> void:
-	# Optional: Clear previous hand
 	for child in get_children():
 		child.queue_free()
-
-	print("[HandDisplay] hand cleared:", hand.size(), "cards")
 
 	# Spawn cards from scene
 	for i in range(hand.size()):
@@ -38,6 +35,7 @@ func _on_hand_drawn(hand: Array) -> void:
 
 		card_instance.position = Vector2(x_shift + i * spacing, 0)
 		add_child(card_instance)
+	
 
 func _on_card_clicked(card_data: Dictionary) -> void:
 	if not accepting_input:

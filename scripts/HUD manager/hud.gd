@@ -21,8 +21,6 @@ func _ready() -> void:
 	
 	end_turn_button.connect("pressed", Callable(self, "_on_end_turn_pressed"))
 	_apply_end_turn_button_style()
-
-	SignalBus.connect("phase_changed", Callable(self, "_on_phase_changed"))
 	
 	_refresh_all()
 
@@ -41,12 +39,6 @@ func _refresh_all() -> void:
 func _on_end_turn_pressed() -> void:
 	print("[HUD] end turn pressed")
 	SignalBus.emit_logged("resolve_hand_requested")
-
-#not needed
-#func _on_phase_changed(new_phase: String) -> void:
-	#var is_play := (new_phase == "Play")
-	#end_turn_button.visible = is_play
-	#end_turn_button.disabled = not is_play
 
 func _apply_end_turn_button_style() -> void:
 	end_turn_button.theme = null
