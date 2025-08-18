@@ -35,6 +35,7 @@ func populate(data: Dictionary) -> void:
 	if $CardImage.material is ShaderMaterial:
 		var sm: ShaderMaterial = $CardImage.material
 		$CardImage.material = sm.duplicate(true)
+	
 
 func _on_mouse_entered() -> void:
 	if tween:

@@ -15,14 +15,23 @@ func _ready() -> void:
 	SignalBus.connect("hand_drawn", Callable(self, "_on_hand_drawn"))
 	SignalBus.connect("play_phase_state_changed", Callable(self, "_on_play_phase_state_changed"))
 	SignalBus.connect("card_played", Callable(self, "_on_card_played"))
+	SignalBus.connect("hand_resolved", Callable(self, "_on_hand_resolved"))
 
-	print("[HandDisplay] ready!")
+	print("[HandDisplay] Ready")
+
 
 func _on_hand_drawn(hand: Array) -> void:
+	# Fade out old cards first
 	for child in get_children():
-		child.queue_free()
+		if child.has_method("fade_out"):
+			child.fade_out()
+		else:
+			child.queue_free()
 
-	# Spawn cards from scene
+	# Delay spawning to next frame so fade_out can run
+	await get_tree().create_timer(0.5).timeout
+
+	# Spawn new cards
 	for i in range(hand.size()):
 		var card_data: Dictionary = hand[i]
 		var card_instance: Control = CardTemplateScene.instantiate()
@@ -35,16 +44,17 @@ func _on_hand_drawn(hand: Array) -> void:
 
 		card_instance.position = Vector2(x_shift + i * spacing, 0)
 		add_child(card_instance)
-	
 
 func _on_card_clicked(card_data: Dictionary) -> void:
 	if not accepting_input:
 		return
 	accepting_input = false
 	SignalBus.emit_logged("card_clicked", [card_data])
+	
 
+#cards are only interactable when the gamestate has play phase state: playing
 func _on_play_phase_state_changed(state: String) -> void:
-	var interactable: bool = (state == "Idle")
+	var interactable: bool = (state == GameState.PLAY_PHASE_STATE_PLAYING)
 	_set_hand_interactable(interactable)
 	if interactable:
 		accepting_input = true
@@ -65,3 +75,12 @@ func _on_card_played(card_data: Dictionary) -> void:
 			child.fade_out()
 			break
 	accepting_input = true
+	
+	
+func _on_hand_resolved() -> void:
+	for child in get_children():
+		if child.has_method("fade_out"):
+			child.fade_out()
+		else:
+			child.queue_free()
+	accepting_input = false

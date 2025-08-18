@@ -1,37 +1,79 @@
 extends Node
 
+const HAND_SIZE := 5
+
 var deck: Array[Dictionary] = []
 var hand: Array[Dictionary] = []
 var discard_pile: Array[Dictionary] = []
 var resources: Dictionary = {} # Injected from ResourceState or GameState
+var debug_switch: bool = true
+
+# -----------------
+# Lifecycle / Setup
+# -----------------
+
+func _ready() -> void:
+	init_from_catalogue()
+
+func init_from_catalogue() -> void:
+	if deck.is_empty():
+		deck.append_array(CardCatalogue.deck.duplicate(true))
+		shuffle_deck()
 
 # -----------------
 # Pure pile operations
 # -----------------
 func shuffle_deck() -> void:
+	if debug_switch:
+		print("[DeckState] shuffling deck")
 	deck.shuffle()
 	_broadcast_piles()
 
-func draw_from_deck(count: int) -> Array[Dictionary]:
+func draw_full_hand() -> void:
+	if debug_switch:
+		print("[DeckState] drawing full hand (%d cards)" % HAND_SIZE)
+	_draw_and_emit(HAND_SIZE)
+
+func draw_from_deck(count: int) -> void:
+	if debug_switch:
+		print("[DeckState] drawing %d card(s)" % count)
+	_draw_and_emit(count)
+
+func _draw_and_emit(count: int) -> void:
+	if deck.is_empty() and not discard_pile.is_empty():
+		_refill_deck_from_discard()
+
 	var drawn: Array[Dictionary] = []
 	for _i in count:
 		if deck.is_empty():
 			if discard_pile.is_empty():
 				break
-			deck = discard_pile.duplicate(true)  # prevents reference sharing
-			discard_pile.clear()
-			deck.shuffle()
+			_refill_deck_from_discard()
+			if deck.is_empty():
+				break
 		drawn.append(deck.pop_front())
+
 	hand.append_array(drawn)
 	_broadcast_piles()
-	return drawn
+	SignalBus.emit_logged("hand_drawn", [drawn])
+
+func _refill_deck_from_discard() -> void:
+	if debug_switch:
+		print("[DeckState] reshuffling discard into deck (%d cards)" % discard_pile.size())
+	deck.append_array(discard_pile)
+	discard_pile.clear()
+	deck.shuffle()
 
 func move_card_to_discard(card: Dictionary) -> void:
+	if debug_switch:
+		print("[DeckState] moving card: %s to discard" % str(card.get("name", "unknown")))
 	hand.erase(card)
 	discard_pile.append(card)
 	_broadcast_piles()
 
 func move_hand_to_discard() -> void:
+	if debug_switch:
+		print("[DeckState] moving hand to discard")
 	discard_pile.append_array(hand)
 	hand.clear()
 	_broadcast_piles()
@@ -52,7 +94,6 @@ func can_afford(cost: Dictionary) -> bool:
 	return true
 
 func get_structure_info_from_card(card: Dictionary) -> Dictionary:
-	# Returns only what’s on the card, no external lookups
 	return {
 		"layer": card.get("layer", "StructuresLayer"),
 		"source_name": card.get("source_name", ""),

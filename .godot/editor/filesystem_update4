@@ -13,3 +13,8 @@ res://singletons/signal_bus.gd
 res://scripts/HUD manager/hud.gd
 res://singletons/resource_state.gd
 res://scripts/deck manager/deck_manager.gd
+res://singletons/deck_state.gd
+res://scripts/turn effects manager/effects_runner.gd
+res://scripts/turn effects manager/effects_manager.gd
+res://scenes/deck/card_template.tscn
+res://scripts/deck manager/border_shader.gdshader

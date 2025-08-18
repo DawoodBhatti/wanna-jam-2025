@@ -50,8 +50,9 @@ signal instant_effect_resolved(effect: Dictionary)  # outcome only
 # ----------------------------
 signal card_clicked(card_data: Dictionary)
 
-signal draw_cards_requested(count: int)
-signal hand_drawn(cards: Array)
+signal draw_hand_requested                 # Intent: "I want a full hand" → handled by GameState
+signal draw_cards_requested(count: int)    # Outcome: "Draw X cards now" → handled by DeckManager
+signal hand_drawn(cards: Array)            # Outcome: cards are actually in hand
 
 signal resolve_hand_requested
 signal hand_resolved

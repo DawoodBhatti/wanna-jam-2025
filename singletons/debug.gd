@@ -25,7 +25,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		#return
 
 	if Input.is_action_just_pressed("advance_phase"):
-		print("[Debug] advance_phase -> advancing")
 		GameState.debug_step()
 		return
 
