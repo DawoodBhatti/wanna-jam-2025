@@ -2,6 +2,9 @@ extends Node2D
 
 var effects_manager: Node2D
 
+#TODO: some refactoring. we might be able to split unique functions into card template...
+
+
 func _ready() -> void:
 	effects_manager = get_node("../EffectsManager")
 
@@ -51,7 +54,7 @@ func _on_card_clicked(card_data: Dictionary) -> void:
 func _play_card_with_rules(card: Dictionary) -> void:
 	var builds_structure: bool = bool(card.get("builds_structure", false))
 	var recycle_mode: bool = bool(card.get("recycle_mode", false))
-
+	
 	if builds_structure:
 		GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLACING_STRUCTURE)
 
@@ -79,10 +82,9 @@ func _play_card_with_rules(card: Dictionary) -> void:
 
 	else:
 		_run_on_play_effects(card)
-
-	# After play resolution, always discard the card and emit the play event
-	DeckState.move_card_to_discard(card)
-	SignalBus.emit_logged("card_played", [card])
+	
+	SignalBus.emit_logged("card_was_played", [card])
+	
 	
 func _on_resolve_hand_requested() -> void:
 	if effects_manager == null:

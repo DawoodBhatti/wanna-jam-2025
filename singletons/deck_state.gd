@@ -13,6 +13,7 @@ var debug_switch: bool = true
 # -----------------
 
 func _ready() -> void:
+	SignalBus.connect("card_was_played", Callable(self, "_on_card_was_played"))
 	init_from_catalogue()
 
 func init_from_catalogue() -> void:
@@ -106,3 +107,7 @@ func _broadcast_piles() -> void:
 	SignalBus.emit_logged("piles_changed", [
 		deck.size(), hand.size(), discard_pile.size()
 	])
+
+func _on_card_was_played(card_data : Dictionary) -> void:
+	
+	DeckState.move_card_to_discard(card_data)

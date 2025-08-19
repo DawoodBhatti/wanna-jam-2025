@@ -49,11 +49,9 @@ signal hand_drawn(cards: Array)            # Outcome: cards are actually in hand
 signal resolve_hand_requested
 signal hand_resolved
 
-signal play_card_requested(card_data: Dictionary)
-signal card_played(card_data: Dictionary)
-
-signal discard_card_requested(card_data: Dictionary)
-signal card_discarded(card_data: Dictionary)
+#TODO we should feed this into our architecture too :)
+signal card_play_requested(card_data: Dictionary)
+signal card_was_played(card_data: Dictionary)
 
 signal piles_changed(deck_size: int, hand_size: int, discard_size: int)  # outcome only
 

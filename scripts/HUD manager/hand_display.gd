@@ -14,7 +14,7 @@ func _ready() -> void:
 	# Connect signals
 	SignalBus.connect("hand_drawn", Callable(self, "_on_hand_drawn"))
 	SignalBus.connect("play_phase_state_changed", Callable(self, "_on_play_phase_state_changed"))
-	SignalBus.connect("card_played", Callable(self, "_on_card_played"))
+	SignalBus.connect("card_was_played", Callable(self, "_on_card_was_played"))
 	SignalBus.connect("hand_resolved", Callable(self, "_on_hand_resolved"))
 
 	print("[HandDisplay] Ready")
@@ -70,7 +70,8 @@ func _set_hand_interactable(enabled: bool) -> void:
 				else Control.MOUSE_FILTER_IGNORE
 			)
 
-func _on_card_played(card_data: Dictionary) -> void:
+
+func _on_card_was_played(card_data: Dictionary) -> void:
 	for child in get_children():
 		if child.has_method("fade_out") and child.card_data == card_data:
 			child.fade_out()
