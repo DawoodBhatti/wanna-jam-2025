@@ -15,19 +15,22 @@ func _ready() -> void:
 	connect("gui_input", Callable(self, "_on_gui_input"))
 
 func populate(data: Dictionary) -> void:
+	
+	#store the card data for use later
+	card_data = data
 
-	get_node("CardTitle").text = data.name
-	get_node("CardDescription").text = data.description
+	get_node("CardTitle").text = card_data.name
+	get_node("CardDescription").text = card_data.description
 
-	if typeof(data.cost) == TYPE_INT:
-		if data.cost == 0:
+	if typeof(card_data.cost) == TYPE_INT:
+		if card_data.cost == 0:
 			$CardCost.text = "Free"
 		else:
-			$CardCost.text = str(data.cost) + " Cost"
+			$CardCost.text = str(card_data.cost) + " Cost"
 
-	if data.has("image_path"):
-		if data.image_path != "":
-			var tex: Resource = load(data.image_path)
+	if card_data.has("image_path"):
+		if card_data.image_path != "":
+			var tex: Resource = load(card_data.image_path)
 			if tex is Texture2D:
 				$CardImage.texture = tex
 
@@ -69,6 +72,7 @@ func set_interactable(value: bool) -> void:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
 		modulate = Color(0.8, 0.8, 0.8)
 
+#fade out when card is played
 func fade_out(duration: float = 0.4) -> void:
 	set_interactable(false)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE

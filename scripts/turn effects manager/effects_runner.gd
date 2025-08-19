@@ -1,5 +1,4 @@
 extends Node2D
-
 class_name EffectsRunner
 
 func run_instant(effect: Dictionary) -> void:
@@ -7,60 +6,56 @@ func run_instant(effect: Dictionary) -> void:
 		push_error("[EffectsRunner] Instant effect missing 'type': %s" % str(effect))
 		return
 
-	match String(effect.get("type", "")):
+	var effect_type := String(effect["type"])
+	match effect_type:
 		"gain_resource", "resource":
 			_handle_gain_resource(effect)
-
 		"medusa":
 			print("[EffectsRunner] apply medusa effects")
-
 		"draw_cards":
 			_handle_draw_cards(effect)
-
 		"discard_random":
 			_handle_discard_random(effect)
-
 		"custom_signal":
 			_handle_custom_signal(effect)
-
 		_:
-			push_warning("[EffectsRunner] Unknown instant effect type: %s" % String(effect.get("type", "")))
+			push_warning("[EffectsRunner] Unknown instant effect type: %s" % effect_type)
 
 func run_queued(effect: Dictionary, ctx: Dictionary = {}) -> void:
 	if not effect.has("type"):
 		push_error("[EffectsRunner] Queued effect missing 'type': %s" % str(effect))
-		var manager: EffectsManager = get_parent() as EffectsManager
-		manager.notify_effect_done(ctx)
+		(get_parent() as EffectsManager).notify_effect_done(ctx)
 		return
 
-	match String(effect.get("type", "")):
+	var effect_type := String(effect["type"])
+	match effect_type:
 		"gain_resource", "resource":
 			_handle_gain_resource(effect)
-			(get_parent() as EffectsManager).notify_effect_done(ctx)
-
 		"medusa":
 			print("[EffectsRunner] apply medusa effects")
-			(get_parent() as EffectsManager).notify_effect_done(ctx)
-
 		"draw_cards":
 			_handle_draw_cards(effect)
-			(get_parent() as EffectsManager).notify_effect_done(ctx)
-
 		"discard_random":
 			_handle_discard_random(effect)
-			(get_parent() as EffectsManager).notify_effect_done(ctx)
-
 		"custom_signal":
 			_handle_custom_signal(effect)
-			(get_parent() as EffectsManager).notify_effect_done(ctx)
-
 		_:
-			push_warning("[EffectsRunner] Unknown queued effect type: %s" % String(effect.get("type", "")))
-			(get_parent() as EffectsManager).notify_effect_done(ctx)
+			push_warning("[EffectsRunner] Unknown queued effect type: %s" % effect_type)
 
-# Placeholder handlers — implement as needed
+	(get_parent() as EffectsManager).notify_effect_done(ctx)
+
+# ----------------------------
+# 🧠 Effect Handlers
+# ----------------------------
 func _handle_gain_resource(effect: Dictionary) -> void:
-	print("[EffectsRunner] Gaining resource:", effect)
+	if not effect.has("target") or not effect.has("amount"):
+		push_error("[EffectsRunner] gain_resource effect missing 'target' or 'amount': %s" % str(effect))
+		return
+
+	var target: String = effect["target"]
+	var amount: int = int(effect["amount"])
+
+	SignalBus.emit_logged("resource_change_requested", [target, amount])
 
 func _handle_draw_cards(effect: Dictionary) -> void:
 	print("[EffectsRunner] Drawing cards:", effect)

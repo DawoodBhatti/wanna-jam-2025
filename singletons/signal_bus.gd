@@ -9,19 +9,11 @@ var signal_detail: int = 1
 # ----------------------------
 # 🪵 Resource Signals
 # ----------------------------
-signal resource_delta_requested(resource: String, delta: int)
-signal resource_delta(resource: String, delta: int)   # outcome
+signal resource_change_requested(resource: String, delta: int)
 
-signal stone_change_requested(amount: int)
 signal stone_changed(amount: int)
-
-signal wood_change_requested(amount: int)
 signal wood_changed(amount: int)
-
-signal food_change_requested(amount: int)
 signal food_changed(amount: int)
-
-signal pop_change_requested(amount: int)
 signal pop_changed(amount: int)
 
 # ----------------------------

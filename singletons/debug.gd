@@ -72,15 +72,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	# --- Quick resource poke ---
 	if Input.is_action_just_pressed("test_resource_change"):
 		if ResourceState:
-			if ResourceState.has_method("add_resource"):
-				ResourceState.add_resource("stone", 1)
-			if ResourceState.has_method("add_resource"):
-				ResourceState.add_resource("wood", 1)
-			if ResourceState.has_method("add_resource"):
-				ResourceState.add_resource("food", 1)
-			if ResourceState.has_method("add_resource"):
-				ResourceState.add_resource("pop", 1)
-			print("[Debug] test_resource_change -> +1 to all available")
+			var types := ["stone", "wood", "food", "pop"]
+			for res_type in types:
+				SignalBus.emit_logged("resource_change_requested", [res_type, 1])
+			print("[Debug] test_resource_change -> +1 to all resources")
 		return
 
 	# --- UI / overlay toggles (adjust paths as needed) ---
