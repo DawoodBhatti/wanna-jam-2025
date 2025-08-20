@@ -31,4 +31,4 @@ func process_tile(building_info: Dictionary) -> void:
 	if _place_cost_on_success and _apply_cost_fn.is_valid():
 		_apply_cost_fn.call(spec)
 
-	SignalBus.emit_signal("building_placed", building_info)
+	SignalBus.emit_logged("building_placed", building_info)

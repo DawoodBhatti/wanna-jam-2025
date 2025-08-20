@@ -1,14 +1,21 @@
 extends Node
-
 class_name EffectsManager
+
+# 🧠 EffectsManager: Routes card effects to the appropriate runner.
+# Handles both instant and queued effects, and manages end-turn effect flow.
 
 @onready var effects_runner: EffectsRunner = $EffectsRunner
 
+# -------------------------------------------------------------------
+# 🚦 Initialization & Signal Wiring
+# -------------------------------------------------------------------
 func _ready() -> void:
 	SignalBus.connect("end_turn_effects_started", Callable(self, "run_end_turn_effects"))
 	print("[EffectsManager] ready!")
 
-# Entry point for all effect routing
+# -------------------------------------------------------------------
+# 🎯 Effect Routing Entry Point
+# -------------------------------------------------------------------
 func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
 	if not effect.has("type"):
 		push_error("[EffectsManager] effect missing 'type': %s" % str(effect))
@@ -30,14 +37,18 @@ func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
 
 		EffectsQueue.queue_effect(queued_cb, job_ctx)
 
-# Begin draining queued end‑turn effects
+# -------------------------------------------------------------------
+# ⏳ End-Turn Effect Drain
+# -------------------------------------------------------------------
 func run_end_turn_effects() -> void:
 	if not EffectsQueue.has_jobs():
 		SignalBus.emit_logged("end_turn_effects_finished")
 		return
 	_process_next()
 
-# Internal: pop next job and execute; effect must call notify_effect_done() when finished
+# -------------------------------------------------------------------
+# 🔄 Queued Effect Execution
+# -------------------------------------------------------------------
 func _process_next() -> void:
 	if not EffectsQueue.has_jobs():
 		SignalBus.emit_logged("end_turn_effects_finished")
@@ -53,6 +64,27 @@ func _process_next() -> void:
 		push_warning("[EffectsManager] Invalid job skipped")
 		_process_next()
 
-# Called by EffectsRunner when an effect finishes
+# -------------------------------------------------------------------
+# ✅ Effect Completion Callback
+# -------------------------------------------------------------------
 func notify_effect_done(ctx: Dictionary) -> void:
 	_process_next()
+
+# -------------------------------------------------------------------
+# ✨ Card Effect Delegation
+# -------------------------------------------------------------------
+# Used by DeckManager to run a card's effects instantly
+func run_card_effects(card_id: String, timing: String = "play") -> void:
+	var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
+	if card.is_empty():
+		push_warning("[EffectsManager] Unknown card ID: %s" % card_id)
+		return
+
+	var effects: Array = card.get("effects_on_" + timing, [])
+	for effect: Dictionary in effects:
+		var e: Dictionary = effect.duplicate(true)
+		e["instant"] = true
+		handle_effect(e, {
+			"card": card,
+			"timing": timing
+		})

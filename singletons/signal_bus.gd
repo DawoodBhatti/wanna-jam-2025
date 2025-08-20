@@ -35,12 +35,12 @@ signal end_turn_effects_finished
 signal resource_count_requested                 # outcome only
 signal resource_count_finished
 
-signal instant_effect_resolved(effect: Dictionary)  # outcome only
+signal instant_effect_resolved(card_id: String)  # outcome only
 
 # ----------------------------
 # 🃏 Card & Hand Signals
 # ----------------------------
-signal card_clicked(card_data: Dictionary)
+signal card_clicked(card_id: String)
 
 signal draw_hand_requested                 # Intent: "I want a full hand" → handled by GameState
 signal draw_cards_requested(count: int)    # Outcome: "Draw X cards now" → handled by DeckManager
@@ -49,9 +49,9 @@ signal hand_drawn(cards: Array)            # Outcome: cards are actually in hand
 signal resolve_hand_requested
 signal hand_resolved
 
-#TODO we should feed this into our architecture too :)
-signal card_play_requested(card_data: Dictionary)
-signal card_was_played(card_data: Dictionary)
+signal card_play_requested(card_id: String)
+signal card_play_denied(card_id: String)
+signal card_was_played(card_id: String)
 
 signal piles_changed(deck_size: int, hand_size: int, discard_size: int)  # outcome only
 

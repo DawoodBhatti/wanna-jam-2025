@@ -46,10 +46,10 @@ func process_tile(building_info: Dictionary) -> void:
 # --- Internal helpers ---
 
 func _apply_colour(building_info: Dictionary) -> void:
-	SignalBus.emit_signal("building_placed", building_info)
+	SignalBus.emit_logged("building_placed", building_info)
 
 func _apply_texture(building_info: Dictionary) -> void:
-	SignalBus.emit_signal("building_placed", building_info)
+	SignalBus.emit_logged("building_placed", building_info)
 
 func _apply_removal(building_info: Dictionary) -> void:
 	if _remove_fn.is_valid():
@@ -58,7 +58,7 @@ func _apply_removal(building_info: Dictionary) -> void:
 		var spec: StructureSpecs = building_info.get("spec", null)
 		if spec != null:
 			_refund_cost_fn.call(spec)
-	SignalBus.emit_signal("building_removed", building_info)
+	SignalBus.emit_logged("building_removed", building_info)
 
 func clear_mode() -> void:
 	mode = ""

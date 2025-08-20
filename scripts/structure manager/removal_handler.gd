@@ -29,4 +29,4 @@ func process_tile(building_info: Dictionary) -> void:
 	if _refund_on_recycle and _refund_cost_fn.is_valid():
 		_refund_cost_fn.call(spec)
 
-	SignalBus.emit_signal("building_removed", building_info)
+	SignalBus.emit_logged("building_removed", building_info)

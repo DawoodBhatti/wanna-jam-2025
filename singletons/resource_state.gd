@@ -26,6 +26,22 @@ func get_resource(res_type: String) -> int:
 		"pop":   return pop_count
 		_:       return 0
 
+#can a card be played based on current resources?
+func can_afford(card_id: String) -> bool:
+	var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
+	if card.is_empty():
+		push_warning("[ResourceState] Cannot afford unknown card: %s" % card_id)
+		return false
+
+	var cost: Dictionary = card.get("cost", {}) as Dictionary
+	for res_type: String in cost.keys():
+		var required: int = int(cost[res_type])
+		var available: int = get_resource(res_type)
+
+		if available < required:
+			return false
+	return true
+
 # ----------------------------
 # 📡 Signal Handling
 # ----------------------------

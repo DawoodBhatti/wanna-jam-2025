@@ -2,57 +2,22 @@ extends Node
 
 # 🗂 Card schema for reference / documentation
 # --------------------------------------------------------------------------
-# This schema describes the shape of a card entry in the catalog.
-# --------------------------------------------------------------------------
-
-const CARD_SCHEMA := {
-	# 📇 Unique identifier for internal lookups (no spaces, lowercase, underscores)
+const CARD_SCHEMA: Dictionary = {
 	"id": "unique_card_id",
-
-	# 🏷 Display name shown to players
 	"name": "Card Name",
-
-	# 📜 Short description of the card’s effect (appears on card face / tooltips)
 	"description": "What this card does in simple terms.",
-
-	# 💰 Resource cost to play the card
-	# Always a dictionary: omit keys for unused resources
-	# e.g., { "wood": 2, "food": 1 } or {} for zero cost
-	"cost": { },
-
-	# 🎨 Visual styling for the card background (links to your theme system)
-	# e.g., "wood", "food", "stone", "mythic"
+	"cost": {},
 	"background_style": "theme_key",
-
-	# 🏗 Structure placement flag — does playing this card initiate building?
-	"builds_structure": false, # true if this card places a structure
-
-	# 🗂 Structure metadata (only used if builds_structure = true)
-	#   layer        → Which tilemap/layer to place on
-	#   source_name  → Name of the structure source/preset in the catalog
-	#   tile_name    → Name of the tile variant to place
-	#   place_amount → How many tiles/structures to place
-	"structure": null, # or { "layer": "...", "source_name": "...", "tile_name": "...", "place_amount": 1 }
-
-	# 🎯 List of effects triggered when the card is played immediately
-	# Each effect is a dictionary with:
-	#   type     → what kind of effect this is (e.g. "resource", "draw_cards", "flag", "enter_structure_placement")
-	#   target   → resource/flag/other target (if applicable)
-	#   amount   → integer change (if applicable)
-	#   name/value → for flags or booleans
-	"effects_on_play": [
-		# Example: { "type": "resource", "target": "wood", "amount": 3 }
-	],
-
-	# ⏳ List of effects triggered at the end of turn if the card was unplayed or remains active
-	"effects_on_end": [
-		# Example: { "type": "resource", "target": "stone", "amount": 2 }
-	]
+	"builds_structure": false,
+	"structure": null,
+	"effects_on_play": [],
+	"effects_on_end": []
 }
-
+#TODO: if we ever introduce duplicates into the deck then we introduce numbers into the ids, also.
 # --------------------------------------------------------------------------
 
 var deck: Array[Dictionary] = []
+var catalog: Dictionary = {} # Structure metadata, e.g. source definitions and tile mappings
 
 func _ready() -> void:
 	load_cards()
@@ -63,7 +28,7 @@ func load_cards() -> void:
 			"id": "lumber_harvest",
 			"name": "Lumber Harvest",
 			"description": "Gain 3 wood.",
-			"cost": { },
+			"cost": {},
 			"background_style": "wood",
 			"builds_structure": false,
 			"structure": null,
@@ -90,7 +55,7 @@ func load_cards() -> void:
 			"id": "stone_meditation",
 			"name": "Stone Meditation",
 			"description": "If unplayed, gain 2 stone at end of turn.",
-			"cost": { },
+			"cost": {},
 			"background_style": "stone",
 			"builds_structure": false,
 			"structure": null,
@@ -103,7 +68,7 @@ func load_cards() -> void:
 			"id": "idle_hands",
 			"name": "Idle Hands",
 			"description": "Lose 1 population if left in hand.",
-			"cost": { },
+			"cost": {},
 			"background_style": "warning",
 			"builds_structure": false,
 			"structure": null,
@@ -157,7 +122,7 @@ func load_cards() -> void:
 			"id": "forest_fire",
 			"name": "Forest Fire",
 			"description": "Lose 2 wood. All players lose 1 population.",
-			"cost": { },
+			"cost": {},
 			"background_style": "disaster",
 			"builds_structure": false,
 			"structure": null,
@@ -218,10 +183,11 @@ func load_cards() -> void:
 			"id": "recycle_structure",
 			"name": "Recycle Structure",
 			"description": "Enter recycle mode to reclaim stone.",
-			"cost": { },
+			"cost": {},
 			"background_style": "stone",
 			"builds_structure": false,
-			"structure": null        },
+			"structure": null
+		},
 		{
 			"id": "medusa",
 			"name": "Medusa",
@@ -244,3 +210,52 @@ func load_cards() -> void:
 			]
 		}
 	]
+
+func get_card_by_id(id: String) -> Dictionary:
+	for card: Dictionary in deck:
+		if card.get("id", "") == id:
+			return card
+	return {}
+
+# take card ID and returns information about the structure to be placed
+func resolve_structure_payload(card_id: String) -> Dictionary:
+	var card: Dictionary = get_card_by_id(card_id)
+	if card.is_empty():
+		push_error("[CardCatalogue] Card not found: %s" % card_id)
+		return {}
+
+	var structure: Dictionary = card.get("structure", {}) as Dictionary
+	if structure.is_empty():
+		push_error("[CardCatalogue] Card missing structure block: %s" % card_id)
+		return {}
+
+	var layer: String = structure.get("layer", "")
+	var source_name: String = structure.get("source_name", "")
+	var tile_name: String = structure.get("tile_name", "")
+	var place_amount: int = int(structure.get("place_amount", 1))
+	var cost: Dictionary = card.get("cost", {}) as Dictionary
+
+	var source_dict: Dictionary = catalog.get(layer, {}).get(source_name, {}) as Dictionary
+	if source_dict.is_empty():
+		push_error("[CardCatalogue] Missing source entry for %s/%s" % [layer, source_name])
+		return {}
+
+	var source_id: int = int(source_dict.get("source_id", -1))
+
+	var atlas_coords_raw = source_dict.get("tiles", {}).get(tile_name)
+	var atlas_coords: Vector2i = Vector2i(-1, -1)
+	if typeof(atlas_coords_raw) == TYPE_VECTOR2I:
+		atlas_coords = atlas_coords_raw
+
+	if source_id < 0 or atlas_coords == Vector2i(-1, -1):
+		push_error("[CardCatalogue] Invalid tile resolution for card: %s" % card.get("name", "unknown"))
+
+	return {
+		"layer": layer,
+		"source_name": source_name,
+		"tile_name": tile_name,
+		"source_id": source_id,
+		"atlas_coords": atlas_coords,
+		"amount": place_amount,
+		"cost": cost
+	}

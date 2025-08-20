@@ -1,17 +1,18 @@
-res://main.tscn
+res://scenes/deck/deck manager.tscn
 res://tilesets/structures.tres
 res://tilesets/ground.tres
 res://tilesets/water.tres
 res://scripts/deck manager/card_template.gd
 res://scripts/deck manager/border_shader.gdshader
 res://scripts/HUD manager/draw_pile.gd
-res://scenes/deck/deck manager.tscn
+res://scripts/structure manager/placement_handler.gd
+res://scripts/structure manager/removal_handler.gd
+res://scripts/structure manager/painting_handler.gd
+res://scripts/deck manager/deck_manager.gd
+res://main.tscn
 res://scenes/HUD/hud.tscn
 res://scenes/deck/card_template.tscn
-res://scripts/turn effects manager/effects_runner.gd
-res://singletons/resource_state.gd
+res://singletons/card_catalogue.gd
+res://scripts/turn effects manager/effects_manager.gd
 res://singletons/signal_bus.gd
-res://singletons/debug.gd
-res://scripts/deck manager/deck_manager.gd
-res://singletons/deck_state.gd
-res://scripts/HUD manager/hand_display.gd
+res://singletons/resource_state.gd
