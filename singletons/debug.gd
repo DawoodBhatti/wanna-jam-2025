@@ -18,8 +18,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		print("[DebugInput] Starting placement mode")
 		var bm := get_tree().get_root().get_node("Main/BuildingManager")
 		if bm:
-			bm.start_placement_mode("StoneTile")  # or "Medusa"
-				
+			#bm.start_placement_mode("StoneTile")  # or "Medusa"
+			bm.paint("StoneTile", 50)  # or bm.start_placement_mode("StoneTile")
+	
 				
 	if Input.is_action_just_pressed("advance_phase"):
 		GameState.debug_step()

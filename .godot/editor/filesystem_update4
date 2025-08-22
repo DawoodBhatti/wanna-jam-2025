@@ -1,18 +1,14 @@
-res://main.tscn
+res://scenes/buildings/building manager.tscn
 res://tilesets/structures.tres
 res://tilesets/ground.tres
 res://tilesets/water.tres
 res://scripts/card manager/border_shader.gdshader
 res://scripts/HUD manager/draw_pile.gd
-res://scenes/buildings/building manager.tscn
+res://scripts/building manager/placement_service.gd
+res://main.tscn
 res://scenes/levels/basegrid.tscn
-res://singletons/debug.gd
+res://scripts/building manager/painting_action.gd
+res://scripts/building manager/placement_action.gd
+res://singletons/deck_state.gd
 res://scripts/building manager/building_manager.gd
-res://scripts/building manager/painting_handler.gd
-res://scripts/building manager/placement_handler.gd
-res://singletons/build_catalogue.gd
-res://scripts/level manager/basegrid.gd
-res://scripts/card manager/card_manager.gd
-res://tilesets/resfffource_placeholder.tres
-res://scenes/HUD/hud.tscn
-res://singletons/signal_bus.gd
+res://scripts/building manager/placement_rules.gd

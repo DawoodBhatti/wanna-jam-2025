@@ -6,7 +6,7 @@ var deck: Array[String] = []
 var hand: Array[String] = []
 var discard_pile: Array[String] = []
 var resources: Dictionary = {} # Injected from ResourceState or GameState
-var debug_switch: bool = true
+var debug_switch: bool = false
 
 # -----------------
 # Lifecycle / Setup

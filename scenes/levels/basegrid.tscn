@@ -6,7 +6,7 @@
 [ext_resource type="TileSet" uid="uid://dmb2jq1rygqi0" path="res://tilesets/ground.tres" id="5_d145u"]
 [ext_resource type="TileSet" uid="uid://bo4fhcajdmg81" path="res://tilesets/water.tres" id="6_sdjep"]
 
-[node name="Tiles" type="Node2D"]
+[node name="Level" type="Node2D"]
 script = ExtResource("1_gfroc")
 
 [node name="GridLayer" type="Node2D" parent="."]

@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://ctdn6dk585exp"]
+[gd_scene load_steps=6 format=3 uid="uid://ctdn6dk585exp"]
 
 [ext_resource type="Script" uid="uid://ij68vke3trpk" path="res://scripts/building manager/building_manager.gd" id="1_a6l47"]
 [ext_resource type="Script" uid="uid://d2sa40ldfi00t" path="res://scripts/building manager/placement_rules.gd" id="2_6km2d"]
 [ext_resource type="Script" uid="uid://b204xulgg545g" path="res://scripts/building manager/removal_action.gd" id="2_qtfxi"]
 [ext_resource type="Script" uid="uid://bbia1r0uaimgq" path="res://scripts/building manager/painting_action.gd" id="2_qyfd8"]
 [ext_resource type="Script" uid="uid://c23sgi6jc5oah" path="res://scripts/building manager/placement_action.gd" id="3_5duwh"]
-[ext_resource type="Script" uid="uid://co6pj8en8217f" path="res://scripts/building manager/placement_service.gd" id="6_2oe36"]
 
 [node name="BuildingManager" type="Node2D"]
 script = ExtResource("1_a6l47")
@@ -19,10 +18,5 @@ script = ExtResource("2_qtfxi")
 [node name="PlacementAction" type="Node2D" parent="."]
 script = ExtResource("3_5duwh")
 
-[node name="PlacementService" type="Node" parent="."]
-script = ExtResource("6_2oe36")
-metadata/_custom_type_script = "uid://co6pj8en8217f"
-
-[node name="PlacementRules" type="Node" parent="."]
+[node name="PlacementRules" type="Node2D" parent="."]
 script = ExtResource("2_6km2d")
-metadata/_custom_type_script = "uid://d2sa40ldfi00t"

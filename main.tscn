@@ -11,7 +11,8 @@
 
 [node name="Camera" parent="." instance=ExtResource("1_eabfd")]
 
-[node name="Tiles" parent="." instance=ExtResource("2_s6e2t")]
+[node name="Level" parent="." instance=ExtResource("2_s6e2t")]
+unique_name_in_owner = true
 
 [node name="HUD" parent="." instance=ExtResource("3_h2yge")]
 
