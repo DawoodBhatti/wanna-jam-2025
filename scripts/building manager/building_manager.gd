@@ -20,6 +20,10 @@ extends Node
 @onready var _painting_action = $PaintingAction
 @onready var _removal_action = $RemovalAction
 
+
+#TODO: add removal painting into here
+#TODO: add in logic for cards to place enter painting mode, too
+
 var _current_action: IBuildAction = null
 
 func place(building_name: String):
