@@ -1,5 +1,11 @@
 extends Node
 
+# SignalBus.gd
+# ------------
+# Global event hub for decoupling systems.
+# Defines and emits signals for all game events that require action
+# Allows other systems to communicate without direct references.
+
 # ----------------------------
 # 🔊 Signal Logging
 # ----------------------------
@@ -43,7 +49,7 @@ signal instant_effect_resolved(card_id: String)  # outcome only
 signal card_clicked(card_id: String)
 
 signal draw_hand_requested                 # Intent: "I want a full hand" → handled by GameState
-signal draw_cards_requested(count: int)    # Outcome: "Draw X cards now" → handled by DeckManager
+signal draw_cards_requested(count: int)    # Outcome: "Draw X cards now" → handled by CardManager
 signal hand_drawn(cards: Array)            # Outcome: cards are actually in hand
 
 signal resolve_hand_requested
@@ -60,15 +66,18 @@ signal cards_drawn(cards: Array)                # outcome alias if needed
 # ----------------------------
 # 🏗 Building Placement Signals
 # ----------------------------
-signal place_building_requested(tile_info: Dictionary)
-signal building_placed(tile_info: Dictionary)
+# These are optional decoupling points — BuildingManager can call
+# placement/erasure directly without going through SignalBus if desired.
 
-signal erase_building_requested(tile_info: Dictionary)
-signal building_erased(tile_info: Dictionary)
+signal place_building_requested(tile_info: Dictionary)   # Player/tool requests a placement
+signal building_placed(tile_info: Dictionary)            # Placement committed
 
-# --- Paint / Build Modes ---
-signal paint_mode_started(mode: String, data: Dictionary, count: int)   # Outcome: we're now in paint mode
-signal paint_mode_completed(mode: String, data: Dictionary, count: int) # Outcome: paint mode has ended
+signal erase_building_requested(tile_info: Dictionary)   # Player/tool requests removal
+signal building_erased(tile_info: Dictionary)            # Removal committed
+
+# Paint / Build Modes (future use)
+signal paint_mode_started(mode: String, data: Dictionary, count: int)
+signal paint_mode_completed(mode: String, data: Dictionary, count: int)
 signal place_mode_completed
 signal remove_mode_completed
 

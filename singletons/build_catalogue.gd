@@ -1,8 +1,14 @@
-# BuildCatalogue.gd
 extends Node
+
+# BuildCatalogue.gd
+# -----------------
+# Central registry of all buildable tile definitions, organised by layer and source name.
+# Provides lookup helpers so other systems can fetch tile data (IDs, atlas coords, costs, etc.).
+# Keeps layer mirrors (e.g. StructuresLayer, GhostLayer) in sync with StructuresLayer definitions.
 
 # Global definition index: [layer_name][source_name] -> definition dictionary
 var catalogue: Dictionary = {}
+var debug_switch : bool = true
 
 func _ready() -> void:
 	_build_catalogue()
@@ -10,25 +16,24 @@ func _ready() -> void:
 func _build_catalogue() -> void:
 	# NOTE: Update these resource paths to your real paths; placeholders shown here.
 	var structures_layer := {
-		"Stone": {
-			"display_name": "Stone",
+		"StoneTile": {
+			"display_name": "StoneTile",
 			"source_id": 0,
-			"source_name": "Stone",
+			"source_name": "StoneTile",
 			"tileset_path": "res://tilesets/structures.tres",
-			"tiles": {"StoneTile": Vector2i(8, 2)},
+			"tiles": {"StoneTile": Vector2i(2, 2)},
 			"priority": 1,
 			"cost": {"stone": 1}
 		},
-		#TODO will need to put this back in, yeah?
-		#"Medusa": {
-			#"display_name": "Medusa",
-			#"source_id": 1,
-			#"source_name": "Medusa",
-			#"tileset_path": "res://StructureManager/data/structures.tres",
-			#"tiles": {"MedusaTile": Vector2i(3, 7)},
-			#"priority": 2,
-			#"cost": {"stone": 2}
-		#}
+		"Medusa": {
+			"display_name": "Medusa",
+			"source_id": 1,
+			"source_name": "Medusa",
+			"tileset_path": "res://StructureManager/data/structures.tres",
+			"tiles": {"MedusaTile": Vector2i(3, 7)},
+			"priority": 2,
+			"cost": {"stone": 2}
+		}
 	}
 
 	catalogue = {
@@ -37,7 +42,7 @@ func _build_catalogue() -> void:
 		"EraseOverlayLayer": structures_layer.duplicate(true),
 		"GhostLayer": structures_layer.duplicate(true),
 
-		#TODO will need to pick the correct atlas coords
+		# TODO will need to pick the correct atlas coords
 		# Terrain examples (expand as needed)
 		"GroundLayer": {
 			"Grass": {
@@ -51,7 +56,7 @@ func _build_catalogue() -> void:
 			}
 		},
 
-		#TODO will need to pick the correct atlas coords
+		# TODO will need to pick the correct atlas coords
 		"WaterLayer": {
 			"Water": {
 				"display_name": "Water",
@@ -66,14 +71,9 @@ func _build_catalogue() -> void:
 	}
 
 # ---------- Lookup helpers ----------
-func get_spec_data(layer: String, source: String) -> Dictionary:
-	return catalogue.get(layer, {}).get(source, {})
-
-func has_spec(layer: String, source: String) -> bool:
-	return not get_spec_data(layer, source).is_empty()
-
-func list_layers() -> Array:
-	return catalogue.keys()
-
-func list_sources(layer: String) -> Array:
-	return catalogue.get(layer, {}).keys()
+#get tile dictionary e.g. get_tile("StructuresLayer", "Stone")
+func get_tile(layer: String, source: String) -> Dictionary:
+	var tiles: Dictionary =  catalogue.get(layer, {}).get(source, {})
+	if debug_switch:
+		print("[BuildCatalog] ", tiles)
+	return tiles

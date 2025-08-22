@@ -73,7 +73,7 @@ func notify_effect_done(ctx: Dictionary) -> void:
 # -------------------------------------------------------------------
 # ✨ Card Effect Delegation
 # -------------------------------------------------------------------
-# Used by DeckManager to run a card's effects instantly
+# Used by CardManager to run a card's effects instantly
 func run_card_effects(card_id: String, timing: String = "play") -> void:
 	var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
 	if card.is_empty():

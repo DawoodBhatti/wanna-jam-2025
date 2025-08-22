@@ -1,7 +1,7 @@
 extends Control
 
 # 🃏 Card_template: Handles visual behavior and interaction for individual cards
-# should probably move to the HUD?
+# could probably move to the HUD?
 
 
 var card_data: Dictionary

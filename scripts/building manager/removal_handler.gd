@@ -19,7 +19,9 @@ func enter_mode(
 
 func process_tile(building_info: Dictionary) -> void:
 	var pos: Vector2i = building_info.get("pos", Vector2i.ZERO)
-	var spec: StructureSpecs = building_info.get("spec", null)
+	var spec = building_info.get("spec", null)
+	var layer: String = building_info.get("layer", "")
+	var source: String = building_info.get("source", "")
 	if spec == null:
 		return
 
@@ -29,4 +31,9 @@ func process_tile(building_info: Dictionary) -> void:
 	if _refund_on_recycle and _refund_cost_fn.is_valid():
 		_refund_cost_fn.call(spec)
 
-	SignalBus.emit_logged("building_removed", building_info)
+	# Emit RESULT (not intent), with minimal payload
+	SignalBus.emit_logged("building_erased", {
+		"pos": pos,
+		"layer": layer,
+		"source": source
+	})

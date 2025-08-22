@@ -90,7 +90,7 @@ func _on_draw_hand_requested() -> void:
 	set_play_phase_state(PLAY_PHASE_STATE_DRAWING)
 
 
-func _on_hand_drawn(cards: Array) -> void:
+func _on_hand_drawn(_cards: Array) -> void:
 	if play_phase_state == PLAY_PHASE_STATE_DRAWING:
 		set_play_phase_state(PLAY_PHASE_STATE_PLAYING)
 

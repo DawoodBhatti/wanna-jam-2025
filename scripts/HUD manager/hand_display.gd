@@ -9,7 +9,7 @@ var CardTemplateScene: PackedScene   # holds the compiled scene resource
 
 func _ready() -> void:
 	# Preload the card scene once — path to your .tscn file
-	CardTemplateScene = preload("res://scenes/deck/card_template.tscn")
+	CardTemplateScene = preload("res://scenes/cards/card_template.tscn")
 
 	# Connect signals
 	SignalBus.connect("hand_drawn", Callable(self, "_on_hand_drawn"))
@@ -34,7 +34,8 @@ func _on_hand_drawn(hand: Array) -> void:
 
 	# Spawn new cards
 	for i in range(hand.size()):
-		var card_data: Dictionary = hand[i]
+		var card_id: String = hand[i]
+		var card_data: Dictionary = CardCatalogue.get_card_by_id(card_id)
 		var card_instance: Control = CardTemplateScene.instantiate()
 
 		if card_instance.has_method("populate"):
@@ -45,6 +46,7 @@ func _on_hand_drawn(hand: Array) -> void:
 
 		card_instance.position = Vector2(x_shift + i * spacing, 0)
 		add_child(card_instance)
+
 
 func _on_card_clicked(card_data: Dictionary) -> void:
 	if not accepting_input:
@@ -71,9 +73,10 @@ func _set_hand_interactable(enabled: bool) -> void:
 			)
 
 
-func _on_card_was_played(card_data: Dictionary) -> void:
+func _on_card_was_played(card_id: String) -> void:
+	var card : Dictionary = CardCatalogue.get_card_by_id(card_id)
 	for child in get_children():
-		if child.has_method("fade_out") and child.card_data == card_data:
+		if child.has_method("fade_out") and child.card_data == card:
 			child.fade_out()
 			break
 	accepting_input = true

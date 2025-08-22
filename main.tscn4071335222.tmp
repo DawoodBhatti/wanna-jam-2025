@@ -11,9 +11,9 @@
 
 [node name="Camera" parent="." instance=ExtResource("1_eabfd")]
 
-[node name="Tiles" parent="." instance=ExtResource("2_s6e2t")]
-
 [node name="HUD" parent="." instance=ExtResource("3_h2yge")]
+
+[node name="Tiles" parent="." instance=ExtResource("2_s6e2t")]
 
 [node name="BuildingManager" parent="." instance=ExtResource("1_1bvp3")]
 

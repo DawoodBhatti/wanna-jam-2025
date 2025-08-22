@@ -211,12 +211,14 @@ func load_cards() -> void:
 		}
 	]
 
+#returns complete dictionary of all card info
 func get_card_by_id(id: String) -> Dictionary:
 	for card: Dictionary in deck:
 		if card.get("id", "") == id:
 			return card
 	return {}
 
+#TODO this function can be simplified/refactored because we should be querying the build catalogue and replacing the local source_dict
 # take card ID and returns information about the structure to be placed
 func resolve_structure_payload(card_id: String) -> Dictionary:
 	var card: Dictionary = get_card_by_id(card_id)

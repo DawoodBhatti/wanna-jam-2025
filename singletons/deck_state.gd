@@ -2,9 +2,9 @@ extends Node
 
 const HAND_SIZE := 5
 
-var deck: Array[Dictionary] = []
-var hand: Array[Dictionary] = []
-var discard_pile: Array[Dictionary] = []
+var deck: Array[String] = []
+var hand: Array[String] = []
+var discard_pile: Array[String] = []
 var resources: Dictionary = {} # Injected from ResourceState or GameState
 var debug_switch: bool = true
 
@@ -18,7 +18,8 @@ func _ready() -> void:
 
 func init_from_catalogue() -> void:
 	if deck.is_empty():
-		deck.append_array(CardCatalogue.deck.duplicate(true))
+		for cards in CardCatalogue.deck:
+			deck.append(cards.id)
 		shuffle_deck()
 
 # -----------------
@@ -44,7 +45,7 @@ func _draw_and_emit(count: int) -> void:
 	if deck.is_empty() and not discard_pile.is_empty():
 		_refill_deck_from_discard()
 
-	var drawn: Array[Dictionary] = []
+	var drawn: Array[String] = []
 	for _i in count:
 		if deck.is_empty():
 			if discard_pile.is_empty():
@@ -65,11 +66,11 @@ func _refill_deck_from_discard() -> void:
 	discard_pile.clear()
 	deck.shuffle()
 
-func move_card_to_discard(card: Dictionary) -> void:
+func move_card_to_discard(card_id: String) -> void:
 	if debug_switch:
-		print("[DeckState] moving card: %s to discard" % str(card.get("name", "unknown")))
-	hand.erase(card)
-	discard_pile.append(card)
+		print("[DeckState] moving card: %s to discard" % card_id)
+	hand.erase(card_id)
+	discard_pile.append(card_id)
 	_broadcast_piles()
 
 func move_hand_to_discard() -> void:
@@ -108,6 +109,6 @@ func _broadcast_piles() -> void:
 		deck.size(), hand.size(), discard_pile.size()
 	])
 
-func _on_card_was_played(card_data : Dictionary) -> void:
+func _on_card_was_played(card_id : String) -> void:
 	
-	DeckState.move_card_to_discard(card_data)
+	move_card_to_discard(card_id)

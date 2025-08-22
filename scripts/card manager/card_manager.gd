@@ -1,9 +1,10 @@
 extends Node2D
 
-# 🧠 DeckManager: Orchestrates card play, manages hand lifecycle,
+# 🧠 CardManager: Orchestrates card play, manages hand lifecycle,
 # validates actions, and delegates gameplay effects.
 
 var effects_manager: Node2D
+var debug_switch: bool = true
 
 # -------------------------------------------------------------------
 # 🚦 Initialization & Signal Wiring
@@ -18,7 +19,7 @@ func _ready() -> void:
 	SignalBus.connect("card_play_requested", Callable(self, "_on_card_play_requested"))
 	SignalBus.connect("resolve_hand_requested", Callable(self, "_on_resolve_hand_requested"))
 
-	print("[DeckManager] ready!")
+	print("[CardManager] ready!")
 
 # -------------------------------------------------------------------
 # 🧩 Utility Accessors
@@ -55,12 +56,13 @@ func _on_card_play_requested(card_id: String) -> void:
 
 	var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
 	if card.is_empty():
-		push_warning("[DeckManager] Unknown card play requested: %s" % card_id)
+		push_warning("[CardManager] Unknown card play requested: %s" % card_id)
 		return
-	if not DeckState.hand.has(card):
+	if not DeckState.hand.has(card_id):
 		return
 	if not ResourceState.can_afford(card_id):
-		print("[DeckManager] Cannot afford card: %s" % card.get("name", "unknown"))
+		if debug_switch:
+			print("[CardManager] Cannot afford card: %s" % card_id)
 		SignalBus.emit_logged("card_play_denied", card_id)
 		return
 
@@ -87,7 +89,8 @@ func _handle_structure_card(card_id: String) -> void:
 
 	if not DeckState.can_afford(cost):
 		var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
-		print("Not enough resources for %s" % card.get("name", "unknown"))
+		if debug_switch:
+			print("Not enough resources for %s" % card.get("name", "unknown"))
 		GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
 		return
 
@@ -117,9 +120,9 @@ func _on_card_clicked(card_id: String) -> void:
 
 	var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
 	if card.is_empty():
-		push_warning("[DeckManager] Unknown card clicked: %s" % card_id)
+		push_warning("[CardManager] Unknown card clicked: %s" % card_id)
 		return
-	if not DeckState.hand.has(card):
+	if not DeckState.hand.has(card_id):
 		return
 
 	SignalBus.emit_logged("card_play_requested", card_id)
@@ -134,7 +137,8 @@ func _on_resolve_hand_requested() -> void:
 	if effects_manager == null:
 		return
 
-	for card: Dictionary in DeckState.hand:
+	for card_id: String in DeckState.hand:
+		var card : Dictionary = CardCatalogue.get_card_by_id(card_id)
 		for effect: Dictionary in card.get("effects_on_end", []):
 			var e: Dictionary = effect.duplicate(true)
 			e["instant"] = true
