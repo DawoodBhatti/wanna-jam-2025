@@ -16,27 +16,30 @@
 
 extends Node
 
-@onready var _placement_action = $PlacementAction
-@onready var _painting_action = $PaintingAction
-@onready var _removal_action = $RemovalAction
+@onready var _place_single = $PlaceSingle
+@onready var _place_multiple = $PlaceMultiple
+@onready var _remove_single = $RemoveSingle
+@onready var _remove_multiple = $RemoveMultiple
 
-
-#TODO: add removal painting into here
 #TODO: add in logic for cards to place enter painting mode, too
 
 var _current_action: IBuildAction = null
 
-func place(building_name: String):
-	_current_action = _placement_action
+func place_single(building_name: String):
+	_current_action = _place_single
 	_current_action.start({"building_name": building_name})
 
-func paint(building_name: String, limit := 0):
-	_current_action = _painting_action
+func place_multiple(building_name: String, limit := 0):
+	_current_action = _place_multiple
 	_current_action.start({"building_name": building_name, "limit": limit})
 
-func remove():
-	_current_action = _removal_action
-	_current_action.start({})
+func remove_single(target_type: String):
+	_current_action = _remove_single
+	_current_action.start({"target_type": target_type})
+
+func remove_multiple(target_type: String, limit := 0):
+	_current_action = _remove_multiple
+	_current_action.start({"target_type": target_type, "limit": limit})
 
 func stop():
 	if _current_action:

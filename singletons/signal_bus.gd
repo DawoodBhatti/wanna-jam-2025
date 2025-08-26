@@ -10,7 +10,7 @@ extends Node
 # 🔊 Signal Logging
 # ----------------------------
 # 0 = silent, 1 =  names and arguments, 2 = names, arguments and call stack
-var signal_detail: int = 1
+var signal_detail: int = 0
 
 # ----------------------------
 # 🪵 Resource Signals

@@ -1,4 +1,4 @@
-# PaintingAction.gd
+# place_multiple.gd
 # Drag-to-paint multi-placement with GhostLayer hover preview.
 
 extends IBuildAction

@@ -12,6 +12,8 @@ class_name PlacementService
 # PUBLIC API – SINGLE PLACEMENT MODE
 # -------------------------------------------------------------------
 
+#TODO: comments need updating...
+
 ## Places a building tile by looking up its build data from the catalog.
 ## Use this for one‑off placements where performance is not a concern.
 ## @param level: The Level node containing tile layers.

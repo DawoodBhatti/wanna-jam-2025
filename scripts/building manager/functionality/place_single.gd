@@ -1,4 +1,4 @@
-# PlacementAction.gd
+# place_single.gd
 # ------------------
 # Handles single‑click placement of a building with ghost preview.
 # Uses cached build data for the active building to avoid repeated catalogue lookups.

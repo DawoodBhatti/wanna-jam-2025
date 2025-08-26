@@ -1,6 +1,8 @@
+RemovalService
+RemovalRules
+Node2D
 PlacementRules
 PlacementService
-Node2D
 Control
 Camera2D
 Label
@@ -11,4 +13,3 @@ NinePatchRect
 CanvasLayer
 HBoxContainer
 VBoxContainer
-TileMapLayer
