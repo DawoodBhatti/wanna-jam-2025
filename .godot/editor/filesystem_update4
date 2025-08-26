@@ -26,3 +26,4 @@ res://scripts/building manager/rules/placement_rules.gd
 res://singletons/deck_state.gd
 res://scripts/HUD manager/hand_display.gd
 res://scripts/turn effects manager/effects_manager.gd
+res://scripts/building manager/functionality/place_single.gd

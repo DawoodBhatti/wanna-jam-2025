@@ -54,4 +54,4 @@ func preview_removal(level: Level, target_type: String, cell: Vector2i) -> void:
 		var preview_def: Dictionary = _rules.get_preview_tile_def_for_type(target_type)
 		if not preview_def.is_empty():
 			level.ghost_layer.set_cell(cell, preview_def["source_id"], preview_def["atlas_coords"])
-			level.ghost_layer.modulate = Color(1, 0, 0, 0.5)
+			level.ghost_layer.modulate = Color(0.75, 0, 0, 0.5)

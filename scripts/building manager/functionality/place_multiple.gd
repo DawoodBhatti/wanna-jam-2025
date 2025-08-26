@@ -20,7 +20,10 @@ func start(params: Dictionary) -> void:
 	# ✅ Cache build data once for painting mode using get_tile()
 	_build_data = BuildCatalogue.get_tile("StructuresLayer", _active_building)
 
-	SignalBus.emit_logged("place_multiple_started", ["paint", {"source": _active_building}, _limit])
+	SignalBus.emit_logged(
+		"place_multiple_started",
+		["paint", {"source": _active_building}, _limit]
+	)
 
 func process_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -34,7 +37,7 @@ func process_input(event: InputEvent) -> void:
 		_paint_current()
 
 	elif event.is_action_pressed("cancel"):
-		get_parent().stop()
+		get_parent().stop()  # cancel path
 
 func _paint_current() -> void:
 	var cell: Vector2i = _level.get_cell_under_mouse(_level.structures_layer)
@@ -49,9 +52,12 @@ func _paint_current() -> void:
 	if _limit > 0:
 		_limit -= 1
 		if _limit <= 0:
-			SignalBus.emit_logged("place_multiple_completed", ["paint", {"source": _active_building}, 0])
-			get_parent().stop()
+			get_parent().stop()  # limit reached path
 
 func stop() -> void:
 	_last_cell = Vector2i(-9999, -9999)
 	_placement_service.clear_preview(_level)
+	SignalBus.emit_logged(
+		"place_multiple_completed",
+		["paint", {"source": _active_building}, _limit]
+	)

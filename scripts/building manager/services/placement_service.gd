@@ -72,6 +72,6 @@ func _preview_cell_internal(level: Level, build_data: Dictionary, cell: Vector2i
 	if valid:
 		var tile_coords: Vector2i = build_data.tiles[build_data.source_name]
 		level.ghost_layer.set_cell(cell, build_data.source_id, tile_coords)
-		level.ghost_layer.modulate = Color(0, 0.75, 0, 1)
+		level.ghost_layer.modulate = Color(0, 0.75, 0, 0.5)
 	else:
 		level.ghost_layer.modulate = Color(1, 1, 1, 1)
