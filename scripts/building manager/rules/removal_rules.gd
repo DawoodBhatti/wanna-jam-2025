@@ -1,15 +1,9 @@
-# removal_rules
-# Centralised removal validation logic.
-# All actions call this before removing a tile.
 extends Node
 class_name RemovalRules
 
 @onready var _level: Node = get_node("../../Level")
-var debug_switch: bool = true
 
 func debug_tile_info(layer: TileMapLayer, coords: Vector2i) -> void:
-	if not debug_switch:
-		return
 
 	var layer_name: String = layer.name
 	var layer_path: NodePath = layer.get_path()
@@ -26,7 +20,7 @@ func debug_tile_info(layer: TileMapLayer, coords: Vector2i) -> void:
 		if tile_data.has_custom_data("name"):
 			var custom_name: Variant = tile_data.get_custom_data("name")
 			if typeof(custom_name) == TYPE_STRING:
-				name = custom_name as String
+				name = String(custom_name)
 			else:
 				name = str(custom_name)
 
@@ -41,42 +35,33 @@ func debug_tile_info(layer: TileMapLayer, coords: Vector2i) -> void:
 	else:
 		print("[RemovalRules] No tile at", coords)
 
-# --- Main removal check ---
-# --- Main removal check ---
-# Returns true if the tile at `cell_pos` in StructuresLayer matches `target_type`
+
 func is_removal_valid(cell_pos: Vector2i, target_type: String) -> bool:
-	if debug_switch:
-		print("[RemovalRules] Checking removal validity → type:", target_type, " cell:", cell_pos)
 
 	var layer: TileMapLayer = _level.structures_layer
 
-	# No tile at this position
 	if layer.get_cell_source_id(cell_pos) == -1:
-		if debug_switch:
-			print("[RemovalRules] ❌ No tile source at", cell_pos)
 		return false
 
-	# Use BuildCatalogue's identity check
 	var valid: bool = BuildCatalogue.is_tile_type(layer, cell_pos, target_type)
 
-	if debug_switch:
-		if valid:
-			print("[RemovalRules] ✅ Removal valid for", target_type, "at", cell_pos)
-		else:
-			print("[RemovalRules] ❌ Tile does not match", target_type, "at", cell_pos)
-
 	return valid
-	
-func get_preview_tile_id_for_type(target_type: String) -> int:
-	if debug_switch:
-		print("[RemovalRules] Getting preview tile ID for type:", target_type)
 
-	var tile_def: Variant = BuildCatalogue.get_tile("StructuresLayer", target_type)
-	if tile_def:
-		if debug_switch:
-			print("[RemovalRules] Preview tile ID:", tile_def.source_id)
-		return tile_def.source_id
 
-	if debug_switch:
-		print("[RemovalRules] ⚠ No preview tile found for type:", target_type)
-	return -1
+# Returns a dictionary with source_id and atlas_coords for the GhostLayer preview.
+# If missing, returns an empty dictionary.
+func get_preview_tile_def_for_type(target_type: String) -> Dictionary:
+
+	var def: Dictionary = BuildCatalogue.get_tile("GhostLayer", target_type)
+	if def.is_empty():
+		return {}
+
+	if def["tiles"].size() == 0:
+		return {}
+
+	var def_coords: Vector2i = def["tiles"].values()[0]
+
+	return {
+		"source_id": def["source_id"],
+		"atlas_coords": def_coords
+	}

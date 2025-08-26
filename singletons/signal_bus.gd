@@ -10,7 +10,7 @@ extends Node
 # 🔊 Signal Logging
 # ----------------------------
 # 0 = silent, 1 =  names and arguments, 2 = names, arguments and call stack
-var signal_detail: int = 0
+var signal_detail: int = 1
 
 # ----------------------------
 # 🪵 Resource Signals
@@ -69,13 +69,11 @@ signal cards_drawn(cards: Array)                # outcome alias if needed
 signal building_placed(tile_info: Dictionary)            # Placement committed
 signal building_removed(tile_info: Dictionary)            # Removal committed
 
-# Paint / Build Modes (future use)
+# Paint / Build Modes 
 signal place_multiple_started(mode: String, data: Dictionary, count: int)
 signal place_multiple_completed(mode: String, data: Dictionary, count: int)
-signal place_mode_completed
 signal remove_multiple_started(mode: String, data: Dictionary, count: int)
 signal remove_multiple_completed(mode: String, data: Dictionary, count: int)
-signal remove_mode_completed
 
 # ----------------------------
 # 📣 Emit wrapper with debug logging

@@ -11,7 +11,6 @@ class_name EffectsManager
 # -------------------------------------------------------------------
 func _ready() -> void:
 	SignalBus.connect("end_turn_effects_started", Callable(self, "run_end_turn_effects"))
-	print("[EffectsManager] ready!")
 
 # -------------------------------------------------------------------
 # 🎯 Effect Routing Entry Point

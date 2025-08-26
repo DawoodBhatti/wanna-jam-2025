@@ -6,7 +6,6 @@ var deck: Array[String] = []
 var hand: Array[String] = []
 var discard_pile: Array[String] = []
 var resources: Dictionary = {} # Injected from ResourceState or GameState
-var debug_switch: bool = false
 
 # -----------------
 # Lifecycle / Setup
@@ -26,19 +25,13 @@ func init_from_catalogue() -> void:
 # Pure pile operations
 # -----------------
 func shuffle_deck() -> void:
-	if debug_switch:
-		print("[DeckState] shuffling deck")
 	deck.shuffle()
 	_broadcast_piles()
 
 func draw_full_hand() -> void:
-	if debug_switch:
-		print("[DeckState] drawing full hand (%d cards)" % HAND_SIZE)
 	_draw_and_emit(HAND_SIZE)
 
 func draw_from_deck(count: int) -> void:
-	if debug_switch:
-		print("[DeckState] drawing %d card(s)" % count)
 	_draw_and_emit(count)
 
 func _draw_and_emit(count: int) -> void:
@@ -60,22 +53,16 @@ func _draw_and_emit(count: int) -> void:
 	SignalBus.emit_logged("hand_drawn", [drawn])
 
 func _refill_deck_from_discard() -> void:
-	if debug_switch:
-		print("[DeckState] reshuffling discard into deck (%d cards)" % discard_pile.size())
 	deck.append_array(discard_pile)
 	discard_pile.clear()
 	deck.shuffle()
 
 func move_card_to_discard(card_id: String) -> void:
-	if debug_switch:
-		print("[DeckState] moving card: %s to discard" % card_id)
 	hand.erase(card_id)
 	discard_pile.append(card_id)
 	_broadcast_piles()
 
 func move_hand_to_discard() -> void:
-	if debug_switch:
-		print("[DeckState] moving hand to discard")
 	discard_pile.append_array(hand)
 	hand.clear()
 	_broadcast_piles()

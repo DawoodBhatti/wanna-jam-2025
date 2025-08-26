@@ -17,8 +17,6 @@ func _ready() -> void:
 	SignalBus.connect("card_was_played", Callable(self, "_on_card_was_played"))
 	SignalBus.connect("hand_resolved", Callable(self, "_on_hand_resolved"))
 
-	print("[HandDisplay] Ready")
-
 
 func _on_hand_drawn(hand: Array) -> void:
 	# Fade out old cards first

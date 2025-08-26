@@ -8,7 +8,6 @@ extends Node
 
 # Global definition index: [layer_name][source_name] -> definition dictionary
 var catalogue: Dictionary = {}
-var debug_switch : bool = true
 
 func _ready() -> void:
 	_build_catalogue()
@@ -74,8 +73,6 @@ func _build_catalogue() -> void:
 #get tile dictionary e.g. get_tile("StructuresLayer", "Stone")
 func get_tile(layer: String, source: String) -> Dictionary:
 	var tiles: Dictionary =  catalogue.get(layer, {}).get(source, {})
-	if debug_switch:
-		print("[BuildCatalog] ", tiles)
 	return tiles
 
 
