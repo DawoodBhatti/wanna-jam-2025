@@ -20,7 +20,7 @@ func start(params: Dictionary) -> void:
 	# ✅ Cache build data once for painting mode using get_tile()
 	_build_data = BuildCatalogue.get_tile("StructuresLayer", _active_building)
 
-	SignalBus.emit_logged("paint_mode_started", ["paint", {"source": _active_building}, _limit])
+	SignalBus.emit_logged("place_multiple_started", ["paint", {"source": _active_building}, _limit])
 
 func process_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -49,7 +49,7 @@ func _paint_current() -> void:
 	if _limit > 0:
 		_limit -= 1
 		if _limit <= 0:
-			SignalBus.emit_logged("paint_mode_completed", ["paint", {"source": _active_building}, 0])
+			SignalBus.emit_logged("place_multiple_completed", ["paint", {"source": _active_building}, 0])
 			get_parent().stop()
 
 func stop() -> void:

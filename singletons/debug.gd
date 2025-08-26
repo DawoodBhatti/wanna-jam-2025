@@ -25,7 +25,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		print("[DebugInput] Starting removal mode")
 		var bm := get_tree().get_root().get_node("Main/BuildingManager")
 		if bm:
-			bm.remove_multiple("StoneTile", 50) # target_type, limit
+			bm.remove_multiple("StoneTile", 5) # target_type, limit
 
 	
 				

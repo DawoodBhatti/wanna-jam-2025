@@ -19,3 +19,6 @@ res://scripts/building manager/functionality/remove_multiple.gd
 res://scripts/building manager/functionality/remove_single.gd
 res://singletons/signal_bus.gd
 res://scripts/building manager/services/placement_service.gd
+res://scripts/building manager/functionality/place_multiple.gd
+res://scripts/level manager/basegrid.gd
+res://singletons/build_catalogue.gd

@@ -77,3 +77,15 @@ func get_tile(layer: String, source: String) -> Dictionary:
 	if debug_switch:
 		print("[BuildCatalog] ", tiles)
 	return tiles
+
+
+# returns True if the tile at `cell` matches the BuildCatalogue entry for `type_name`
+func is_tile_type(layer: TileMapLayer, cell: Vector2i, type_name: String) -> bool:
+	var def: Dictionary = get_tile(layer.name, type_name)
+	if def.is_empty():
+		return false
+	var src_id: int = layer.get_cell_source_id(cell)
+	var coords: Vector2i = layer.get_cell_atlas_coords(cell)
+	var alt: int = layer.get_cell_alternative_tile(cell)
+	var def_coords: Vector2i = def["tiles"].values()[0] if def["tiles"].size() > 0 else Vector2i(-1, -1)
+	return src_id == def["source_id"] and coords == def_coords and alt == 0

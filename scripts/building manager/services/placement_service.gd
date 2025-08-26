@@ -12,8 +12,6 @@ class_name PlacementService
 # PUBLIC API – SINGLE PLACEMENT MODE
 # -------------------------------------------------------------------
 
-#TODO: comments need updating...
-
 ## Places a building tile by looking up its build data from the catalog.
 ## Use this for one‑off placements where performance is not a concern.
 ## @param level: The Level node containing tile layers.
@@ -62,12 +60,6 @@ func _commit_tile_internal(level: Node, build_data: Dictionary, cell: Vector2i) 
 	# Validate placement
 	if not _rules.is_valid(cell, build_data.source_name):
 		return
-
-	# Emit request signal (auditable)
-	SignalBus.emit_logged(
-		"place_building_requested",
-		[{"layer": "StructuresLayer", "source": build_data.source_name, "cell_pos": cell}]
-	)
 
 	# Place tile in the structures layer
 	var tile_coords: Vector2i = build_data.tiles[build_data.source_name]

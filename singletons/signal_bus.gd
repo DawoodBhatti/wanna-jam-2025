@@ -66,19 +66,15 @@ signal cards_drawn(cards: Array)                # outcome alias if needed
 # ----------------------------
 # 🏗 Building Placement Signals
 # ----------------------------
-# These are optional decoupling points — BuildingManager can call
-# placement/erasure directly without going through SignalBus if desired.
-
-signal place_building_requested(tile_info: Dictionary)   # Player/tool requests a placement
 signal building_placed(tile_info: Dictionary)            # Placement committed
-
-signal erase_building_requested(tile_info: Dictionary)   # Player/tool requests removal
-signal building_erased(tile_info: Dictionary)            # Removal committed
+signal building_removed(tile_info: Dictionary)            # Removal committed
 
 # Paint / Build Modes (future use)
-signal paint_mode_started(mode: String, data: Dictionary, count: int)
-signal paint_mode_completed(mode: String, data: Dictionary, count: int)
+signal place_multiple_started(mode: String, data: Dictionary, count: int)
+signal place_multiple_completed(mode: String, data: Dictionary, count: int)
 signal place_mode_completed
+signal remove_multiple_started(mode: String, data: Dictionary, count: int)
+signal remove_multiple_completed(mode: String, data: Dictionary, count: int)
 signal remove_mode_completed
 
 # ----------------------------
