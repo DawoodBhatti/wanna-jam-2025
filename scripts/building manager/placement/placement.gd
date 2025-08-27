@@ -18,7 +18,7 @@ func start(params: Dictionary) -> void:
 	_last_cell = Vector2i(-9999, -9999)
 
 	# ✅ Cache build data once for painting mode using get_tile()
-	_build_data = BuildCatalogue.get_tile("StructuresLayer", _active_building)
+	_build_data = BuildCatalogue.get_tile(_active_building)
 
 	SignalBus.emit_logged(
 		"placement_started",

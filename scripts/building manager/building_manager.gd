@@ -33,9 +33,9 @@ func placement(building_name: String, limit := 0):
 	_current_action.start({"building_name": building_name, "limit": limit})
 
 
-func removal(target_type: String, limit := 0):
+func removal(building_name: String, limit := 0):
 	_current_action = _removal
-	_current_action.start({"target_type": target_type, "limit": limit})
+	_current_action.start({"building_name": building_name, "limit": limit})
 
 func stop():
 	if _current_action:

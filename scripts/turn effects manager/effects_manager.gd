@@ -16,6 +16,10 @@ func _ready() -> void:
 # 🎯 Effect Routing Entry Point
 # -------------------------------------------------------------------
 func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
+	
+	print("handling an effect...")
+	print(effect)
+	
 	if not effect.has("type"):
 		push_error("[EffectsManager] effect missing 'type': %s" % str(effect))
 		return

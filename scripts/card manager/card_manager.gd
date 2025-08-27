@@ -95,8 +95,8 @@ func _handle_structure_card(card_id: String) -> void:
 		return
 
 	effects_manager.run_card_effects(card_id, "play")
-	SignalBus.emit_logged("structure_placement_requested", [req])
 	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
+
 
 func _handle_recycle_card(card_id: String) -> void:
 	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_RECYCLE)
@@ -107,6 +107,7 @@ func _handle_recycle_card(card_id: String) -> void:
 	effects_manager.run_card_effects(card_id, "play")
 	SignalBus.emit_logged("recycle_mode_requested", [{ "amount": amount }])
 	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
+
 
 func _handle_standard_card(card_id: String) -> void:
 	effects_manager.run_card_effects(card_id, "play")

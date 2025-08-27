@@ -4,24 +4,24 @@ extends IBuildAction
 @onready var _removal_service: RemovalService = $RemovalService
 
 # 🎯 State
-var _target_type: String
+var _target_building: String
 var _limit: int
 var _last_cell: Vector2i = Vector2i(-9999, -9999)
 
 func start(params: Dictionary) -> void:
-	_target_type = params.get("target_type", "")
+	_target_building = params.get("building_name", "")
 	_limit = params.get("limit", 0)
 	_last_cell = Vector2i(-9999, -9999)
 
 	SignalBus.emit_logged(
 		"removal_started",
-		["removal_paint", {"target_type": _target_type}, _limit]
+		["removal", {"building_name": _target_building}, _limit]
 	)
 
 func process_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		var ghost_cell: Vector2i = _level.get_cell_under_mouse(_level.ghost_layer)
-		_removal_service.preview_removal(_level, _target_type, ghost_cell)
+		_removal_service.preview_removal(_level, _target_building, ghost_cell)
 
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			_remove_current()
@@ -38,7 +38,7 @@ func _remove_current() -> void:
 		return
 
 	_last_cell = cell
-	_removal_service.commit_removal(_level, _target_type, cell)
+	_removal_service.commit_removal(_level, _target_building, cell)
 
 	if _limit > 0:
 		_limit -= 1
@@ -50,5 +50,5 @@ func stop() -> void:
 	_removal_service.clear_preview(_level)
 	SignalBus.emit_logged(
 		"removal_completed",
-		["removal_paint", {"target_type": _target_type}, _limit]
+		["removal", {"target_building": _target_building}, _limit]
 	)
