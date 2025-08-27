@@ -42,7 +42,6 @@ func debug_tile_info(layer: TileMapLayer, coords: Vector2i) -> void:
 # -------------------------------------------------------------------
 func is_removal_valid(cell_pos: Vector2i, tile_name: String) -> bool:
 	var def: Dictionary = BuildCatalogue.get_tile(tile_name)
-	print(tile_name)
 	if def.is_empty():
 		push_error("[RemovalRules] Unknown tile: %s" % tile_name)
 		return false

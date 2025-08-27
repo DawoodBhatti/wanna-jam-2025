@@ -1,6 +1,9 @@
 extends Node2D
 class_name EffectsRunner
 
+
+@onready var bm : Node2D = get_tree().get_root().get_node("Main/BuildingManager")
+
 func run_instant(effect: Dictionary) -> void:
 	if not effect.has("type"):
 		push_error("[EffectsRunner] Instant effect missing 'type': %s" % str(effect))
@@ -13,9 +16,9 @@ func run_instant(effect: Dictionary) -> void:
 		"draw_cards":
 			_handle_draw_cards(effect)
 		"placement":
-			print("i am now well equipped to handle your structure placement")
+			_handle_placement(effect)
 		"removal":
-			print("i am equally well equipped to handle your structure removal")
+			_handle_removal(effect)
 		_:
 			push_warning("[EffectsRunner] Unknown instant effect type: %s" % effect_type)
 			
@@ -33,9 +36,9 @@ func run_queued(effect: Dictionary, ctx: Dictionary = {}) -> void:
 		"draw_cards":
 			_handle_draw_cards(effect)
 		"placement":
-			print("i am now well equipped to handle your structure placement")
+			_handle_placement(effect)
 		"removal":
-			print("i am equally well equipped to handle your structure removal")
+			_handle_removal(effect)
 		_:
 			push_warning("[EffectsRunner] Unknown instant effect type: %s" % effect_type)
 			
@@ -58,8 +61,9 @@ func _handle_draw_cards(effect: Dictionary) -> void:
 	SignalBus.emit_logged("draw_cards_requested", 1)
 	print("[EffectsRunner] Drawing cards:", effect)
 
-func _handle_discard_random(effect: Dictionary) -> void:
-	print("[EffectsRunner] Discarding random card:", effect)
+func _handle_placement(effect: Dictionary) -> void:
+	bm.placement(effect["tile_name"], effect["amount"])  
 
-func _handle_custom_signal(effect: Dictionary) -> void:
-	print("[EffectsRunner] Emitting custom signal:", effect)
+func _handle_removal(effect: Dictionary) -> void:
+	bm.removal(effect["tile_name"], effect["amount"])  
+	

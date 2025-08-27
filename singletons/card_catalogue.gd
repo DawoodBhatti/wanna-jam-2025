@@ -169,7 +169,7 @@ func load_cards() -> void:
 			"cost": {},
 			"effects_on_play": [
 				{ "type": "resource_change", "target": "stone", "amount": -1 },
-				{ "type": "placement", "tile_name": "StoneTile", "amount": 1  }
+				{ "type": "removal", "tile_name": "StoneTile", "amount": 1  }
 			],
 		}
 	]

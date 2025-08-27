@@ -8,9 +8,7 @@ class_name RemovalService
 # -------------------------------------------------------------------
 
 func commit_removal(level: Level, target_type: String, cell: Vector2i) -> void:
-	
-	print("cell: ", cell)
-	print("target type is: ", target_type)
+
 
 	if not _rules.is_removal_valid(cell, target_type):
 		return

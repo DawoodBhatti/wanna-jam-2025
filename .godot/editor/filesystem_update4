@@ -7,3 +7,8 @@ res://scripts/HUD manager/draw_pile.gd
 res://scenes/buildings/building manager.tscn
 res://scripts/building manager/removal/removal_service.gd
 res://scripts/building manager/removal/removal.gd
+res://singletons/signal_bus.gd
+res://scripts/turn effects manager/effects_runner.gd
+res://singletons/card_catalogue.gd
+res://scripts/turn effects manager/effects_manager.gd
+res://scripts/building manager/removal/removal_rules.gd

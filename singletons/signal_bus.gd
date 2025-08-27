@@ -47,7 +47,7 @@ signal instant_effect_resolved(card_id: String)  # outcome only
 # 🃏 Card & Hand Signals
 # ----------------------------
 signal card_clicked(card_id: String)
-
+#TODO: currently drawing a card seems to remove all other cards from hand? will fix in a biz. think we should stick to the 5 card limit for now?
 signal draw_hand_requested                 # Intent: "I want a full hand" → handled by GameState
 signal draw_cards_requested(count: int)    # Outcome: "Draw X cards now" → handled by CardManager
 signal hand_drawn(cards: Array)            # Outcome: cards are actually in hand
