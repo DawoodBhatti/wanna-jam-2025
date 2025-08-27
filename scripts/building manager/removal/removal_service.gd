@@ -26,13 +26,13 @@ func commit_removal(level: Level, target_type: String, cell: Vector2i) -> void:
 # -------------------------------------------------------------------
 
 func start_multiple_removal(mode: String, data: Dictionary) -> void:
-	SignalBus.emit_logged("remove_multiple_started", [mode, data, 0])
+	SignalBus.emit_logged("removal_started", [mode, data, 0])
 
 func complete_multiple_removal(mode: String, data: Dictionary, count: int) -> void:
-	SignalBus.emit_logged("remove_multiple_completed", [mode, data, count])
+	SignalBus.emit_logged("removal_completed", [mode, data, count])
 
 func cancel_multiple_removal(mode: String, data: Dictionary, count: int) -> void:
-	SignalBus.emit_logged("remove_multiple_completed", [mode, data, count])
+	SignalBus.emit_logged("removal_completed", [mode, data, count])
 
 # -------------------------------------------------------------------
 # PUBLIC API – CLEANUP

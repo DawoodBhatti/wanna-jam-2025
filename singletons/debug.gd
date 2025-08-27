@@ -14,12 +14,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		var bm := get_tree().get_root().get_node("Main/BuildingManager")
 		if bm:
 			#bm.start_placement_mode("StoneTile")  # or "Medusa"
-			bm.place_multiple("StoneTile", 50)  # or bm.start_placement_mode("StoneTile")
+			bm.placement("StoneTile", 50)  # or bm.start_placement_mode("StoneTile")
 	
 	if Input.is_action_just_pressed("test_removal_mode"):
 		var bm := get_tree().get_root().get_node("Main/BuildingManager")
 		if bm:
-			bm.remove_multiple("StoneTile", 5) # target_type, limit
+			bm.removal("StoneTile", 5) # target_type, limit
 
 	
 				

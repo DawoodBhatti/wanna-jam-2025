@@ -60,7 +60,6 @@ signal card_play_denied(card_id: String)
 signal card_was_played(card_id: String)
 
 signal piles_changed(deck_size: int, hand_size: int, discard_size: int)  # outcome only
-
 signal cards_drawn(cards: Array)                # outcome alias if needed
 
 # ----------------------------
@@ -69,11 +68,10 @@ signal cards_drawn(cards: Array)                # outcome alias if needed
 signal building_placed(tile_info: Dictionary)            # Placement committed
 signal building_removed(tile_info: Dictionary)            # Removal committed
 
-# Paint / Build Modes 
-signal place_multiple_started(mode: String, data: Dictionary, count: int)
-signal place_multiple_completed(mode: String, data: Dictionary, count: int)
-signal remove_multiple_started(mode: String, data: Dictionary, count: int)
-signal remove_multiple_completed(mode: String, data: Dictionary, count: int)
+signal placement_started(mode: String, data: Dictionary, count: int)
+signal placement_completed(mode: String, data: Dictionary, count: int)
+signal removal_started(mode: String, data: Dictionary, count: int)
+signal removal_completed(mode: String, data: Dictionary, count: int)
 
 # ----------------------------
 # 📣 Emit wrapper with debug logging

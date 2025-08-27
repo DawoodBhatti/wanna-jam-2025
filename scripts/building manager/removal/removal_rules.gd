@@ -1,7 +1,7 @@
 extends Node
 class_name RemovalRules
 
-@onready var _level: Node = get_node("../../Level")
+@onready var _level: Node = get_tree().get_root().get_node("Main/Level")
 
 func debug_tile_info(layer: TileMapLayer, coords: Vector2i) -> void:
 

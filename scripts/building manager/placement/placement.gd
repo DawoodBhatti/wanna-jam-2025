@@ -1,11 +1,11 @@
-# place_multiple.gd
-# Drag-to-paint multi-placement with GhostLayer hover preview.
+# placement.gd
+# Drag-to-paint placement with GhostLayer hover preview.
 
 extends IBuildAction
 
-@onready var _level = get_node("../../Level")
-@onready var _rules = get_node("../PlacementRules")
-@onready var _placement_service: PlacementService = get_node("../PlacementService")
+@onready var _level: Node = get_tree().get_root().get_node("Main/Level")
+@onready var _rules = $PlacementRules
+@onready var _placement_service: PlacementService = $PlacementService
 
 var _active_building: String
 var _limit: int
@@ -21,7 +21,7 @@ func start(params: Dictionary) -> void:
 	_build_data = BuildCatalogue.get_tile("StructuresLayer", _active_building)
 
 	SignalBus.emit_logged(
-		"place_multiple_started",
+		"placement_started",
 		["paint", {"source": _active_building}, _limit]
 	)
 
@@ -58,6 +58,6 @@ func stop() -> void:
 	_last_cell = Vector2i(-9999, -9999)
 	_placement_service.clear_preview(_level)
 	SignalBus.emit_logged(
-		"place_multiple_completed",
+		"placement_completed",
 		["paint", {"source": _active_building}, _limit]
 	)

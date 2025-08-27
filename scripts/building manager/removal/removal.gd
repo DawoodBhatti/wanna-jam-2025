@@ -1,7 +1,7 @@
 extends IBuildAction
 
-@onready var _level = get_node("../../Level")
-@onready var _removal_service: RemovalService = get_node("../RemovalService")
+@onready var _level: Node = get_tree().get_root().get_node("Main/Level")
+@onready var _removal_service: RemovalService = $RemovalService
 
 # 🎯 State
 var _target_type: String
@@ -14,7 +14,7 @@ func start(params: Dictionary) -> void:
 	_last_cell = Vector2i(-9999, -9999)
 
 	SignalBus.emit_logged(
-		"remove_multiple_started",
+		"removal_started",
 		["removal_paint", {"target_type": _target_type}, _limit]
 	)
 
@@ -49,6 +49,6 @@ func stop() -> void:
 	_last_cell = Vector2i(-9999, -9999)
 	_removal_service.clear_preview(_level)
 	SignalBus.emit_logged(
-		"remove_multiple_completed",
+		"removal_completed",
 		["removal_paint", {"target_type": _target_type}, _limit]
 	)

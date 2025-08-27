@@ -30,13 +30,13 @@ func preview_cell_with_data(level: Level, build_data: Dictionary, cell: Vector2i
 # -------------------------------------------------------------------
 
 func start_multiple_placement(mode: String, data: Dictionary) -> void:
-	SignalBus.emit_logged("place_multiple_started", [mode, data, 0])
+	SignalBus.emit_logged("placement_started", [mode, data, 0])
 
 func complete_multiple_placement(mode: String, data: Dictionary, count: int) -> void:
-	SignalBus.emit_logged("place_multiple_completed", [mode, data, count])
+	SignalBus.emit_logged("placement_completed", [mode, data, count])
 
 func cancel_multiple_placement(mode: String, data: Dictionary, count: int) -> void:
-	SignalBus.emit_logged("place_multiple_completed", [mode, data, count])
+	SignalBus.emit_logged("placement_completed", [mode, data, count])
 
 # -------------------------------------------------------------------
 # PUBLIC API – CLEANUP
