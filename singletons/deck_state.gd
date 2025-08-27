@@ -2,9 +2,12 @@ extends Node
 
 const HAND_SIZE := 5
 
+#arrays are containers of cardIDs which you can use to query cardcatalogue
 var deck: Array[String] = []
 var hand: Array[String] = []
 var discard_pile: Array[String] = []
+
+#TODO. this linkage might not be quite right?
 var resources: Dictionary = {} # Injected from ResourceState or GameState
 
 # -----------------
@@ -47,9 +50,10 @@ func _draw_and_emit(count: int) -> void:
 			if deck.is_empty():
 				break
 		drawn.append(deck.pop_front())
-
 	hand.append_array(drawn)
 	_broadcast_piles()
+	
+	#hack to bypass argument limit. handled separately in signal bus
 	SignalBus.emit_logged("hand_drawn", [drawn])
 
 func _refill_deck_from_discard() -> void:

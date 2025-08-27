@@ -80,13 +80,12 @@ func emit_logged(name: String, arg: Variant = null) -> void:
 	if signal_detail >= 1:
 		var arg_str: String = ""
 
-		# Special-case: only print card names for hand_drawn
+		# Special-case: only print card names for hand_drawn signal
 		if name == "hand_drawn" and typeof(arg) == TYPE_ARRAY:
-			var card_names: Array = []
-			for card in arg[0]:
-				if typeof(card) == TYPE_DICTIONARY and card.has("name"):
-					card_names.append(card["name"])
-			arg_str = str(card_names)
+			var card_ids: Array = []
+			for ids in arg[0]:
+				card_ids.append(ids)
+			arg_str = str(card_ids)
 		elif arg != null:
 			arg_str = str(arg)
 
