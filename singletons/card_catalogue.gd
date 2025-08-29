@@ -8,9 +8,11 @@ const CARD_SCHEMA: Dictionary = {
 	"name": "Card Name",
 	"description": "What this card does in simple terms.",
 	"cost": {},
-	"effects_on_play": [], #TODO: include effect examples here...
-	"effects_on_end": []
+	"instant_effects": [], #effects which occur instantly when card is played
+	"end_turn_effects": [], #effects which occur at end of turn when a card
+	"remain_effects": [] #effects which occur on turn end if card remains in hand
 }
+
 #TODO: it's possible to modify schema to include things like background types
 
 # -------------------------------------------------------------------
@@ -29,150 +31,230 @@ func _ready() -> void:
 # -------------------------------------------------------------------
 # ♠️ Deck Definition
 # -------------------------------------------------------------------
+
 func load_cards() -> void:
 	deck = [
 		{
 			"id": "lumber_harvest",
 			"name": "Lumber Harvest",
-			"description": "Gain 3 wood.",
+			"description": "Gain 1 wood instantly.",
 			"cost": {},
-			"effects_on_play": [
-				{ "type": "resource_change", "target": "wood", "amount": 3 }
+			"instant_effects": [
+				{ "type": "resource_change", "target": "wood", "amount": 1 }
 			],
-			"effects_on_end": []
+			"end_turn_effects": [			],
+			"remain_effects": []
 		},
 		{
 			"id": "place_stone",
 			"name": "Place Stone",
 			"description": "Spend 1 stone to place a stone structure.",
 			"cost": { "stone": 1 },
-			"effects_on_play": [
+			"instant_effects": [
 				{ "type": "resource_change", "target": "stone", "amount": -1 },
-				{ "type": "placement", "tile_name": "StoneTile", "amount": 1  }
+				{ "type": "placement", "tile_name": "StoneTile", "amount": 1 }
 			],
-			"effects_on_end": []
+			"end_turn_effects": [],
+			"remain_effects": []
 		},
-		#{
-			#"id": "medusa",
-			#"name": "Medusa",
-			#"description": "Turns surrounding ground to stone at end of turn.",
-			#"cost": { "pop": 5 },
-			#"structure_built": { "tile_name": "MedusaTile", "place_amount": 1 },
-			#"effects_on_play": [
-				#{ "type": "resource_change", "target": "pop", "amount": -5 },
-				#{ "type": "enter_structure_placement" }
-			#],
-			#"effects_on_end": [
-				#{ "type": "aoe_tile_transform", "target_tile": "StoneTile", "radius": 1 }
-			#]
-		#},
 		{
 			"id": "foraging_party",
 			"name": "Foraging Party",
-			"description": "Spend 1 population to gain 2 food.",
+			"description": "Spend 1 pop to gain 1 food.",
 			"cost": { "pop": 1 },
-			"effects_on_play": [
+			"instant_effects": [
 				{ "type": "resource_change", "target": "pop", "amount": -1 },
-				{ "type": "resource_change", "target": "food", "amount": 2 }
+				{ "type": "resource_change", "target": "food", "amount": 1 }
 			],
-			"effects_on_end": []
+			"end_turn_effects": [],
+			"remain_effects": [
+			]
 		},
 		{
 			"id": "stone_meditation",
 			"name": "Stone Meditation",
-			"description": "If unplayed, gain 2 stone at end of turn.",
+			"description": "If unplayed, gain 1 stone.",
 			"cost": {},
-			"effects_on_play": [],
-			"effects_on_end": [
-				{ "type": "resource_change", "target": "stone", "amount": 2 }
+			"instant_effects": [],
+			"end_turn_effects": [],
+			"remain_effects": [
+				{ "type": "resource_change", "target": "stone", "amount": 1 },
 			]
 		},
 		{
 			"id": "idle_hands",
 			"name": "Idle Hands",
-			"description": "Lose 1 population if left in hand.",
+			"description": "Spend 1 wood or lose 1 pop.",
 			"cost": {},
-			"effects_on_play": [],
-			"effects_on_end": [
+			"instant_effects": [
+				{ "type": "resource_change", "target": "wood", "amount": 1 }
+			],
+			"end_turn_effects": [],
+			"remain_effects": [
 				{ "type": "resource_change", "target": "pop", "amount": -1 }
 			]
 		},
 		{
 			"id": "village_growth",
 			"name": "Village Growth",
-			"description": "Gain 2 population.",
-			"cost": { "food": 2 },
-			"effects_on_play": [
-				{ "type": "resource_change", "target": "pop", "amount": 2 }
+			"description": "Gain 1 at end of turn.",
+			"cost": { "food": 1 },
+			"instant_effects": [
 			],
-			"effects_on_end": []
+			"end_turn_effects": [
+				{ "type": "resource_change", "target": "pop", "amount": 1 }
+			],
+			"remain_effects": []
 		},
 		{
 			"id": "campfire",
 			"name": "Campfire",
-			"description": "Spend 2 wood to gain 3 food.",
-			"cost": { "wood": 2 },
-			"effects_on_play": [
-				{ "type": "resource_change", "target": "wood", "amount": -2 },
-				{ "type": "resource_change", "target": "food", "amount": 3 }
+			"description": "Spend 1 wood to gain 2 food instantly.",
+			"cost": { "wood": 1 },
+			"instant_effects": [
+				{ "type": "resource_change", "target": "wood", "amount": -1 },
+				{ "type": "resource_change", "target": "food", "amount": 2 }
 			],
-			"effects_on_end": []
+			"end_turn_effects": [],
+			"remain_effects": [
+			]
 		},
 		{
 			"id": "stone_masonry",
 			"name": "Stone Masonry",
-			"description": "Spend 3 stone to gain 1 population.",
-			"cost": { "stone": 3 },
-			"effects_on_play": [
-				{ "type": "resource_change", "target": "stone", "amount": -3 },
-				{ "type": "resource_change", "target": "pop", "amount": 1 }
+			"description": "Spend 1 stone to gain 1 wood at end of turn.",
+			"cost": { "stone": 1 },
+			"instant_effects": [
+				{ "type": "resource_change", "target": "stone", "amount": -1 },
 			],
-			"effects_on_end": []
+			"end_turn_effects": [
+				{ "type": "resource_change", "target": "wood", "amount": 1 }
+			],
+			"remain_effects": []
 		},
 		{
 			"id": "forest_fire",
 			"name": "Forest Fire",
-			"description": "Lose 2 wood. All players lose 1 population.",
+			"description": "Spend 2 pop to prevent 5 wood loss if left in hand.",
 			"cost": {},
-			"effects_on_play": [
-				{ "type": "resource_change", "target": "wood", "amount": -2 },
-				{ "type": "resource_change", "target": "pop", "amount": -1 }
+			"instant_effects": [
+				{ "type": "resource_change", "target": "pop", "amount": -2 }
 			],
-			"effects_on_end": []
+			"end_turn_effects": [
+			],
+			"remain_effects": [{ "type": "resource_change", "target": "pop", "amount": -5 }]
 		},
 		{
 			"id": "scouting_party",
 			"name": "Scouting Party",
-			"description": "Spend 1 food to reveal 2 cards.",
+			"description": "Spend 1 food ...",
 			"cost": { "food": 1 },
-			"effects_on_play": [
+			"instant_effects": [
 				{ "type": "resource_change", "target": "food", "amount": -1 },
-				{ "type": "draw_cards", "amount": 2 }
 			],
-			"effects_on_end": []
+			"end_turn_effects": [
+			],
+			"remain_effects": []
 		},
 		{
 			"id": "wooden_barricade",
 			"name": "Wooden Barricade",
-			"description": "Spend 2 wood to prevent 1 population loss this turn.",
-			"cost": { "wood": 2 },
-			"effects_on_play": [
-				{ "type": "resource_change", "target": "wood", "amount": -2 },
-				{ "type": "flag", "name": "prevent_pop_loss", "value": true }
+			"description": "Spend 1 wood to gain 1 pop instantly.",
+			"cost": { "wood": 1 },
+			"instant_effects": [
+				{ "type": "resource_change", "target": "wood", "amount": -1 },
+				{ "type": "resource_change", "target": "pop", "amount": 1 }
 			],
-			"effects_on_end": []
+			"end_turn_effects": [],
+			"remain_effects": [
+			]
 		},
 		{
 			"id": "recycle_structure",
 			"name": "Recycle Structure",
-			"description": "Enter recycle mode to reclaim stone.",
+			"description": "Remove 1 stone tile, gain 1 stone at end of turn.",
 			"cost": {},
-			"effects_on_play": [
-				{ "type": "resource_change", "target": "stone", "amount": -1 },
-				{ "type": "removal", "tile_name": "StoneTile", "amount": 1  }
+			"instant_effects": [
+				{ "type": "removal", "tile_name": "StoneTile", "amount": 1 }
 			],
+			"end_turn_effects": [
+				{ "type": "resource_change", "target": "stone", "amount": 1 },
+			],
+			"remain_effects": []
+		},
+		# --- Instant-only ---
+		{
+			"id": "quick_chop",
+			"name": "Quick Chop",
+			"description": "Gain 2 wood instantly.",
+			"cost": {},
+			"instant_effects": [
+				{ "type": "resource_change", "target": "wood", "amount": 2 }
+			],
+			"end_turn_effects": [],
+			"remain_effects": []
+		},
+		{
+			"id": "stone_pick",
+			"name": "Stone Pick",
+			"description": "Gain 1 stone instantly.",
+			"cost": {},
+			"instant_effects": [
+				{ "type": "resource_change", "target": "stone", "amount": 1 }
+			],
+			"end_turn_effects": [],
+			"remain_effects": []
+		},
+
+		# --- End-turn-only ---
+		{
+			"id": "harvest_festival",
+			"name": "Harvest Festival",
+			"description": "At end of turn, gain 1 food.",
+			"cost": {},
+			"instant_effects": [],
+			"end_turn_effects": [
+				{ "type": "resource_change", "target": "food", "amount": 1 }
+			],
+			"remain_effects": []
+		},
+		{
+			"id": "stone_settle",
+			"name": "Stone Settle",
+			"description": "At end of turn, place 1 stone structure.",
+			"cost": {},
+			"instant_effects": [],
+			"end_turn_effects": [
+				{ "type": "placement", "tile_name": "StoneTile", "amount": 1 }
+			],
+			"remain_effects": []
+		},
+
+		# --- Remain-only ---
+		{
+			"id": "forgotten_supplies",
+			"name": "Forgotten Supplies",
+			"description": "If unplayed, gain 1 wood.",
+			"cost": {},
+			"instant_effects": [],
+			"end_turn_effects": [],
+			"remain_effects": [
+				{ "type": "resource_change", "target": "wood", "amount": 1 }
+			]
+		},
+		{
+			"id": "neglected_tools",
+			"name": "Neglected Tools",
+			"description": "If unplayed, lose 1 stone.",
+			"cost": {},
+			"instant_effects": [],
+			"end_turn_effects": [],
+			"remain_effects": [
+				{ "type": "resource_change", "target": "stone", "amount": -1 }
+			]
 		}
 	]
+
 # -------------------------------------------------------------------
 # 🔍 Lookup Helpers
 # -------------------------------------------------------------------

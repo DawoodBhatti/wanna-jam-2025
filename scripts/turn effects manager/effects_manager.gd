@@ -1,20 +1,13 @@
 extends Node
 class_name EffectsManager
 
-# 🧠 EffectsManager: Routes card effects to the appropriate runner.
-# Handles both instant and queued effects, and manages end-turn effect flow.
-
 @onready var effects_runner: EffectsRunner = $EffectsRunner
 
-# -------------------------------------------------------------------
-# 🚦 Initialization & Signal Wiring
-# -------------------------------------------------------------------
 func _ready() -> void:
-	SignalBus.connect("end_turn_effects_started", Callable(self, "run_end_turn_effects"))
+	# Only one hook now — all delayed effects drain here
+	SignalBus.connect("end_turn_effects_started", Callable(self, "run_queue"))
 
-# -------------------------------------------------------------------
-# 🎯 Effect Routing Entry Point
-# -------------------------------------------------------------------
+# --- Effect Routing ---
 func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
 	if not effect.has("type"):
 		push_error("[EffectsManager] effect missing 'type': %s" % str(effect))
@@ -30,24 +23,49 @@ func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
 
 		var job_ctx: Dictionary = {
 			"effect": effect,
-			"card": ctx.get("card", null),
-			"timing": String(ctx.get("timing", ""))
+			"card": ctx.get("card", null)
 		}
 
 		EffectsQueue.queue_effect(queued_cb, job_ctx)
 
-# -------------------------------------------------------------------
-# ⏳ End-Turn Effect Drain
-# -------------------------------------------------------------------
-func run_end_turn_effects() -> void:
+# --- Explicit helpers ---
+func run_instant_effects(card_id: String) -> void:
+	var card := CardCatalogue.get_card_by_id(card_id)
+	if card.is_empty():
+		push_warning("[EffectsManager] Unknown card ID: %s" % card_id)
+		return
+	for effect: Dictionary in card.get("instant_effects", []):
+		var e: Dictionary = effect.duplicate(true)
+		e["instant"] = true
+		handle_effect(e, { "card": card })
+
+func queue_end_turn_effects(card_id: String) -> void:
+	var card := CardCatalogue.get_card_by_id(card_id)
+	if card.is_empty():
+		return
+	for effect in card.get("end_turn_effects", []):
+		EffectsQueue.queue_effect(
+			func(inner_ctx): effects_runner.run_queued(inner_ctx["effect"], inner_ctx),
+			{ "effect": effect, "card": card }
+		)
+
+func queue_remain_effects(card_id: String) -> void:
+	var card := CardCatalogue.get_card_by_id(card_id)
+	if card.is_empty():
+		return
+	for effect in card.get("remain_effects", []):
+		EffectsQueue.queue_effect(
+			func(inner_ctx): effects_runner.run_queued(inner_ctx["effect"], inner_ctx),
+			{ "effect": effect, "card": card }
+		)
+
+# --- Unified drain ---
+func run_queue(finished_signal: String = "end_turn_effects_finished") -> void:
 	if not EffectsQueue.has_jobs():
-		SignalBus.emit_logged("end_turn_effects_finished")
+		SignalBus.emit_logged(finished_signal)
 		return
 	_process_next()
 
-# -------------------------------------------------------------------
-# 🔄 Queued Effect Execution
-# -------------------------------------------------------------------
 func _process_next() -> void:
 	if not EffectsQueue.has_jobs():
 		SignalBus.emit_logged("end_turn_effects_finished")
@@ -63,27 +81,5 @@ func _process_next() -> void:
 		push_warning("[EffectsManager] Invalid job skipped")
 		_process_next()
 
-# -------------------------------------------------------------------
-# ✅ Effect Completion Callback
-# -------------------------------------------------------------------
 func notify_effect_done(ctx: Dictionary) -> void:
 	_process_next()
-
-# -------------------------------------------------------------------
-# ✨ Card Effect Delegation
-# -------------------------------------------------------------------
-# Used by CardManager to run a card's effects instantly
-func run_card_effects(card_id: String, timing: String = "play") -> void:
-	var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
-	if card.is_empty():
-		push_warning("[EffectsManager] Unknown card ID: %s" % card_id)
-		return
-
-	var effects: Array = card.get("effects_on_" + timing, [])
-	for effect: Dictionary in effects:
-		var e: Dictionary = effect.duplicate(true)
-		e["instant"] = true
-		handle_effect(e, {
-			"card": card,
-			"timing": timing
-		})
