@@ -4,9 +4,19 @@ res://tilesets/ground.tres
 res://tilesets/water.tres
 res://scripts/card manager/border_shader.gdshader
 res://scripts/HUD manager/draw_pile.gd
-res://singletons/card_catalogue.gd
+res://scripts/building manager/building_manager.gd
 res://scenes/buildings/building manager.tscn
-res://scripts/turn effects manager/effects_manager.gd
-res://scripts/card manager/card_manager.gd
+res://scripts/building manager/placement/placement_square.gd
+res://scripts/building manager/removal/removal.gd
+res://scenes/levels/basegrid.tscn
+res://scripts/building manager/placement/placement_service.gd
+res://singletons/debug.gd
 res://scripts/turn effects manager/effects_runner.gd
-res://singletons/signal_bus.gd
+res://scripts/building manager/placement/placement.gd
+res://scripts/building manager/removal/removal_service.gd
+res://scripts/building manager/removal.gd
+res://scripts/building manager/placement_square.gd
+res://scripts/building manager/square_removal.gd
+res://scripts/building manager/removal_square.gd
+res://scripts/building manager/removal support/removal_service.gd
+res://scripts/building manager/placement.gd

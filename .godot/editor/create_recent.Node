@@ -1,6 +1,7 @@
+Node
+Node2D
 RemovalService
 RemovalRules
-Node2D
 PlacementRules
 PlacementService
 Control
@@ -11,5 +12,3 @@ ColorRect
 TextureRect
 NinePatchRect
 CanvasLayer
-HBoxContainer
-VBoxContainer

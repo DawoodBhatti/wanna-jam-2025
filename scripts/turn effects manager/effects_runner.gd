@@ -1,7 +1,7 @@
 extends Node2D
 class_name EffectsRunner
 
-@onready var bm: Node2D = get_tree().get_root().get_node("Main/BuildingManager")
+@onready var bm: Node = get_tree().get_root().get_node("Main/BuildingManager")
 @onready var signal_bus: Node = get_node("/root/SignalBus")
 
 # Debug level: defaults to SignalBus.signal_detail

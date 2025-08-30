@@ -2,27 +2,26 @@
 extends Node
 # Centralized hotkeys for dev/debug. Safe-guards and null checks throughout.
 
-
-func _ready() -> void:
-	var bm : Node2D = get_tree().get_root().get_node("Main/BuildingManager")
+@onready var bm : Node = get_tree().get_root().get_node("Main/BuildingManager")
+ 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_pressed():
 		return
 		
 	if Input.is_action_just_pressed("test_build_mode"):
-		var bm := get_tree().get_root().get_node("Main/BuildingManager")
-		if bm:
-			#bm.start_placement_mode("StoneTile")  # or "Medusa"
-			bm.placement("StoneTile", 50)  # or bm.start_placement_mode("StoneTile")
+		#bm.start_placement_mode("StoneTile")  # or "Medusa"
+		bm.placement("StoneTile", 5)  # or bm.start_placement_mode("StoneTile")
 	
 	if Input.is_action_just_pressed("test_removal_mode"):
-		var bm := get_tree().get_root().get_node("Main/BuildingManager")
-		if bm:
-			bm.removal("StoneTile", 5) # target_type, limit
+		bm.removal("StoneTile", 5) # target_type, limit
 
-	
-				
+	if Input.is_action_just_pressed("test_square_placement"):
+		bm.square_placement("StoneTile", 3, true)
+		
+	if Input.is_action_just_pressed("test_square_removal"):
+		bm.remove_square("StoneTile", 3, true)
+		
 	if Input.is_action_just_pressed("advance_phase"):
 		GameState.debug_step()
 		return
