@@ -1,11 +1,13 @@
+#placement_square.gd
+
 extends IBuildAction
 
 # -------------------------------------------------------------------
 # NODE REFERENCES
 # -------------------------------------------------------------------
 @onready var _level: Node = get_tree().get_root().get_node("Main/Level")
-@onready var _rules = get_node("../PlacementSupport/PlacementRules")
-@onready var _placement_service: PlacementService = get_node("../PlacementSupport/PlacementService")
+@onready var _rules = get_node("../../PlacementSupport/PlacementRules")
+@onready var _placement_service: PlacementService = get_node("../../PlacementSupport/PlacementService")
 
 # -------------------------------------------------------------------
 # STATE
@@ -62,10 +64,10 @@ func process_input(event: InputEvent) -> void:
 			for cell in cells:
 				_placement_service.commit_tile_with_data(_level, _build_data, cell)
 			_placed_count = cells.size()
-			get_parent().stop() # exit after one full valid placement
+			get_parent().get_parent().stop() #this is bad practice needs a fix
 
 	elif event.is_action_pressed("cancel"):
-		get_parent().stop()
+		get_parent().get_parent().stop() #this is bad practice needs a fix
 
 # ===================================================================
 # 3. SHAPE LOGIC

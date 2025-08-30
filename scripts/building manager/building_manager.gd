@@ -24,9 +24,9 @@ extends Node
 # NODE REFERENCES
 # -------------------------------------------------------------------
 @onready var _placement = $Placement
-@onready var _placement_square = $PlacementSquare
+@onready var _placement_square = get_node("PlacementShapes/PlacementSquare")
 @onready var _removal = $Removal
-@onready var _removal_square = $RemovalSquare
+@onready var _removal_square = get_node("RemovalShapes/RemovalSquare")
 @onready var _level: Node = get_tree().get_root().get_node("Main/Level")
 
 # -------------------------------------------------------------------

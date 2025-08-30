@@ -8,8 +8,8 @@ extends IBuildAction
 # NODE REFERENCES
 # -------------------------------------------------------------------
 @onready var _level: Node = get_tree().get_root().get_node("Main/Level")
-@onready var _rules = get_node("../RemovalSupport/RemovalRules")
-@onready var _removal_service: RemovalService = get_node("../RemovalSupport/RemovalService")
+@onready var _rules = get_node("../../RemovalSupport/RemovalRules")
+@onready var _removal_service: RemovalService = get_node("../../RemovalSupport/RemovalService")
 
 # -------------------------------------------------------------------
 # STATE
@@ -65,10 +65,10 @@ func process_input(event: InputEvent) -> void:
 			for cell in cells:
 				_removal_service.commit_removal(_level, _target_building, cell)
 			_removed_count = cells.size()
-			get_parent().stop() # exit after one full valid removal
+			get_parent().get_parent().stop() #this is bad practice needs a fix
 
 	elif event.is_action_pressed("cancel"):
-		get_parent().stop()
+		get_parent().get_parent().stop() #this is bad practice needs a fix
 
 # ===================================================================
 # 3. SHAPE LOGIC
