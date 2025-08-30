@@ -30,7 +30,7 @@ func process_input(event: InputEvent) -> void:
 		_remove_current()
 
 	elif event.is_action_pressed("cancel"):
-		get_parent().stop()  # cancel path
+		stop()  # cancel path
 
 func _remove_current() -> void:
 	var cell: Vector2i = _level.get_cell_under_mouse(_level.structures_layer)
@@ -43,7 +43,7 @@ func _remove_current() -> void:
 	if _limit > 0:
 		_limit -= 1
 		if _limit <= 0:
-			get_parent().stop()  # limit reached path
+			stop()  # limit reached path
 
 func stop() -> void:
 	_last_cell = Vector2i(-9999, -9999)

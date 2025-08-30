@@ -64,11 +64,10 @@ func process_input(event: InputEvent) -> void:
 			for cell in cells:
 				_placement_service.commit_tile_with_data(_level, _build_data, cell)
 			_placed_count = cells.size()
-			get_parent().get_parent().stop() #this is bad practice needs a fix
-
+			stop()
+			
 	elif event.is_action_pressed("cancel"):
-		get_parent().get_parent().stop() #this is bad practice needs a fix
-
+			stop()
 # ===================================================================
 # 3. SHAPE LOGIC
 # ===================================================================

@@ -22,3 +22,4 @@ res://scripts/building manager/removal support/removal_service.gd
 res://scripts/building manager/placement.gd
 res://scripts/building manager/placement shapes/placement_square.gd
 res://scripts/building manager/removal shapes/removal_square.gd
+res://singletons/signal_bus.gd

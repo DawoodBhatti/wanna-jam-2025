@@ -65,10 +65,10 @@ func process_input(event: InputEvent) -> void:
 			for cell in cells:
 				_removal_service.commit_removal(_level, _target_building, cell)
 			_removed_count = cells.size()
-			get_parent().get_parent().stop() #this is bad practice needs a fix
+			stop() 
 
 	elif event.is_action_pressed("cancel"):
-		get_parent().get_parent().stop() #this is bad practice needs a fix
+		stop() 
 
 # ===================================================================
 # 3. SHAPE LOGIC

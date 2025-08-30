@@ -83,7 +83,7 @@ func process_input(event: InputEvent) -> void:
 
 	elif event.is_action_pressed("cancel"):
 		# Cancel placement mode
-		get_parent().stop()
+		stop()
 
 
 # ===================================================================
@@ -109,7 +109,7 @@ func _paint_current() -> void:
 	if _limit > 0:
 		_limit -= 1
 		if _limit <= 0:
-			get_parent().stop()
+			stop()
 
 
 # ===================================================================
@@ -124,7 +124,7 @@ func _place_auto() -> void:
 
 	# Auto mode always stops immediately after placing
 	_limit = 0
-	get_parent().stop()
+	stop()
 	
 
 # NOTE: Behaviour when some cells fail placement rules in auto mode:
