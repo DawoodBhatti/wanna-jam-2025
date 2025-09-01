@@ -21,3 +21,7 @@ res://scripts/construction manager/removal support/removal_service.gd
 res://scripts/construction manager/removal shapes/removal_square.gd
 res://scripts/construction manager/removal.gd
 res://scenes/tiles/tile manager.tscn
+res://scripts/tile manager/structure_effects_manager.gd
+res://singletons/game_state.gd
+res://singletons/signal_bus.gd
+res://scripts/tile manager/tile_effects_manager.gd

@@ -35,6 +35,8 @@ signal cancel_active_modes                     # outcome
 
 signal turn_ended(turn_number: int)
 
+signal queue_end_turn_tile_effects
+signal end_turn_tile_effects_queued
 signal end_turn_effects_started
 signal end_turn_effects_finished
 

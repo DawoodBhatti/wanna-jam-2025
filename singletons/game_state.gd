@@ -9,7 +9,7 @@ const PLAY_PHASE_STATE_IDLE              := "Idle"
 const PLAY_PHASE_STATE_DRAWING           := "Drawing"
 const PLAY_PHASE_STATE_PLAYING           := "Playing"
 const PLAY_PHASE_STATE_RESOLVING         := "Resolving"
-const PLAY_PHASE_STATE_PLACING_STRUCTURE := "PlacingStructure"
+const PLAY_PHASE_STATE_PLACING_TILE      := "PlacingTile"
 const PLAY_PHASE_STATE_RECYCLE           := "RecycleMode"
 
 # 📊 Game State
@@ -26,6 +26,7 @@ func _ready() -> void:
 
 	SignalBus.connect("hand_drawn", Callable(self, "_on_hand_drawn"))
 	SignalBus.connect("hand_resolved", Callable(self, "_on_hand_resolved"))
+	SignalBus.connect("end_turn_tile_effects_queued", Callable(self, "_end_turn_tile_effects_queued"))
 	SignalBus.connect("end_turn_effects_finished", Callable(self, "_on_end_turn_effects_finished"))
 	SignalBus.connect("resource_count_finished", Callable(self, "_on_resource_count_finished"))
 
@@ -46,7 +47,8 @@ func set_phase(new_phase: String) -> void:
 
 	match new_phase:
 		"Turn Effects":
-			SignalBus.emit_logged("end_turn_effects_started")
+			SignalBus.emit_logged("queue_end_turn_tile_effects")
+			#SignalBus.emit_logged("end_turn_effects_started")
 		"Resource Count":
 			SignalBus.emit_logged("resource_count_requested")
 		"Play":
@@ -79,6 +81,11 @@ func _on_end_turn_effects_finished() -> void:
 		print("[GameState] Turn Effects complete — requesting resource count")
 	set_phase("Resource Count")
 
+func _end_turn_tile_effects_queued() -> void:
+	if debug_switch:
+		print("[GameState] Turn effects have been queued - ready to advance to next stage")
+	SignalBus.emit_logged("end_turn_effects_started")
+
 func _on_resource_count_finished() -> void:
 	current_turn += 1
 	SignalBus.emit_logged("turn_ended", [current_turn - 1])
@@ -98,8 +105,8 @@ func _is_transition_allowed(from_state: String, to_state: String) -> bool:
 	var allowed: Dictionary = {
 		PLAY_PHASE_STATE_IDLE:              [PLAY_PHASE_STATE_DRAWING],
 		PLAY_PHASE_STATE_DRAWING:           [PLAY_PHASE_STATE_PLAYING],
-		PLAY_PHASE_STATE_PLAYING:           [PLAY_PHASE_STATE_PLACING_STRUCTURE, PLAY_PHASE_STATE_RECYCLE, PLAY_PHASE_STATE_RESOLVING, PLAY_PHASE_STATE_PLAYING],
-		PLAY_PHASE_STATE_PLACING_STRUCTURE: [PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_PLAYING:           [PLAY_PHASE_STATE_PLACING_TILE, PLAY_PHASE_STATE_RECYCLE, PLAY_PHASE_STATE_RESOLVING, PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_PLACING_TILE:      [PLAY_PHASE_STATE_PLAYING],
 		PLAY_PHASE_STATE_RECYCLE:           [PLAY_PHASE_STATE_PLAYING],
 		PLAY_PHASE_STATE_RESOLVING:         [PLAY_PHASE_STATE_IDLE]
 	}
@@ -129,7 +136,7 @@ func debug_step() -> void:
 				print("[DebugStep] Advancing: Playing → Resolving")
 			set_play_phase_state(PLAY_PHASE_STATE_RESOLVING)
 
-		PLAY_PHASE_STATE_PLACING_STRUCTURE, PLAY_PHASE_STATE_RECYCLE:
+		PLAY_PHASE_STATE_PLACING_TILE, PLAY_PHASE_STATE_RECYCLE:
 			if debug_switch:
 				print("[DebugStep] Currently in a build/recycle mode — skipping manual advance for now")
 
