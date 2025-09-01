@@ -96,8 +96,5 @@ func _on_resolve_hand_requested() -> void:
 	for card_id: String in DeckState.hand:
 		effects_manager.queue_remain_effects(card_id)
 
-	# Now trigger the unified end-turn drain
-	#SignalBus.emit_logged("end_turn_effects_started")
-
 	DeckState.move_hand_to_discard()
 	SignalBus.emit_logged("hand_resolved")

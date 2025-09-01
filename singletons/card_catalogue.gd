@@ -19,13 +19,11 @@ const CARD_SCHEMA: Dictionary = {
 # 📦 Data Stores
 # -------------------------------------------------------------------
 var deck: Array[Dictionary] = []
-var build_catalogue: BuildCatalogue
 
 # -------------------------------------------------------------------
 # 🚦 Initialization
 # -------------------------------------------------------------------
 func _ready() -> void:
-	build_catalogue = get_node("/root/BuildCatalogue")
 	load_cards()
 
 # -------------------------------------------------------------------
@@ -80,6 +78,19 @@ func load_cards() -> void:
 			"remain_effects": [
 				{ "type": "resource_change", "target": "stone", "amount": 1 },
 			]
+		},
+				{
+			"id": "medusa",
+			"name": "Medusa",
+			"description": "Place a tile which turns surrounding squares to stone on turn end.",
+			"cost": {},
+			"instant_effects": [
+				{ "type": "resource_change", "target": "gold", "amount": 5},
+				{ "type": "placement", "tile_name": "StoneTile", "amount": 1 }
+
+			],
+			"end_turn_effects": [],
+			"remain_effects": [],
 		},
 		{
 			"id": "idle_hands",
@@ -279,7 +290,7 @@ func resolve_structure_payload(card_id: String) -> Dictionary[String, Variant]:
 		return {}
 
 	var tile_name: String = structure_built.get("tile_name", "") as String
-	var build_def: Dictionary = build_catalogue.get_tile(tile_name)
+	var build_def: Dictionary = TileCatalogue.get_tile(tile_name)
 	if build_def.is_empty():
 		push_error("[CardCatalogue] Missing build definition for tile: %s" % tile_name)
 		return {}

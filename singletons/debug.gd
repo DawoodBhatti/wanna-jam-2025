@@ -2,7 +2,7 @@
 extends Node
 # Centralized hotkeys for dev/debug. Safe-guards and null checks throughout.
 
-@onready var bm : Node = get_tree().get_root().get_node("Main/BuildingManager")
+@onready var cm : Node = get_tree().get_root().get_node("Main/ConstructionManager")
  
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -11,16 +11,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if Input.is_action_just_pressed("test_build_mode"):
 		#bm.start_placement_mode("StoneTile")  # or "Medusa"
-		bm.placement("StoneTile", 5)  # or bm.start_placement_mode("StoneTile")
+		cm.placement("StoneTile", 5)  # or bm.start_placement_mode("StoneTile")
 	
 	if Input.is_action_just_pressed("test_removal_mode"):
-		bm.removal("StoneTile", 5) # target_type, limit
+		cm.removal("StoneTile", 5) # target_type, limit
 
 	if Input.is_action_just_pressed("test_square_placement"):
-		bm.square_placement("StoneTile", 3, true)
+		cm.square_placement("StoneTile", 3, true)
 		
 	if Input.is_action_just_pressed("test_square_removal"):
-		bm.remove_square("StoneTile", 3, true)
+		cm.remove_square("StoneTile", 3, true)
 		
 	if Input.is_action_just_pressed("advance_phase"):
 		GameState.debug_step()

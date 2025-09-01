@@ -4,8 +4,9 @@ class_name EffectsManager
 @onready var effects_runner: EffectsRunner = $EffectsRunner
 
 func _ready() -> void:
-	# Only one hook now — all delayed effects drain here
+	# Only one hook now — all queued effects drain here
 	SignalBus.connect("end_turn_effects_started", Callable(self, "run_queue"))
+
 
 # --- Effect Routing ---
 func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
@@ -28,6 +29,7 @@ func handle_effect(effect: Dictionary, ctx: Dictionary) -> void:
 
 		EffectsQueue.queue_effect(queued_cb, job_ctx)
 
+
 # --- Explicit helpers ---
 func run_instant_effects(card_id: String) -> void:
 	var card := CardCatalogue.get_card_by_id(card_id)
@@ -39,6 +41,7 @@ func run_instant_effects(card_id: String) -> void:
 		e["instant"] = true
 		handle_effect(e, { "card": card })
 
+
 func queue_end_turn_effects(card_id: String) -> void:
 	var card := CardCatalogue.get_card_by_id(card_id)
 	if card.is_empty():
@@ -48,6 +51,7 @@ func queue_end_turn_effects(card_id: String) -> void:
 			func(inner_ctx): effects_runner.run_queued(inner_ctx["effect"], inner_ctx),
 			{ "effect": effect, "card": card }
 		)
+
 
 func queue_remain_effects(card_id: String) -> void:
 	var card := CardCatalogue.get_card_by_id(card_id)
@@ -59,12 +63,14 @@ func queue_remain_effects(card_id: String) -> void:
 			{ "effect": effect, "card": card }
 		)
 
+
 # --- Unified drain ---
 func run_queue(finished_signal: String = "end_turn_effects_finished") -> void:
 	if not EffectsQueue.has_jobs():
 		SignalBus.emit_logged(finished_signal)
 		return
 	_process_next()
+
 
 func _process_next() -> void:
 	if not EffectsQueue.has_jobs():
@@ -80,6 +86,7 @@ func _process_next() -> void:
 	else:
 		push_warning("[EffectsManager] Invalid job skipped")
 		_process_next()
+
 
 func notify_effect_done(ctx: Dictionary) -> void:
 	_process_next()

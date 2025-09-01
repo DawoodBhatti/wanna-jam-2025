@@ -14,10 +14,10 @@ extends IBuildAction
 # -------------------------------------------------------------------
 # STATE
 # -------------------------------------------------------------------
-var _active_building: String
+var _active_tile: String
 var _limit: int
 var _last_cell: Vector2i = Vector2i(-9999, -9999) # Tracks last painted cell to avoid duplicates
-var _build_data: Dictionary
+var _tile_data: Dictionary
 var _auto_mode := false
 var _auto_locations: Array = []
 
@@ -28,23 +28,23 @@ var _auto_locations: Array = []
 
 ## Called when this build action starts.
 ## Params dictionary can contain:
-## - building_name: String
+## - tile_name: String
 ## - limit: int
 ## - auto_placement: bool
 ## - placement_locations: Array of Vector2i
 func start(params: Dictionary) -> void:
-	_active_building = params.get("building_name", "")
+	_active_tile = params.get("tile_name", "")
 	_limit = params.get("limit", 0)
 	_auto_mode = params.get("auto_placement", false)
 	_auto_locations = params.get("placement_locations", [])
 	_last_cell = Vector2i(-9999, -9999)
 
 	# ✅ Cache build data once for painting mode using get_tile()
-	_build_data = BuildCatalogue.get_tile(_active_building)
+	_tile_data = TileCatalogue.get_tile(_active_tile)
 
 	SignalBus.emit_logged(
 		"placement_started",
-		["paint", {"source": _active_building}, _limit]
+		["paint", {"source": _active_tile}, _limit]
 	)
 
 	# If in auto mode, skip input handling and place immediately
@@ -56,9 +56,10 @@ func start(params: Dictionary) -> void:
 func stop() -> void:
 	_last_cell = Vector2i(-9999, -9999)
 	_placement_service.clear_preview(_level)
+	
 	SignalBus.emit_logged(
 		"placement_completed",
-		["paint", {"source": _active_building}, _limit]
+		["paint", {"source": _active_tile}, _limit]
 	)
 
 
@@ -71,7 +72,7 @@ func process_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		# Update ghost preview under mouse
 		var ghost_cell: Vector2i = _level.get_cell_under_mouse(_level.ghost_layer)
-		_placement_service.preview_cell_with_data(_level, _build_data, ghost_cell)
+		_placement_service.preview_cell_with_data(_level, _tile_data, ghost_cell)
 
 		# Paint continuously while left mouse is held
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
@@ -99,11 +100,11 @@ func _paint_current() -> void:
 		return
 
 	# Validate placement rules
-	if not _rules.is_valid(cell, _active_building):
+	if not _rules.is_valid(cell, _active_tile):
 		return
 
 	_last_cell = cell
-	_placement_service.commit_tile_with_data(_level, _build_data, cell)
+	_placement_service.commit_tile_with_data(_level, _tile_data, cell)
 
 	# Decrement limit and stop if reached
 	if _limit > 0:
@@ -119,8 +120,8 @@ func _paint_current() -> void:
 ## Places all tiles in _auto_locations without user input.
 func _place_auto() -> void:
 	for cell in _auto_locations:
-		if _rules.is_valid(cell, _active_building):
-			_placement_service.commit_tile_with_data(_level, _build_data, cell)
+		if _rules.is_valid(cell, _active_tile):
+			_placement_service.commit_tile_with_data(_level, _tile_data, cell)
 
 	# Auto mode always stops immediately after placing
 	_limit = 0

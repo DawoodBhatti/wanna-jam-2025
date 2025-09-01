@@ -1,7 +1,7 @@
-res://scripts/building manager
+res://singletons
+res://scripts/structure effects manager
 res://scripts/turn effects manager
 res://scripts
 res://assets
-res://singletons
 res://tilesets
 res://

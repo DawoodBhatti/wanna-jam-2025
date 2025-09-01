@@ -1,24 +1,34 @@
 extends Node
 
 # -------------------------------------------------------------------
-# 🗂 Build schema for reference / documentation
+# 🗂 Tile schema for reference / documentation
 # -------------------------------------------------------------------
-const BUILD_SCHEMA: Dictionary = {
-	"building_name": {
+const TILE_SCHEMA: Dictionary = {
+	"tile_name": #this is the key
+		
+		{ #and this is the value which is a nested dictionary
 		"source_id": "Atlas ID in TileSet",
-		"build_layer": "layer(s) this tile can be built upon",
+		"level_layer": "layer(s) this tile can be built upon",
 		"tileset_path": "location to the tileset resource",
-		"tiles": "vector co-ordinates in the Atlas e.g. Vector2i(1,2)"
+		"atlas_coords": "vector co-ordinates in the Atlas e.g. Vector2i(1,2)",
+		"tile_name": "self contained tile's name",
+		"trackable": "true / false if you want to add this to structure_state.gd for further control"
 	}
 }
+
+#TODO we could introduce things like priority and cost into the schema
+#if we require them...
 
 # Global definition index: [tile_name] -> definition dictionary
 var catalogue: Dictionary = {}
 
-func _ready() -> void:
-	_build_catalogue()
 
-func _build_catalogue() -> void:
+# Create our tile catalogue and init TileState with empty entries for all possible tiles
+func _ready() -> void:
+	_tile_catalogue()
+
+
+func _tile_catalogue() -> void:
 	var new_catalogue: Dictionary = {}
 
 	new_catalogue["StoneTile"] = {
@@ -26,34 +36,36 @@ func _build_catalogue() -> void:
 		"build_layer": "StructuresLayer" as String,
 		"tileset_path": "res://tilesets/structures.tres" as String,
 		"tiles": [Vector2i(2, 2)] as Array,
-		"cost": {"stone": 1} as Dictionary
+		"tile_name": "StoneTile",
+		"trackable": true
 	}
 
 	#TODO: get working sometime.
-	new_catalogue["MedusaBuilding"] = {
+	new_catalogue["MedusaTile"] = {
 		"source_id": 1 as int,
 		"build_layer": "StructuresLayer" as String,
 		"tileset_path": "res://StructureManager/data/structures.tres" as String,
 		"tiles": [Vector2i(3, 7)] as Array,
-		"cost": {"stone": 2} as Dictionary
+		"tile_name": "MedusaTile",
+		"trackable": true
 	}
 
-	new_catalogue["Grass"] = {
+	new_catalogue["GrassTile"] = {
 		"source_id": 0 as int,
 		"build_layer": "GroundLayer" as String,
 		"tileset_path": "res://tilesets/ground.tres" as String,
 		"tiles": [Vector2i(0, 0)] as Array,
-		"priority": 0 as int,
-		"cost": {} as Dictionary
-	}
+		"tile_name": "GrassTile",
+		"trackable": false
+			}
 
 	new_catalogue["WaterTile"] = {
 		"source_id": 0 as int,
 		"build_layer": "WaterLayer" as String,
 		"tileset_path": "res://tilesets/water.tres" as String,
 		"tiles": [Vector2i(4, 7)] as Array,
-		"priority": 0 as int,
-		"cost": {} as Dictionary
+		"tile_name": "WaterTile",
+		"trackable": false
 	}
 
 	catalogue = new_catalogue

@@ -1,3 +1,11 @@
+#effects_queue.gd
+
+# autoload which holds the effects we wish to run 
+# effects can be instant or queued
+
+# currently the structure effects manager and the turn effects manager are 
+# the only two entry points into this queue
+
 extends Node
 
 var _queue: Array[Dictionary] = []

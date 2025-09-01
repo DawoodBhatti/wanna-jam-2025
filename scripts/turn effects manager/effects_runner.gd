@@ -1,7 +1,7 @@
 extends Node2D
 class_name EffectsRunner
 
-@onready var bm: Node = get_tree().get_root().get_node("Main/BuildingManager")
+@onready var bm: Node = get_tree().get_root().get_node("Main/ConstructionManager")
 @onready var signal_bus: Node = get_node("/root/SignalBus")
 
 # Debug level: defaults to SignalBus.signal_detail
@@ -81,3 +81,6 @@ func _handle_removal(effect: Dictionary) -> void:
 		push_error("[EffectsRunner] removal effect missing 'tile_name' or 'amount': %s" % str(effect))
 		return
 	bm.removal(effect["tile_name"], effect["amount"])
+
+func _handle_medusa(effect: Dictionary) -> void:
+	print("handling medusa")

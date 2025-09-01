@@ -41,7 +41,7 @@ func debug_tile_info(layer: TileMapLayer, coords: Vector2i) -> void:
 # ✅ Valid removal check by tile name
 # -------------------------------------------------------------------
 func is_removal_valid(cell_pos: Vector2i, tile_name: String) -> bool:
-	var def: Dictionary = BuildCatalogue.get_tile(tile_name)
+	var def: Dictionary = TileCatalogue.get_tile(tile_name)
 	if def.is_empty():
 		push_error("[RemovalRules] Unknown tile: %s" % tile_name)
 		return false
@@ -54,13 +54,13 @@ func is_removal_valid(cell_pos: Vector2i, tile_name: String) -> bool:
 	if layer_node.get_cell_source_id(cell_pos) == -1:
 		return false
 
-	return BuildCatalogue.is_tile_type(layer_node, cell_pos, tile_name)
+	return TileCatalogue.is_tile_type(layer_node, cell_pos, tile_name)
 
 # -------------------------------------------------------------------
 # 🖼️ Ghost preview definition lookup
 # -------------------------------------------------------------------
 func get_preview_tile_def_for_type(tile_name: String) -> Dictionary:
-	var def: Dictionary = BuildCatalogue.get_tile(tile_name)
+	var def: Dictionary = TileCatalogue.get_tile(tile_name)
 	if def.is_empty():
 		return {}
 

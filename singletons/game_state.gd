@@ -25,7 +25,6 @@ func _ready() -> void:
 		print("[GameState] Ready")
 
 	SignalBus.connect("hand_drawn", Callable(self, "_on_hand_drawn"))
-
 	SignalBus.connect("hand_resolved", Callable(self, "_on_hand_resolved"))
 	SignalBus.connect("end_turn_effects_finished", Callable(self, "_on_end_turn_effects_finished"))
 	SignalBus.connect("resource_count_finished", Callable(self, "_on_resource_count_finished"))

@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
-BuildCatalogue="*res://singletons/build_catalogue.gd"
+TileCatalogue="*res://singletons/tile_catalogue.gd"
 CardCatalogue="*res://singletons/card_catalogue.gd"
 DeckState="*res://singletons/deck_state.gd"
 EffectsQueue="*res://singletons/effects_queue.gd"
@@ -24,6 +24,7 @@ GameState="*res://singletons/game_state.gd"
 ResourceState="*res://singletons/resource_state.gd"
 SignalBus="*res://singletons/signal_bus.gd"
 Debug="*res://singletons/debug.gd"
+TileState="*res://singletons/tile_state.gd"
 
 [display]
 

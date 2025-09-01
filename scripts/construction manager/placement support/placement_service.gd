@@ -8,12 +8,12 @@ class_name PlacementService
 # ===================================================================
 
 ## Commits a single tile to the level using cached build data.
-func commit_tile_with_data(level: Level, build_data: Dictionary, cell: Vector2i) -> void:
-	_commit_tile_internal(level, build_data, cell)
-
+func commit_tile_with_data(level: Level, tile_data: Dictionary, cell: Vector2i) -> void:
+	_commit_tile_internal(level, tile_data, cell)
+	
 ## Previews a single cell in the ghost layer using cached build data.
-func preview_cell_with_data(level: Level, build_data: Dictionary, cell: Vector2i) -> void:
-	_preview_cell_internal(level, build_data, cell)
+func preview_cell_with_data(level: Level, tile_data: Dictionary, cell: Vector2i) -> void:
+	_preview_cell_internal(level, tile_data, cell)
 
 
 # ===================================================================
@@ -31,25 +31,28 @@ func clear_preview(level: Level) -> void:
 # ===================================================================
 
 ## Internal: Commits a single tile if valid.
-func _commit_tile_internal(level: Level, build_data: Dictionary, cell: Vector2i) -> void:
-	if build_data.is_empty():
+func _commit_tile_internal(level: Level, tile_data: Dictionary, grid_location: Vector2i) -> void:
+	if tile_data.is_empty():
 		return
 
-	var tile_name: String = build_data.get("tile_name", "")
-	if not _rules.is_valid(cell, tile_name):
+	var tile_name: String = tile_data.get("tile_name", "")
+	if not _rules.is_valid(grid_location, tile_name):
 		return
 
-	var target_layer: TileMapLayer = level.get_node_or_null(build_data.get("build_layer", "")) as TileMapLayer
+	var target_layer: TileMapLayer = level.get_node_or_null(tile_data.get("build_layer", "")) as TileMapLayer
 	if target_layer == null:
-		push_error("[PlacementService] Missing target layer for tile: %s" % tile_name)
+		push_error("[PlacementService] Missing target layer for building: %s" % tile_name)
 		return
 
-	var tile_coords: Vector2i = build_data["tiles"][0] as Vector2i
-	target_layer.set_cell(cell, build_data["source_id"], tile_coords)
+	var tile_atlas_coords: Vector2i = tile_data["tiles"][0] as Vector2i
+	target_layer.set_cell(grid_location, tile_data["source_id"], tile_atlas_coords)
+	
+	if tile_data["trackable"]:
+		TileState.add_tile(tile_name, tile_data, target_layer, grid_location)
 
 	SignalBus.emit_logged(
 		"building_placed",
-		[{"layer": build_data.get("build_layer", ""), "source": tile_name, "cell_pos": cell}]
+		[{"layer": tile_data.get("level_layer", ""), "source": tile_name, "cell_pos": grid_location}]
 	)
 
 

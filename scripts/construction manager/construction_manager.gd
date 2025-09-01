@@ -1,18 +1,15 @@
-# building_manager.gd
+# construction_manager.gd
 # Orchestrates building actions. The only public API for placement, painting, and removal.
-
-# building_manager.gd
-# Orchestrates building actions. The only public API for placement, painting, removal, and shape-based build actions.
 
 # =============================================================================
 # BUILDING SYSTEM – QUICK REFERENCE
 # =============================================================================
-# building_manager.gd       – Orchestrates build mode; starts/stops PlacementAction, RemovalAction, and shape-based actions.
+# construction_manager.gd       – Orchestrates build mode; starts/stops PlacementAction, RemovalAction, and shape-based actions.
 # IBuildAction.gd           – Base interface for all build actions; defines start(), process_input(), and stop() lifecycle methods.
 #
 # build_catalogue.gd        – Central registry of all buildable definitions; helper methods included.
 #
-# placement.gd              – Handles building placement; caches build data once; calls PlacementService.
+# placement.gd              – Handles building placement; caches tile data once; calls PlacementService.
 # placement_square.gd       – Shape action: places a square of tiles in one click; uses PlacementService for preview/commit.
 # placement_service.gd      – Core placement/preview logic; validates via PlacementRules; updates Level layers; emits placement signals.
 # placement_rules.gd        – Validates if a building can be placed at a given cell (terrain, collisions, resources, etc.).
@@ -67,20 +64,20 @@ func _input(event):
 # ===================================================================
 
 ## Starts placement mode (interactive by default).
-func placement(building_name: String, limit := 0, auto_placement := false, placement_locations: Array = []):
+func placement(tile_name: String, limit := 0, auto_placement := false, placement_locations: Array = []):
 	_start_action(_placement, "placement_completed")
 	_current_action.start({
-		"building_name": building_name,
+		"tile_name": tile_name,
 		"limit": limit,
 		"auto_placement": auto_placement,
 		"placement_locations": placement_locations
 	})
 
 ## Starts removal mode (interactive by default).
-func removal(building_name: String, limit := 0, auto_removal := false, removal_locations: Array = []):
+func removal(tile_name: String, limit := 0, auto_removal := false, removal_locations: Array = []):
 	_start_action(_removal, "removal_completed")
 	_current_action.start({
-		"building_name": building_name,
+		"tile_name": tile_name,
 		"limit": limit,
 		"auto_removal": auto_removal,
 		"removal_locations": removal_locations
@@ -92,12 +89,12 @@ func removal(building_name: String, limit := 0, auto_removal := false, removal_l
 # ===================================================================
 
 ## Places a set of tiles automatically without user input.
-func auto_place(building_name: String, cells: Array):
-	placement(building_name, cells.size(), true, cells)
+func auto_place(tile_name: String, cells: Array):
+	placement(tile_name, cells.size(), true, cells)
 
 ## Removes a set of tiles automatically without user input.
-func auto_remove(building_name: String, cells: Array):
-	removal(building_name, cells.size(), true, cells)
+func auto_remove(tile_name: String, cells: Array):
+	removal(tile_name, cells.size(), true, cells)
 
 
 # ===================================================================
@@ -107,10 +104,10 @@ func auto_remove(building_name: String, cells: Array):
 ## Places a square of tiles centered on the current mouse cell.
 ## - size: 1 = 1x1, 2 = 3x3, 3 = 5x5, etc.
 ## - fill: true = solid square, false = hollow border.
-func square_placement(building_name: String, size: int, fill := true):
+func square_placement(tile_name: String, size: int, fill := true):
 	_start_action(_placement_square, "placement_completed")
 	_current_action.start({
-		"building_name": building_name,
+		"tile_name": tile_name,
 		"size": size,
 		"fill": fill
 	})
@@ -118,10 +115,10 @@ func square_placement(building_name: String, size: int, fill := true):
 ## Removes a square of tiles centered on the current mouse cell.
 ## - size: 1 = 1x1, 2 = 3x3, 3 = 5x5, etc.
 ## - fill: true = solid square, false = hollow border.
-func remove_square(building_name: String, size: int, fill := true):
+func remove_square(tile_name: String, size: int, fill := true):
 	_start_action(_removal_square, "removal_completed")
 	_current_action.start({
-		"building_name": building_name,
+		"tile_name": tile_name,
 		"size": size,
 		"fill": fill
 	})
