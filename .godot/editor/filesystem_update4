@@ -20,3 +20,4 @@ res://singletons/debug.gd
 res://scripts/construction manager/removal support/removal_service.gd
 res://scripts/construction manager/removal shapes/removal_square.gd
 res://scripts/construction manager/removal.gd
+res://scenes/tiles/tile manager.tscn

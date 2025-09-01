@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ct3vv767hmw05"]
-
-[ext_resource type="Script" uid="uid://bopoj3j4p1ca5" path="res://scripts/structure effects manager/structure_effects_manager.gd" id="1_lq14n"]
-
-[node name="TileEffectsManager" type="Node2D"]
-script = ExtResource("1_lq14n")

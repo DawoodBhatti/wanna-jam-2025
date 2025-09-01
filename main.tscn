@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cqsiov6wcgkiw" path="res://scenes/HUD/hud.tscn" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://d4hmqpiijxkfs" path="res://scenes/cards/deck manager.tscn" id="5_7mycd"]
 [ext_resource type="PackedScene" uid="uid://jburlgiwfsb6" path="res://scenes/effects/effects manager.tscn" id="6_272bh"]
-[ext_resource type="PackedScene" uid="uid://ct3vv767hmw05" path="res://scenes/effects/structure effects manager.tscn" id="7_272bh"]
+[ext_resource type="PackedScene" uid="uid://ct3vv767hmw05" path="res://scenes/tiles/tile manager.tscn" id="7_272bh"]
 
 [node name="Main" type="Node2D"]
 
@@ -23,4 +23,4 @@ unique_name_in_owner = true
 
 [node name="EffectsManager" parent="." instance=ExtResource("6_272bh")]
 
-[node name="StructureEffectsManager" parent="." instance=ExtResource("7_272bh")]
+[node name="TileManager" parent="." instance=ExtResource("7_272bh")]
