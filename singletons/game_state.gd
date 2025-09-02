@@ -5,12 +5,12 @@ extends Node
 # resource_state.gd as ResourceState
 
 # 🏷 Constants
-const PLAY_PHASE_STATE_IDLE              := "Idle"
-const PLAY_PHASE_STATE_DRAWING           := "Drawing"
-const PLAY_PHASE_STATE_PLAYING           := "Playing"
-const PLAY_PHASE_STATE_RESOLVING         := "Resolving"
-const PLAY_PHASE_STATE_PLACING_TILE      := "PlacingTile"
-const PLAY_PHASE_STATE_RECYCLE           := "RecycleMode"
+const PLAY_PHASE_STATE_IDLE: String         = "Idle"
+const PLAY_PHASE_STATE_DRAWING: String      = "Drawing"
+const PLAY_PHASE_STATE_PLAYING: String      = "Playing"
+const PLAY_PHASE_STATE_RESOLVING: String    = "Resolving"
+const PLAY_PHASE_STATE_PLACING_TILE: String = "PlacingTile"
+const PLAY_PHASE_STATE_RECYCLE: String      = "RecycleMode"
 
 # 📊 Game State
 var current_turn: int = 0
@@ -19,25 +19,34 @@ var play_phase_state: String = PLAY_PHASE_STATE_IDLE
 
 var debug_switch: bool = true
 
+
+# =========================================================
 # 🚀 Lifecycle
+# =========================================================
 func _ready() -> void:
 	if debug_switch:
 		print("[GameState] Ready")
 
 	SignalBus.connect("hand_drawn", Callable(self, "_on_hand_drawn"))
 	SignalBus.connect("hand_resolved", Callable(self, "_on_hand_resolved"))
-	SignalBus.connect("end_turn_tile_effects_queued", Callable(self, "_end_turn_tile_effects_queued"))
+	SignalBus.connect("end_turn_tile_effects_queued", Callable(self, "_on_end_turn_tile_effects_queued"))
 	SignalBus.connect("end_turn_effects_finished", Callable(self, "_on_end_turn_effects_finished"))
 	SignalBus.connect("resource_count_finished", Callable(self, "_on_resource_count_finished"))
 
 	call_deferred("start_game")
 
+
+# =========================================================
 # 🔄 Turn Control
+# =========================================================
 func start_game() -> void:
 	current_turn = 0
 	set_phase("Play")
 
+
+# =========================================================
 # ⏩ Phase Transitions
+# =========================================================
 func set_phase(new_phase: String) -> void:
 	current_phase = new_phase
 	if new_phase != "Play":
@@ -47,8 +56,8 @@ func set_phase(new_phase: String) -> void:
 
 	match new_phase:
 		"Turn Effects":
+			# Ask tile system to queue its end-turn effects
 			SignalBus.emit_logged("queue_end_turn_tile_effects")
-			#SignalBus.emit_logged("end_turn_effects_started")
 		"Resource Count":
 			SignalBus.emit_logged("resource_count_requested")
 		"Play":
@@ -70,55 +79,58 @@ func set_play_phase_state(new_state: String) -> void:
 		push_warning("[GameState] Illegal play phase transition: %s → %s" % [play_phase_state, new_state])
 
 
-func _on_hand_resolved() -> void: 
-	if debug_switch: 
-		print("[GameState] Resolving hand → moving to Turn Effects") 
-		set_phase("Turn Effects")
+# =========================================================
+# 📡 Signal Handlers
+# =========================================================
+func _on_hand_resolved() -> void:
+	if debug_switch:
+		print("[GameState] Resolving hand → moving to Turn Effects")
+	set_phase("Turn Effects")
 
+func _on_end_turn_tile_effects_queued() -> void:
+	if debug_switch:
+		print("[GameState] Turn effects have been queued — starting drain")
+	SignalBus.emit_logged("end_turn_effects_started")
 
 func _on_end_turn_effects_finished() -> void:
 	if debug_switch:
 		print("[GameState] Turn Effects complete — requesting resource count")
 	set_phase("Resource Count")
 
-func _end_turn_tile_effects_queued() -> void:
-	if debug_switch:
-		print("[GameState] Turn effects have been queued - ready to advance to next stage")
-	SignalBus.emit_logged("end_turn_effects_started")
-
 func _on_resource_count_finished() -> void:
 	current_turn += 1
 	SignalBus.emit_logged("turn_ended", [current_turn - 1])
 	set_phase("Play")
 
+# Optional: if GameState should react to draw requests directly
 func _on_draw_hand_requested() -> void:
-	# GameState only updates state; drawing is delegated elsewhere
 	set_play_phase_state(PLAY_PHASE_STATE_DRAWING)
-
 
 func _on_hand_drawn(_cards: Array) -> void:
 	if play_phase_state == PLAY_PHASE_STATE_DRAWING:
 		set_play_phase_state(PLAY_PHASE_STATE_PLAYING)
 
+
+# =========================================================
 # 🛠 Utility
+# =========================================================
 func _is_transition_allowed(from_state: String, to_state: String) -> bool:
 	var allowed: Dictionary = {
-		PLAY_PHASE_STATE_IDLE:              [PLAY_PHASE_STATE_DRAWING],
-		PLAY_PHASE_STATE_DRAWING:           [PLAY_PHASE_STATE_PLAYING],
-		PLAY_PHASE_STATE_PLAYING:           [PLAY_PHASE_STATE_PLACING_TILE, PLAY_PHASE_STATE_RECYCLE, PLAY_PHASE_STATE_RESOLVING, PLAY_PHASE_STATE_PLAYING],
-		PLAY_PHASE_STATE_PLACING_TILE:      [PLAY_PHASE_STATE_PLAYING],
-		PLAY_PHASE_STATE_RECYCLE:           [PLAY_PHASE_STATE_PLAYING],
-		PLAY_PHASE_STATE_RESOLVING:         [PLAY_PHASE_STATE_IDLE]
+		PLAY_PHASE_STATE_IDLE:         [PLAY_PHASE_STATE_DRAWING],
+		PLAY_PHASE_STATE_DRAWING:      [PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_PLAYING:      [PLAY_PHASE_STATE_PLACING_TILE, PLAY_PHASE_STATE_RECYCLE, PLAY_PHASE_STATE_RESOLVING, PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_PLACING_TILE: [PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_RECYCLE:      [PLAY_PHASE_STATE_PLAYING],
+		PLAY_PHASE_STATE_RESOLVING:    [PLAY_PHASE_STATE_IDLE]
 	}
 	return allowed.has(from_state) and to_state in allowed[from_state]
-
 
 func debug_step() -> void:
 	if debug_switch:
 		print("\n[DebugStep] Current phase: %s | Current play phase state: %s" % [
-		current_phase,
-		play_phase_state
-	])
+			current_phase,
+			play_phase_state
+		])
 
 	match play_phase_state:
 		PLAY_PHASE_STATE_IDLE:
@@ -138,7 +150,7 @@ func debug_step() -> void:
 
 		PLAY_PHASE_STATE_PLACING_TILE, PLAY_PHASE_STATE_RECYCLE:
 			if debug_switch:
-				print("[DebugStep] Currently in a build/recycle mode — skipping manual advance for now")
+				print("[DebugStep] In build/recycle mode — skipping manual advance")
 
 		PLAY_PHASE_STATE_RESOLVING:
 			if debug_switch:

@@ -78,12 +78,12 @@ signal removal_completed(mode: String, data: Dictionary, count: int)
 # ----------------------------
 # 📣 Emit wrapper with debug logging
 # ----------------------------
-func emit_logged(name: String, arg: Variant = null) -> void:
+func emit_logged(signal_name: String, arg: Variant = null) -> void:
 	if signal_detail >= 1:
 		var arg_str: String = ""
 
 		# Special-case: only print card names for hand_drawn signal
-		if name == "hand_drawn" and typeof(arg) == TYPE_ARRAY:
+		if signal_name == "hand_drawn" and typeof(arg) == TYPE_ARRAY:
 			var card_ids: Array = []
 			for ids in arg[0]:
 				card_ids.append(ids)
@@ -91,7 +91,7 @@ func emit_logged(name: String, arg: Variant = null) -> void:
 		elif arg != null:
 			arg_str = str(arg)
 
-		print("[Signal] %s(%s)" % [name, arg_str])
+		print("[Signal] %s(%s)" % [signal_name, arg_str])
 
 		if signal_detail >= 2:
 			print("--- Signal emit call stack ---")
@@ -101,15 +101,15 @@ func emit_logged(name: String, arg: Variant = null) -> void:
 	# Actual emit
 	match typeof(arg):
 		TYPE_NIL:
-			emit_signal(name)
+			emit_signal(signal_name)
 		TYPE_ARRAY:
 			var arr: Array = arg as Array
 			match arr.size():
-				0: emit_signal(name)
-				1: emit_signal(name, arr[0])
-				2: emit_signal(name, arr[0], arr[1])
-				3: emit_signal(name, arr[0], arr[1], arr[2])
-				4: emit_signal(name, arr[0], arr[1], arr[2], arr[3])
+				0: emit_signal(signal_name)
+				1: emit_signal(signal_name, arr[0])
+				2: emit_signal(signal_name, arr[0], arr[1])
+				3: emit_signal(signal_name, arr[0], arr[1], arr[2])
+				4: emit_signal(signal_name, arr[0], arr[1], arr[2], arr[3])
 				_: push_error("SignalBus.emit_logged: Too many arguments in array")
 		_:
-			emit_signal(name, arg)
+			emit_signal(signal_name, arg)

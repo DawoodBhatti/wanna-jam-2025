@@ -18,20 +18,20 @@ func debug_tile_info(layer: TileMapLayer, coords: Vector2i) -> void:
 	print("[RemovalRules] --- Inspecting layer:", layer_name, "(", layer_path, ") ---")
 
 	if tile_data != null:
-		var name: String = ""
+		var tile_name: String = ""
 		if tile_data.has_custom_data("name"):
 			var custom_name: Variant = tile_data.get_custom_data("name")
 			if typeof(custom_name) == TYPE_STRING:
-				name = String(custom_name)
+				tile_name = String(custom_name)
 			else:
-				name = str(custom_name)
+				tile_name = str(custom_name)
 
 		var output: String = "[RemovalRules] Tile @" + str(coords)
 		output += " | Source:" + str(source_id)
 		output += " | Atlas:" + str(atlas_coords)
 		output += " | Alt:" + str(alt_tile)
-		if name != "":
-			output += " | Name:" + name
+		if tile_name != "":
+			output += " | Name:" + tile_name
 
 		print(output)
 	else:

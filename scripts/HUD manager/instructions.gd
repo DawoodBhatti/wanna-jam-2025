@@ -11,7 +11,7 @@ func _ready():
 	update_instructions()
 
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("toggle_instructions"):
 		print("toggling")
 		instructions_visible = !instructions_visible

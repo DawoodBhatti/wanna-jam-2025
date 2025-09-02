@@ -41,9 +41,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		var grid := get_node_or_null("/root/main/Tiles/GridOverlay")
 		if grid:
 			grid.visible = not grid.visible
-			var state := "off"
-			if grid.visible:
-				state = "on"
 		return
 
 
@@ -51,7 +48,4 @@ func _unhandled_input(event: InputEvent) -> void:
 		var instructions := get_node_or_null("/root/main/HUD/Instructions")
 		if instructions:
 			instructions.visible = not instructions.visible
-			var state2 := "off"
-			if instructions.visible:
-				state2 = "on"
 		return

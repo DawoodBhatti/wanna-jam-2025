@@ -1,27 +1,21 @@
-extends Node2D
+extends Node
 class_name EffectsRunner
 
 @onready var bm: Node = get_tree().get_root().get_node("Main/ConstructionManager")
-@onready var signal_bus: Node = get_node("/root/SignalBus")
+@onready var custom_effects: Node = $CustomEffects
 
-# Debug level: defaults to SignalBus.signal_detail
-# 0 = silent, 1 = basic effect info, 2 = verbose with call stack
 var debug_level: int
 
 func _ready() -> void:
-	debug_level = signal_bus.signal_detail
+	debug_level = SignalBus.signal_detail
 
-# -------------------------------------------------------------------
+# =========================================================
 # 🔄 Shared Effect Execution
-# -------------------------------------------------------------------
-func _execute_effect(effect: Dictionary) -> void:
+# =========================================================
+func _execute_effect(ctx: Dictionary) -> void:
+	var effect: Dictionary = ctx.get("effect", {})
 	if debug_level >= 1:
 		print("[EffectsRunner] Triggering effect:", effect)
-
-	if debug_level >= 2:
-		print("--- Effect execution call stack ---")
-		print_stack()
-		print("-----------------------------------")
 
 	if not effect.has("type"):
 		push_error("[EffectsRunner] Effect missing 'type': %s" % str(effect))
@@ -37,25 +31,24 @@ func _execute_effect(effect: Dictionary) -> void:
 		"removal":
 			_handle_removal(effect)
 		_:
-			push_warning("[EffectsRunner] Unknown effect type: %s" % effect["type"])
+			custom_effects.handle_custom_effect(ctx) # pass full ctx for tile effects
 
-# -------------------------------------------------------------------
+# =========================================================
 # ⚡ Instant Effects
-# -------------------------------------------------------------------
-func run_instant(effect: Dictionary) -> void:
-	_execute_effect(effect)
-	# No queue notification needed for instant effects
+# =========================================================
+func run_instant(ctx: Dictionary) -> void:
+	_execute_effect(ctx)
 
-# -------------------------------------------------------------------
+# =========================================================
 # ⏳ Queued Effects
-# -------------------------------------------------------------------
-func run_queued(effect: Dictionary, ctx: Dictionary = {}) -> void:
-	_execute_effect(effect)
-	(get_parent() as EffectsManager).notify_effect_done(ctx)
+# =========================================================
+func run_queued(ctx: Dictionary) -> void:
+	_execute_effect(ctx)
+	(get_parent() as EffectsManager).notify_effect_done()
 
-# -------------------------------------------------------------------
+# =========================================================
 # 🧠 Effect Handlers
-# -------------------------------------------------------------------
+# =========================================================
 func _handle_resource_change(effect: Dictionary) -> void:
 	if not effect.has("target") or not effect.has("amount"):
 		push_error("[EffectsRunner] resource_change effect missing 'target' or 'amount': %s" % str(effect))
@@ -81,6 +74,3 @@ func _handle_removal(effect: Dictionary) -> void:
 		push_error("[EffectsRunner] removal effect missing 'tile_name' or 'amount': %s" % str(effect))
 		return
 	bm.removal(effect["tile_name"], effect["amount"])
-
-func _handle_medusa(effect: Dictionary) -> void:
-	print("handling medusa")

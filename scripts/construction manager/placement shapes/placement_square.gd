@@ -40,7 +40,6 @@ func stop() -> void:
 		"placement_completed",
 		["square", {"source": _active_tile}, _placed_count]
 	)
-	print("TileState now looks like:" , TileState.stone_tile_state)
 
 # ===================================================================
 # 2. INPUT HANDLING

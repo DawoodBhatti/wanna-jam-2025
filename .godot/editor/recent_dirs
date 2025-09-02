@@ -1,6 +1,5 @@
-res://singletons
-res://scripts/structure effects manager
 res://scripts/turn effects manager
+res://singletons
 res://scripts
 res://assets
 res://tilesets

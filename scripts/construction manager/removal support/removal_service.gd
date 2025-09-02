@@ -58,7 +58,7 @@ func _commit_removal_internal(level: Level, tile_data: Dictionary, cell: Vector2
 
 	# Remove from TileState if trackable
 	if tile_data.get("trackable", false):
-		TileState.remove_tile(tile_name, tile_data, target_layer, cell)
+		TileState.remove_tile(tile_name, target_layer, cell)
 
 	SignalBus.emit_logged(
 		"building_removed",

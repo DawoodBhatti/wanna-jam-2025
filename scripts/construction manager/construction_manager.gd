@@ -29,7 +29,6 @@ extends Node
 @onready var _placement_square = $PlacementShapes/PlacementSquare
 @onready var _removal = $Removal
 @onready var _removal_square = $RemovalShapes/RemovalSquare
-@onready var _level: Node = get_tree().get_root().get_node("Main/Level")
 
 # -------------------------------------------------------------------
 # STATE

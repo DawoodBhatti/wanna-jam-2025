@@ -40,7 +40,7 @@ func load_cards() -> void:
 			"instant_effects": [
 				{ "type": "resource_change", "target": "wood", "amount": 1 }
 			],
-			"end_turn_effects": [			],
+			"end_turn_effects": [],
 			"remain_effects": []
 		},
 		{
@@ -86,7 +86,7 @@ func load_cards() -> void:
 			"cost": {},
 			"instant_effects": [
 				{ "type": "resource_change", "target": "gold", "amount": 5},
-				{ "type": "placement", "tile_name": "StoneTile", "amount": 1 }
+				{ "type": "placement", "tile_name": "MedusaTile", "amount": 1 }
 
 			],
 			"end_turn_effects": [],

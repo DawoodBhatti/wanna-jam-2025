@@ -40,9 +40,9 @@ func get_all_layers() -> Array[TileMapLayer]:
 	return layers.values()
 
 # --- Get a layer by its registry name ---
-func get_layer_by_name(name: String) -> TileMapLayer:
-	if layers.has(name):
-		return layers[name]
+func get_layer_by_name(layer_name: String) -> TileMapLayer:
+	if layers.has(layer_name):
+		return layers[layer_name]
 	return null
 
 # --- Find the first layer containing a tile with a given custom "name" ---

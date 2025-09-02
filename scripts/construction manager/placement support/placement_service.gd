@@ -48,7 +48,7 @@ func _commit_tile_internal(level: Level, tile_data: Dictionary, grid_location: V
 	target_layer.set_cell(grid_location, tile_data["source_id"], tile_atlas_coords)
 	
 	if tile_data["trackable"]:
-		TileState.add_tile(tile_name, tile_data, target_layer, grid_location)
+		TileState.add_tile(tile_name, target_layer, grid_location)
 
 	SignalBus.emit_logged(
 		"building_placed",

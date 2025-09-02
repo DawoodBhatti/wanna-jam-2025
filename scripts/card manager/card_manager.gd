@@ -1,11 +1,10 @@
 extends Node2D
 
-var effects_manager: Node2D
+@onready var effects_manager: EffectsManager = get_node("../EffectsManager") as EffectsManager
+
 var debug_switch: bool = true
 
 func _ready() -> void:
-	effects_manager = get_node("../EffectsManager")
-
 	SignalBus.connect("phase_changed", Callable(self, "_on_phase_changed"))
 	SignalBus.connect("draw_hand_requested", Callable(self, "_on_draw_hand_requested"))
 	SignalBus.connect("draw_cards_requested", Callable(self, "_on_draw_cards_requested"))
@@ -18,8 +17,8 @@ func end_turn() -> void:
 	SignalBus.emit_logged("resolve_hand_requested")
 
 func _on_phase_changed(new_phase: String) -> void:
-	if new_phase == "ResolveHand":
-		_on_resolve_hand_requested()
+	# Note: GameState handles the resolving trigger; this hook is kept for future needs.
+	pass
 
 # --- Draw Logic ---
 func _on_draw_hand_requested() -> void:
@@ -37,6 +36,7 @@ func _on_card_play_requested(card_id: String) -> void:
 	var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
 	if card.is_empty() or not DeckState.hand.has(card_id):
 		return
+
 	if not ResourceState.can_afford(card_id):
 		if debug_switch:
 			print("[CardManager] Cannot afford card: %s" % card_id)
@@ -44,10 +44,10 @@ func _on_card_play_requested(card_id: String) -> void:
 		return
 
 	# Instant effects now
-	effects_manager.run_instant_effects(card_id)
+	effects_manager.run_card_instant_effect(card_id)
 
 	# Queue end-turn effects for later
-	effects_manager.queue_end_turn_effects(card_id)
+	effects_manager.queue_card_end_turn_effect(card_id)
 
 	if card.get("builds_structure", false):
 		_handle_structure_card(card_id)
@@ -61,7 +61,7 @@ func _on_card_play_requested(card_id: String) -> void:
 
 # --- Card Type Handlers ---
 func _handle_structure_card(card_id: String) -> void:
-	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLACING_STRUCTURE)
+	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLACING_TILE)
 	var req: Dictionary = CardCatalogue.resolve_structure_payload(card_id)
 	var cost: Dictionary = req.get("cost", {}) as Dictionary
 	if not DeckState.can_afford(cost):
@@ -87,14 +87,15 @@ func _on_card_clicked(card_id: String) -> void:
 	if DeckState.hand.is_empty():
 		SignalBus.emit_logged("resolve_hand_requested")
 
+
 # --- Hand Resolution ---
 func _on_resolve_hand_requested() -> void:
-	if effects_manager == null:
-		return
-
 	# Queue remain effects for all cards still in hand
-	for card_id: String in DeckState.hand:
-		effects_manager.queue_remain_effects(card_id)
+	if effects_manager != null:
+		for card_id: String in DeckState.hand:
+			effects_manager.queue_card_remain_effect(card_id)
+	else:
+		push_warning("[CardManager] EffectsManager not found; skipping remain-effect queue")
 
 	DeckState.move_hand_to_discard()
 	SignalBus.emit_logged("hand_resolved")

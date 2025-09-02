@@ -7,7 +7,7 @@ extends Node
 # 🗂 Tile state schema (reference only)
 # -------------------------------------------------------------------
 # Keys are strings in the format:
-#   "tile_name|layer_name|x,y"
+#   "tile_name|layer_name|x grid pos,y grid pos"
 # Example:
 #   "MedusaTile|StructuresLayer|3,7"
 #
@@ -22,11 +22,9 @@ const TILE_STATE_SCHEMA: Dictionary = {
 
 # 'incomplete' set because we only need to track tiles which apply effects
 var medusa_tile_state = {}
-var stone_tile_state = {}
 
 # registry to route lookups based on tile_name
 var tile_state_registry = {
-	"StoneTile": stone_tile_state,
 	"MedusaTile": medusa_tile_state
 }
 
@@ -40,20 +38,20 @@ var tile_state_registry = {
 # ===================================================================
 
 # add a tile entry to the dictionary
-func add_tile(tile_name, tile_data, level_layer, cell):
+func add_tile(tile_name, level_layer, cell):
 	var key = make_tile_key(tile_name, level_layer, cell)
 
 	if tile_state_registry.has(tile_name):
 		tile_state_registry[tile_name][key] = {
 			"effect_fired": false
 		}
+		print("tracking tile: ", tile_name)
 	else:
 		push_error("this tile doesn't belong in the tile state....")
 	
 
-
 # remove a tile entry from the dictionary
-func remove_tile(tile_name, tile_data, level_layer, cell):
+func remove_tile(tile_name, level_layer, cell):
 	var key = make_tile_key(tile_name, level_layer, cell)
 
 	if tile_state_registry.has(tile_name):
@@ -73,9 +71,9 @@ func _query_tile_states(tile_names = [], layer_names = [], cell = Vector2i(-999,
 	var dicts = []
 
 	if tile_names.size() > 0:
-		for name in tile_names:
-			if tile_state_registry.has(name):
-				dicts.append(tile_state_registry[name])
+		for tile_name in tile_names:
+			if tile_state_registry.has(tile_name):
+				dicts.append(tile_state_registry[tile_name])
 	else:
 		for d in tile_state_registry.values():
 			dicts.append(d)
@@ -105,7 +103,7 @@ func _query_tile_states(tile_names = [], layer_names = [], cell = Vector2i(-999,
 
 
 # ===================================================================
-# 3. External query wrappers
+# 3. External query wrappers - build your own!
 # ===================================================================
 
 # get all MedusaTile entries
@@ -160,3 +158,29 @@ func parse_tile_key(key):
 		"layer_name": parts[1],
 		"cell": Vector2i(cell_parts[0].to_int(), cell_parts[1].to_int())
 	}
+	# ===================================================================
+# 5. Public API — State mutation helpers
+# ===================================================================
+
+## Marks the given tile's effect as fired.
+## tile_key must be in the format: "tile_name|layer_name|x,y"
+func set_tile_fired(tile_key: String) -> void:
+	if tile_key == "":
+		push_error("[TileState] set_tile_fired called with empty tile_key")
+		return
+
+	var meta: Dictionary = parse_tile_key(tile_key)
+	if meta.is_empty():
+		push_error("[TileState] Invalid tile key: %s" % tile_key)
+		return
+
+	var registry: Dictionary = tile_state_registry.get(meta["tile_name"], {}) as Dictionary
+	if registry.is_empty():
+		push_error("[TileState] No registry for tile type: %s" % meta["tile_name"])
+		return
+
+	if not registry.has(tile_key):
+		push_warning("[TileState] No tracked tile found for key: %s" % tile_key)
+		return
+
+	registry[tile_key]["effect_fired"] = true
