@@ -11,6 +11,7 @@ extends Node
 @onready var discard_display := $DiscardPile
 @onready var end_turn_button: Button = $EndTurn
 
+@onready var cm : Node = get_node("../ConstructionManager")
 
 #TODO:
 #buggy stuff with card hands popping up so maybe we can get some flashy animation in there
@@ -40,8 +41,12 @@ func _refresh_all() -> void:
 	food_label.text  = str(ResourceState.food_count)
 	pop_label.text   = str(ResourceState.pop_count)
 
+#skip straight to resolution phase, cancelling active build/remove actions in the process
 func _on_end_turn_pressed() -> void:
-	print("[HUD] end turn pressed")
+	
+	#cancel current construction
+	cm.cancel_current_action()
+	
 	SignalBus.emit_logged("resolve_hand_requested")
 
 func _apply_end_turn_button_style() -> void:

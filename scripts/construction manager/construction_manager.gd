@@ -21,49 +21,58 @@
 #
 # =============================================================================
 extends Node
+class_name ConstructionManager
+# 🏗️ ConstructionManager: Orchestrates build mode actions like placement and removal.
+# This is the only public API for initiating or cancelling build interactions.
+# It delegates actual logic to child build actions (Placement, Removal, etc.) and listens for their completion.
 
-# -------------------------------------------------------------------
-# NODE REFERENCES
-# -------------------------------------------------------------------
+# ================================
+# 📦 Node References
+# ================================
+
 @onready var _placement = $Placement
 @onready var _placement_square = $PlacementShapes/PlacementSquare
 @onready var _removal = $Removal
 @onready var _removal_square = $RemovalShapes/RemovalSquare
 @onready var game_state: GameState = get_node("../GameController/GameState") as GameState
 
-# -------------------------------------------------------------------
-# STATE
-# -------------------------------------------------------------------
+# ================================
+# 🔄 State
+# ================================
+
 var _current_action: IBuildAction = null
 var _current_signal: String = ""
 
+# ================================
+# 🧹 Lifecycle & State Management
+# ================================
 
-# ===================================================================
-# 1. LIFECYCLE & STATE MANAGEMENT
-# ===================================================================
-
-## Stops the current build action (placement or removal) and clears connected signals.
-## This "unplugs" the manager from the active action so it won't react to old signals.
-func stop():
+## Disconnects from the current build action and clears signal bindings.
+## This is a cleanup step — it does not stop the child action itself.
+func disconnect_action() -> void:
 	if _current_action:
-		# Disconnect from the active action's completion signal
 		if _current_signal != "" and SignalBus.is_connected(_current_signal, Callable(self, "_on_action_completed")):
 			SignalBus.disconnect(_current_signal, Callable(self, "_on_action_completed"))
 			_current_signal = ""
-
 		_current_action = null
 
-## Forwards all input events to the active build action.
-func _input(event):
+## Cancels the current build action (placement or removal) via calls to their stop() functions
+## This is used when the player ends the turn manually because they might not want to continue with the construction action
+func cancel_current_action() -> void:
+	if _current_action and _current_action.has_method("stop"):
+		_current_action.stop()
+	disconnect_action()
+
+## Forwards input events to the active build action.
+func _input(event): 
 	if _current_action:
 		_current_action.process_input(event)
 
+# ================================
+# 🧱 Interactive Build Actions
+# ================================
 
-# ===================================================================
-# 2. INTERACTIVE BUILD ACTIONS
-# ===================================================================
-
-## Starts placement mode (interactive by default).
+## Starts placement mode (interactive or auto).
 func placement(tile_name: String, limit := 0, auto_placement := false, placement_locations: Array = []):
 	_start_action(_placement, "placement_completed")
 	_current_action.start({
@@ -73,7 +82,7 @@ func placement(tile_name: String, limit := 0, auto_placement := false, placement
 		"placement_locations": placement_locations
 	})
 
-## Starts removal mode (interactive by default).
+## Starts removal mode (interactive or auto).
 func removal(tile_name: String, limit := 0, auto_removal := false, removal_locations: Array = []):
 	_start_action(_removal, "removal_completed")
 	_current_action.start({
@@ -83,10 +92,9 @@ func removal(tile_name: String, limit := 0, auto_removal := false, removal_locat
 		"removal_locations": removal_locations
 	})
 
-
-# ===================================================================
-# 3. PROGRAMMATIC / AUTO BUILD ACTIONS
-# ===================================================================
+# ================================
+# ⚙️ Programmatic / Auto Build Actions
+# ================================
 
 ## Places a set of tiles automatically without user input.
 func auto_place(tile_name: String, cells: Array):
@@ -96,10 +104,9 @@ func auto_place(tile_name: String, cells: Array):
 func auto_remove(tile_name: String, cells: Array):
 	removal(tile_name, cells.size(), true, cells)
 
-
-# ===================================================================
-# 4. SHAPE HELPERS
-# ===================================================================
+# ================================
+# 🧩 Shape Helpers
+# ================================
 
 ## Places a square of tiles centered on the current mouse cell.
 ## - size: 1 = 1x1, 2 = 3x3, 3 = 5x5, etc.
@@ -112,10 +119,7 @@ func square_placement(tile_name: String, size: int, fill := true):
 		"fill": fill
 	})
 
-
 ## Removes a square of tiles centered on the current mouse cell.
-## - size: 1 = 1x1, 2 = 3x3, 3 = 5x5, etc.
-## - fill: true = solid square, false = hollow border.
 func remove_square(tile_name: String, size: int, fill := true):
 	_start_action(_removal_square, "removal_completed")
 	_current_action.start({
@@ -124,28 +128,23 @@ func remove_square(tile_name: String, size: int, fill := true):
 		"fill": fill
 	})
 
+# ================================
+# 🔌 Internal Helpers
+# ================================
 
-# ===================================================================
-# 5. INTERNAL HELPERS
-# ===================================================================
-
-## Starts an action and connects its completion signal to the manager's stop().
+## Starts a build action and connects its completion signal.
 ## This is the "plug in" step — we listen only to the active action's completion.
 func _start_action(action: IBuildAction, completion_signal: String):
-	# Stop any existing action first (also "unplugs" old signal)
-	stop()
+	disconnect_action()  # Unplug any previous action
 
 	_current_action = action
 	_current_signal = completion_signal
 
-	# Connect to the completion signal so we can stop cleanly when the action finishes
 	if not SignalBus.is_connected(completion_signal, Callable(self, "_on_action_completed")):
 		SignalBus.connect(completion_signal, Callable(self, "_on_action_completed"))
 
-
 ## Called when the active action signals completion.
-## This is the "plug out" step — we stop the action and disconnect its signal.
+## This is the "plug out" step — we disconnect and emit the construction completion.
 func _on_action_completed(_mode, _data, _count):
-	stop()
-	#TODO would need to fix this so it emits the right count signal...
+	disconnect_action()
 	SignalBus.emit_logged("construction_action_completed", [_mode, _data, _count])
