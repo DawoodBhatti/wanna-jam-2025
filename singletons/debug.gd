@@ -1,0 +1,50 @@
+# res://debug/DebugInput.gd
+extends Node
+# Centralized hotkeys for dev/debug. Safe-guards and null checks throughout.
+
+@onready var cm : Node = get_tree().get_root().get_node("Main/ConstructionManager")
+ 
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event.is_pressed():
+		return
+		
+	if Input.is_action_just_pressed("test_build_mode"):
+		#bm.start_placement_mode("StoneTile")  # or "Medusa"
+		cm.placement("StoneTile", 5)  # or bm.start_placement_mode("StoneTile")
+	
+	if Input.is_action_just_pressed("test_removal_mode"):
+		cm.removal("StoneTile", 5) # target_type, limit
+
+	if Input.is_action_just_pressed("test_square_placement"):
+		cm.square_placement("StoneTile", 3, true)
+		
+	if Input.is_action_just_pressed("test_square_removal"):
+		cm.remove_square("StoneTile", 3, true)
+		
+	if Input.is_action_just_pressed("advance_phase"):
+		return
+
+	
+	# --- Quick resource poke ---
+	if Input.is_action_just_pressed("test_resource_change"):
+		if ResourceState:
+			var types := ["stone", "wood", "food", "pop"]
+			for res_type in types:
+				SignalBus.emit_logged("resource_change_requested", [res_type, 1])
+		return
+
+
+	# --- UI / overlay toggles (adjust paths as needed) ---
+	if Input.is_action_just_pressed("toggle_grid"):
+		var grid := get_node_or_null("/root/main/Tiles/GridOverlay")
+		if grid:
+			grid.visible = not grid.visible
+		return
+
+
+	if Input.is_action_just_pressed("toggle_instructions"):
+		var instructions := get_node_or_null("/root/main/HUD/Instructions")
+		if instructions:
+			instructions.visible = not instructions.visible
+		return

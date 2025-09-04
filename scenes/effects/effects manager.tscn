@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://jburlgiwfsb6"]
+
+[ext_resource type="Script" uid="uid://mpg4c4woj1x8" path="res://scripts/effects manager/effects_manager.gd" id="1_27k36"]
+[ext_resource type="Script" uid="uid://dk3hjcx2k1xcm" path="res://scripts/effects manager/effects_runner.gd" id="2_egtwc"]
+[ext_resource type="Script" uid="uid://bf3cq4p5dmyb8" path="res://scripts/effects manager/custom_effects.gd" id="3_egtwc"]
+
+[node name="EffectsManager" type="Node"]
+script = ExtResource("1_27k36")
+
+[node name="EffectsRunner" type="Node" parent="."]
+script = ExtResource("2_egtwc")
+
+[node name="CustomEffects" type="Node" parent="EffectsRunner"]
+script = ExtResource("3_egtwc")

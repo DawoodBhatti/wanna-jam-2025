@@ -1,6 +1,23 @@
-res://scenes + scripts/main.tscn
-res://assets/prototyping/structures.tres
-res://scenes + scripts/basegrid.tscn
-res://scenes + scripts/resource_control.tscn
-res://scenes + scripts/hud.tscn
-res://scenes + scripts/resource_control.gd
+res://scenes/HUD/hud.tscn
+res://scripts/card manager/border_shader.gdshader
+res://scripts/HUD manager/draw_pile.gd
+res://tilesets/structures.tres
+res://tilesets/ground.tres
+res://tilesets/water.tres
+res://main.tscn
+res://scenes/game controller/game control.tscn
+res://scenes/cards/card manager.tscn
+res://scripts/card manager/card_manager.gd
+res://scenes/effects/effects manager.tscn
+res://scripts/construction manager/construction_manager.gd
+res://scripts/effects manager/effects_manager.gd
+res://singletons/card_catalogue.gd
+res://scripts/game controller/game_state.gd
+res://scripts/game controller/game_controller.gd
+res://scripts/HUD manager/hand_display.gd
+res://scripts/game controller/resolution_watcher.gd
+res://singletons/resource_state.gd
+res://singletons/signal_bus.gd
+res://singletons/effects_queue.gd
+res://scripts/effects manager/effects_runner.gd
+res://scripts/HUD manager/hud.gd

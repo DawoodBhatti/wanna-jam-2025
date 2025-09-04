@@ -1,0 +1,64 @@
+extends Node
+
+# ----------------------------
+# 📊 Resource Storage
+# ----------------------------
+var stone_count: int = 10
+var wood_count: int  = 10
+var food_count: int  = 10
+var pop_count: int   = 10
+
+# ----------------------------
+# 🚀 Lifecycle
+# ----------------------------
+func _ready() -> void:
+	SignalBus.connect("resource_count_requested", Callable(self, "_on_resource_count_requested"))
+	SignalBus.connect("resource_change_requested", Callable(self, "_on_resource_change_requested"))
+
+# ----------------------------
+# 🛠 Public API
+# ----------------------------
+
+
+func get_resource(res_type: String) -> int:
+	match res_type:
+		"stone": return stone_count
+		"wood":  return wood_count
+		"food":  return food_count
+		"pop":   return pop_count
+		_:       return 0
+
+#can a card be played based on current resources?
+func can_afford(card_id: String) -> bool:
+	var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
+	if card.is_empty():
+		push_warning("[ResourceState] Cannot afford unknown card: %s" % card_id)
+		return false
+
+	var cost: Dictionary = card.get("cost", {}) as Dictionary
+	for res_type: String in cost.keys():
+		var required: int = int(cost[res_type])
+		var available: int = get_resource(res_type)
+
+		if available < required:
+			return false
+	return true
+
+# ----------------------------
+# 📡 Signal Handling
+# ----------------------------
+func _on_resource_count_requested() -> void:
+	SignalBus.emit_logged("resource_count_finished")
+
+func _on_resource_change_requested(res_type: String, amount: int) -> void:
+	match res_type:
+		"stone": stone_count += amount
+		"wood":  wood_count  += amount
+		"food":  food_count  += amount
+		"pop":   pop_count   += amount
+		_:
+			push_warning("[ResourceState] Unknown resource type: %s" % res_type)
+			return
+
+	var sig_name := "%s_changed" % res_type
+	SignalBus.emit_logged(sig_name, [amount])

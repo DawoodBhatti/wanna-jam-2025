@@ -1,0 +1,50 @@
+[gd_scene load_steps=10 format=3 uid="uid://ctdn6dk585exp"]
+
+[ext_resource type="Script" uid="uid://ij68vke3trpk" path="res://scripts/construction manager/construction_manager.gd" id="1_a6l47"]
+[ext_resource type="Script" uid="uid://d2sa40ldfi00t" path="res://scripts/construction manager/placement support/placement_rules.gd" id="2_6km2d"]
+[ext_resource type="Script" uid="uid://bbia1r0uaimgq" path="res://scripts/construction manager/placement.gd" id="2_qyfd8"]
+[ext_resource type="Script" uid="uid://co6pj8en8217f" path="res://scripts/construction manager/placement support/placement_service.gd" id="3_kowrh"]
+[ext_resource type="Script" uid="uid://c27v8waca76nm" path="res://scripts/construction manager/removal.gd" id="4_43xbt"]
+[ext_resource type="Script" uid="uid://dku5nthjd77ms" path="res://scripts/construction manager/removal shapes/removal_square.gd" id="5_43xbt"]
+[ext_resource type="Script" uid="uid://fnpci3dlgjud" path="res://scripts/construction manager/placement shapes/placement_square.gd" id="5_s41s1"]
+[ext_resource type="Script" uid="uid://25lncjnfe0cc" path="res://scripts/construction manager/removal support/removal_service.gd" id="6_s41s1"]
+[ext_resource type="Script" uid="uid://b2p8lr67yam25" path="res://scripts/construction manager/removal support/removal_rules.gd" id="7_kowrh"]
+
+[node name="BuildingManager" type="Node"]
+script = ExtResource("1_a6l47")
+
+[node name="Placement" type="Node" parent="."]
+script = ExtResource("2_qyfd8")
+
+[node name="PlacementShapes" type="Node" parent="."]
+
+[node name="PlacementSquare" type="Node" parent="PlacementShapes"]
+script = ExtResource("5_s41s1")
+
+[node name="Removal" type="Node" parent="."]
+script = ExtResource("4_43xbt")
+
+[node name="RemovalShapes" type="Node" parent="."]
+
+[node name="RemovalSquare" type="Node" parent="RemovalShapes"]
+script = ExtResource("5_43xbt")
+
+[node name="PlacementSupport" type="Node" parent="."]
+
+[node name="PlacementService" type="Node" parent="PlacementSupport"]
+script = ExtResource("3_kowrh")
+metadata/_custom_type_script = "uid://co6pj8en8217f"
+
+[node name="PlacementRules" type="Node" parent="PlacementSupport"]
+script = ExtResource("2_6km2d")
+metadata/_custom_type_script = "uid://d2sa40ldfi00t"
+
+[node name="RemovalSupport" type="Node" parent="."]
+
+[node name="RemovalService" type="Node" parent="RemovalSupport"]
+script = ExtResource("6_s41s1")
+metadata/_custom_type_script = "uid://25lncjnfe0cc"
+
+[node name="RemovalRules" type="Node" parent="RemovalSupport"]
+script = ExtResource("7_kowrh")
+metadata/_custom_type_script = "uid://b2p8lr67yam25"

@@ -1,0 +1,123 @@
+extends Node
+
+# SignalBus.gd
+# ------------
+# Global event hub for decoupling systems.
+# Defines and emits signals for all game events that require action
+# Allows other systems to communicate without direct references.
+
+# ----------------------------
+# 🔊 Signal Logging
+# ----------------------------
+# 0 = silent, 1 =  names and arguments, 2 = names, arguments and call stack
+var signal_detail: int = 1
+
+# ----------------------------
+# 🪵 Resource Signals
+# ----------------------------
+signal resource_change_requested(resource: String, delta: int)
+
+signal stone_changed(amount: int)
+signal wood_changed(amount: int)
+signal food_changed(amount: int)
+signal pop_changed(amount: int)
+
+# ----------------------------
+# 🎮 Game Flow Signals
+# ----------------------------
+signal game_started
+
+signal outer_phase_changed(new_phase: String)      # replaces phase_changed
+signal inner_phase_changed(state: String)          # replaces play_phase_state_changed
+
+signal cancel_active_modes_requested
+signal cancel_active_modes
+
+signal turn_ended(turn_number: int)
+
+signal queue_end_turn_tile_effects
+signal end_turn_tile_effects_queued
+signal end_turn_effects_started
+signal end_turn_effects_finished
+
+signal queued_effect_completed(queue_id : String)
+
+signal resource_count_requested
+signal resource_count_finished
+
+# ----------------------------
+# 🃏 Card & Hand Signals
+# ----------------------------
+signal card_clicked(card_id: String)
+#TODO: currently drawing a card seems to remove all other cards from hand? will fix in a biz. think we should stick to the 5 card limit for now?
+signal draw_hand_requested                 # Intent: "I want a full hand" → handled by GameState
+signal draw_cards_requested(count: int)    # Outcome: "Draw X cards now" → handled by CardManager
+signal hand_drawn(cards: Array)            # Outcome: cards are actually in hand
+
+signal resolve_hand_requested
+signal resolve_hand_started
+signal hand_resolved
+
+signal card_play_requested(card_id: String)
+signal card_play_denied(card_id: String)
+signal card_was_played(card_id: String)
+
+signal piles_changed(deck_size: int, hand_size: int, discard_size: int)  # outcome only
+signal cards_drawn(cards: Array)                # outcome alias if needed
+
+# ----------------------------
+# 🏗 Construction Signals
+# ----------------------------
+signal construction_action_completed(mode: String, data: Dictionary, count: int)             # Signals placement/removal fully completed
+
+signal placement_card_played(card_id: String)         # A card triggered placement
+signal removal_card_played(data: Dictionary)          # A card triggered removal
+
+signal building_placed(tile_info: Dictionary)         # Placement committed
+signal building_removed(tile_info: Dictionary)        # Removal committed
+
+signal placement_started(mode: String, data: Dictionary, count: int)
+signal placement_completed(mode: String, data: Dictionary, count: int)
+
+signal removal_started(mode: String, data: Dictionary, count: int)
+signal removal_completed(mode: String, data: Dictionary, count: int)
+
+
+# ----------------------------
+# 📣 Emit wrapper with debug logging
+# ----------------------------
+func emit_logged(signal_name: String, arg: Variant = null) -> void:
+	if signal_detail >= 1:
+		var arg_str: String = ""
+
+		# Special-case: only print card names for hand_drawn signal
+		if signal_name == "hand_drawn" and typeof(arg) == TYPE_ARRAY:
+			var card_ids: Array = []
+			for ids in arg[0]:
+				card_ids.append(ids)
+			arg_str = str(card_ids)
+		elif arg != null:
+			arg_str = str(arg)
+
+		print("[Signal] %s(%s)" % [signal_name, arg_str])
+
+		if signal_detail >= 2:
+			print("--- Signal emit call stack ---")
+			print_stack()
+			print("------------------------------")
+
+	# Actual emit
+	match typeof(arg):
+		TYPE_NIL:
+			emit_signal(signal_name)
+		TYPE_ARRAY:
+			var arr: Array = arg as Array
+			match arr.size():
+				0: emit_signal(signal_name)
+				1: emit_signal(signal_name, arr[0])
+				2: emit_signal(signal_name, arr[0], arr[1])
+				3: emit_signal(signal_name, arr[0], arr[1], arr[2])
+				4: emit_signal(signal_name, arr[0], arr[1], arr[2], arr[3])
+				_: push_error("SignalBus.emit_logged: Too many arguments in array")
+		_:
+			emit_signal(signal_name, arg)

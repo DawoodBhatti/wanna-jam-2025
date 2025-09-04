@@ -1,3 +1,6 @@
-res://scenes + scripts
-res://
+res://scripts/turn effects manager
+res://singletons
+res://scripts
 res://assets
+res://tilesets
+res://
