@@ -29,6 +29,7 @@ extends Node
 @onready var _placement_square = $PlacementShapes/PlacementSquare
 @onready var _removal = $Removal
 @onready var _removal_square = $RemovalShapes/RemovalSquare
+@onready var game_state: GameState = get_node("../GameController/GameState") as GameState
 
 # -------------------------------------------------------------------
 # STATE
@@ -111,6 +112,7 @@ func square_placement(tile_name: String, size: int, fill := true):
 		"fill": fill
 	})
 
+
 ## Removes a square of tiles centered on the current mouse cell.
 ## - size: 1 = 1x1, 2 = 3x3, 3 = 5x5, etc.
 ## - fill: true = solid square, false = hollow border.
@@ -140,7 +142,10 @@ func _start_action(action: IBuildAction, completion_signal: String):
 	if not SignalBus.is_connected(completion_signal, Callable(self, "_on_action_completed")):
 		SignalBus.connect(completion_signal, Callable(self, "_on_action_completed"))
 
+
 ## Called when the active action signals completion.
 ## This is the "plug out" step — we stop the action and disconnect its signal.
 func _on_action_completed(_mode, _data, _count):
 	stop()
+	#TODO would need to fix this so it emits the right count signal...
+	SignalBus.emit_logged("construction_action_completed", [_mode, _data, _count])

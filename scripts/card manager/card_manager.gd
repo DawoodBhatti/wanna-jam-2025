@@ -1,101 +1,104 @@
 extends Node2D
+# 🃏 CardManager: Handles drawing, playing, clicking, and type-specific behavior.
 
+# --- Dependencies ---
+@onready var game_state: GameState = get_node("../GameController/GameState") as GameState
 @onready var effects_manager: EffectsManager = get_node("../EffectsManager") as EffectsManager
 
-var debug_switch: bool = true
-
+# --- Initialization ---
 func _ready() -> void:
-	SignalBus.connect("phase_changed", Callable(self, "_on_phase_changed"))
 	SignalBus.connect("draw_hand_requested", Callable(self, "_on_draw_hand_requested"))
 	SignalBus.connect("draw_cards_requested", Callable(self, "_on_draw_cards_requested"))
 	SignalBus.connect("card_clicked", Callable(self, "_on_card_clicked"))
 	SignalBus.connect("card_play_requested", Callable(self, "_on_card_play_requested"))
-	SignalBus.connect("resolve_hand_requested", Callable(self, "_on_resolve_hand_requested"))
 
-# --- Turn Management ---
-func end_turn() -> void:
-	SignalBus.emit_logged("resolve_hand_requested")
+# ================================
+# 🃏 DRAWING CARDS
+# ================================
 
-func _on_phase_changed(new_phase: String) -> void:
-	# Note: GameState handles the resolving trigger; this hook is kept for future needs.
-	pass
-
-# --- Draw Logic ---
+## Handles a request to draw a full new hand.
 func _on_draw_hand_requested() -> void:
-	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_DRAWING)
+	game_state.set_inner_phase("drawing")
 	DeckState.draw_full_hand()
 
+## Handles a request to draw a specific number of cards.
 func _on_draw_cards_requested(count: int) -> void:
 	DeckState.draw_from_deck(count)
 
-# --- Card Play Routing ---
+# ================================
+# 🖱️ CARD INTERACTION
+# ================================
+
+func _on_card_clicked(card_id: String) -> void:
+	SignalBus.emit_logged("card_play_requested", card_id)
+
+# ================================
+# ▶️ CARD PLAYING LOGIC
+# ================================
+
+## Handles the logic for playing a card:
+## - Validates if it can be played
+## - Routes instant and queued effects
+## - Emits relevant signals
 func _on_card_play_requested(card_id: String) -> void:
-	if GameState.play_phase_state != GameState.PLAY_PHASE_STATE_PLAYING:
+	if not _can_play_card(card_id):
 		return
 
-	var card: Dictionary = CardCatalogue.get_card_by_id(card_id)
-	if card.is_empty() or not DeckState.hand.has(card_id):
-		return
+	var card := CardCatalogue.get_card_by_id(card_id)
 
-	if not ResourceState.can_afford(card_id):
-		if debug_switch:
-			print("[CardManager] Cannot afford card: %s" % card_id)
-		SignalBus.emit_logged("card_play_denied", card_id)
-		return
+	# Set phase for instant placement/removal cards
+	if CardCatalogue.has_instant_placement(card_id):
+		game_state.set_inner_phase("placing_tile")
+	if CardCatalogue.has_instant_removal(card_id):
+		game_state.set_inner_phase("removing_tile")
 
-	# Instant effects now
+	# Route effects
 	effects_manager.run_card_instant_effect(card_id)
-
-	# Queue end-turn effects for later
 	effects_manager.queue_card_end_turn_effect(card_id)
-
-	if card.get("builds_structure", false):
-		_handle_structure_card(card_id)
-	elif card.get("recycle_mode", false):
-		_handle_recycle_card(card_id)
 
 	SignalBus.emit_logged("card_was_played", card_id)
 
+	# If hand is empty after playing, request resolution
 	if DeckState.hand.is_empty():
 		SignalBus.emit_logged("resolve_hand_requested")
 
-# --- Card Type Handlers ---
-func _handle_structure_card(card_id: String) -> void:
-	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLACING_TILE)
-	var req: Dictionary = CardCatalogue.resolve_structure_payload(card_id)
-	var cost: Dictionary = req.get("cost", {}) as Dictionary
-	if not DeckState.can_afford(cost):
-		if debug_switch:
-			print("Not enough resources for %s" % CardCatalogue.get_card_by_id(card_id).get("name", "unknown"))
-		GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
-		return
-	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
+# ================================
+# ✅ VALIDATION HELPERS
+# ================================
 
-func _handle_recycle_card(card_id: String) -> void:
-	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_RECYCLE)
-	var amount: int = int(CardCatalogue.get_card_by_id(card_id).get("remove_amount", 1))
-	SignalBus.emit_logged("recycle_mode_requested", [{ "amount": amount }])
-	GameState.set_play_phase_state(GameState.PLAY_PHASE_STATE_PLAYING)
+## Checks if a card can be interacted with (clicked/played).
+func _can_interact_with_card(card_id: String) -> bool:
+	if game_state.inner_phase != game_state.INNER_PHASES.playing:
+		return false
+	return _card_exists_in_hand(card_id)
 
-# --- Card Interaction ---
-func _on_card_clicked(card_id: String) -> void:
-	if GameState.play_phase_state != GameState.PLAY_PHASE_STATE_PLAYING:
-		return
-	if CardCatalogue.get_card_by_id(card_id).is_empty() or not DeckState.hand.has(card_id):
-		return
-	SignalBus.emit_logged("card_play_requested", card_id)
-	if DeckState.hand.is_empty():
-		SignalBus.emit_logged("resolve_hand_requested")
+## Checks if a card can be played:
+## - Must be in the playing phase
+## - Must exist in hand
+## - Must be affordable
+func _can_play_card(card_id: String) -> bool:
+	if game_state.inner_phase != game_state.INNER_PHASES.playing:
+		SignalBus.emit_logged("card_play_denied", card_id)
+		return false
 
+	if not _card_exists_in_hand(card_id):
+		return false
 
-# --- Hand Resolution ---
-func _on_resolve_hand_requested() -> void:
-	# Queue remain effects for all cards still in hand
-	if effects_manager != null:
-		for card_id: String in DeckState.hand:
-			effects_manager.queue_card_remain_effect(card_id)
-	else:
-		push_warning("[CardManager] EffectsManager not found; skipping remain-effect queue")
+	if not ResourceState.can_afford(card_id):
+		SignalBus.emit_logged("card_play_denied", card_id)
+		return false
 
-	DeckState.move_hand_to_discard()
-	SignalBus.emit_logged("hand_resolved")
+	return true
+
+## Checks if a card exists in the current hand.
+func _card_exists_in_hand(card_id: String) -> bool:
+	var card := CardCatalogue.get_card_by_id(card_id)
+	return not card.is_empty() and DeckState.hand.has(card_id)
+
+## Determines the type of a card based on its properties.
+func _get_card_type(card: Dictionary) -> String:
+	if card.get("triggers_placement", false):
+		return "structure"
+	elif card.get("triggers_removal", false):
+		return "recycle"
+	return "neutral"

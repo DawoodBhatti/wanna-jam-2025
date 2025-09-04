@@ -12,6 +12,10 @@ extends Node
 @onready var end_turn_button: Button = $EndTurn
 
 
+#TODO:
+#buggy stuff with card hands popping up so maybe we can get some flashy animation in there
+#shouldn't be able to place or remove structures from behind cards...
+
 func _ready() -> void:
 	# Bind resource labels in one consistent way
 	_bind_resource_label("stone_changed", stone_label, func(): return ResourceState.stone_count)

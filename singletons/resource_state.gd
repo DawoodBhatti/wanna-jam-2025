@@ -3,10 +3,10 @@ extends Node
 # ----------------------------
 # 📊 Resource Storage
 # ----------------------------
-var stone_count: int = 0
-var wood_count: int  = 0
-var food_count: int  = 0
-var pop_count: int   = 0
+var stone_count: int = 10
+var wood_count: int  = 10
+var food_count: int  = 10
+var pop_count: int   = 10
 
 # ----------------------------
 # 🚀 Lifecycle
@@ -18,6 +18,8 @@ func _ready() -> void:
 # ----------------------------
 # 🛠 Public API
 # ----------------------------
+
+
 func get_resource(res_type: String) -> int:
 	match res_type:
 		"stone": return stone_count

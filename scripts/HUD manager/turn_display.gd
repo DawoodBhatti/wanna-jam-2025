@@ -1,6 +1,7 @@
 extends Label
 
 var tween: Tween
+@onready var game_state: GameState = get_tree().get_root().get_node("/root/Main/GameController/GameState")
 
 func _ready() -> void:
 	# Listen for turn number changes
@@ -15,7 +16,7 @@ func _ready() -> void:
 	add_theme_color_override("font_color", Color.WHITE)
 
 func _on_game_started() -> void:
-	_update_turn_label(GameState.current_turn)
+	_update_turn_label(game_state.current_turn)
 
 func _on_turn_ended(turn_number: int) -> void:
 	# turn_number is the one that just ended, so display the *next* turn

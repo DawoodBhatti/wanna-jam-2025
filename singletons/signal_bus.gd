@@ -27,11 +27,11 @@ signal pop_changed(amount: int)
 # ----------------------------
 signal game_started
 
-signal phase_changed(new_phase: String)
-signal play_phase_state_changed(state: String)
+signal outer_phase_changed(new_phase: String)      # replaces phase_changed
+signal inner_phase_changed(state: String)          # replaces play_phase_state_changed
 
 signal cancel_active_modes_requested
-signal cancel_active_modes                     # outcome
+signal cancel_active_modes
 
 signal turn_ended(turn_number: int)
 
@@ -40,10 +40,10 @@ signal end_turn_tile_effects_queued
 signal end_turn_effects_started
 signal end_turn_effects_finished
 
-signal resource_count_requested                 # outcome only
-signal resource_count_finished
+signal queued_effect_completed(queue_id : String)
 
-signal instant_effect_resolved(card_id: String)  # outcome only
+signal resource_count_requested
+signal resource_count_finished
 
 # ----------------------------
 # 🃏 Card & Hand Signals
@@ -55,6 +55,7 @@ signal draw_cards_requested(count: int)    # Outcome: "Draw X cards now" → han
 signal hand_drawn(cards: Array)            # Outcome: cards are actually in hand
 
 signal resolve_hand_requested
+signal resolve_hand_started
 signal hand_resolved
 
 signal card_play_requested(card_id: String)
@@ -65,15 +66,22 @@ signal piles_changed(deck_size: int, hand_size: int, discard_size: int)  # outco
 signal cards_drawn(cards: Array)                # outcome alias if needed
 
 # ----------------------------
-# 🏗 Building Placement Signals
+# 🏗 Construction Signals
 # ----------------------------
-signal building_placed(tile_info: Dictionary)            # Placement committed
-signal building_removed(tile_info: Dictionary)            # Removal committed
+signal construction_action_completed(mode: String, data: Dictionary, count: int)             # Signals placement/removal fully completed
+
+signal placement_card_played(card_id: String)         # A card triggered placement
+signal removal_card_played(data: Dictionary)          # A card triggered removal
+
+signal building_placed(tile_info: Dictionary)         # Placement committed
+signal building_removed(tile_info: Dictionary)        # Removal committed
 
 signal placement_started(mode: String, data: Dictionary, count: int)
 signal placement_completed(mode: String, data: Dictionary, count: int)
+
 signal removal_started(mode: String, data: Dictionary, count: int)
 signal removal_completed(mode: String, data: Dictionary, count: int)
+
 
 # ----------------------------
 # 📣 Emit wrapper with debug logging

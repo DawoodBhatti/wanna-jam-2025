@@ -23,7 +23,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		cm.remove_square("StoneTile", 3, true)
 		
 	if Input.is_action_just_pressed("advance_phase"):
-		GameState.debug_step()
 		return
 
 	

@@ -9,6 +9,8 @@ const CARD_SCHEMA: Dictionary = {
 	"description": "What this card does in simple terms.",
 	"cost": {},
 	"instant_effects": [], #effects which occur instantly when card is played
+	"triggers_placement": true, 
+	"triggers_removal": true,
 	"end_turn_effects": [], #effects which occur at end of turn when a card
 	"remain_effects": [] #effects which occur on turn end if card remains in hand
 }
@@ -52,6 +54,7 @@ func load_cards() -> void:
 				{ "type": "resource_change", "target": "stone", "amount": -1 },
 				{ "type": "placement", "tile_name": "StoneTile", "amount": 1 }
 			],
+			"triggers_placement": true,
 			"end_turn_effects": [],
 			"remain_effects": []
 		},
@@ -79,18 +82,18 @@ func load_cards() -> void:
 				{ "type": "resource_change", "target": "stone", "amount": 1 },
 			]
 		},
-				{
+		{
 			"id": "medusa",
 			"name": "Medusa",
 			"description": "Place a tile which turns surrounding squares to stone on turn end.",
 			"cost": {},
 			"instant_effects": [
-				{ "type": "resource_change", "target": "gold", "amount": 5},
+				{ "type": "resource_change", "target": "gold", "amount": 5 },
 				{ "type": "placement", "tile_name": "MedusaTile", "amount": 1 }
-
 			],
+			"triggers_placement": true,
 			"end_turn_effects": [],
-			"remain_effects": [],
+			"remain_effects": []
 		},
 		{
 			"id": "idle_hands",
@@ -188,8 +191,9 @@ func load_cards() -> void:
 			"instant_effects": [
 				{ "type": "removal", "tile_name": "StoneTile", "amount": 1 }
 			],
+			"triggers_removal": true,
 			"end_turn_effects": [
-				{ "type": "resource_change", "target": "stone", "amount": 1 },
+				{ "type": "resource_change", "target": "stone", "amount": 1 }
 			],
 			"remain_effects": []
 		},
@@ -275,31 +279,28 @@ func get_card_by_id(id: String) -> Dictionary:
 			return card
 	return {}
 
-# -------------------------------------------------------------------
-# 🏗️ Structure Payload Resolution
-# -------------------------------------------------------------------
-func resolve_structure_payload(card_id: String) -> Dictionary[String, Variant]:
-	var card: Dictionary = get_card_by_id(card_id)
+
+#useful for handling inner phase changes
+func has_instant_placement(card_id: String) -> bool:
+	var card := get_card_by_id(card_id)
 	if card.is_empty():
-		push_error("[CardCatalogue] Card not found: %s" % card_id)
-		return {}
+		push_error("[CardCatalogue] Card not found: " + card_id)
+		return false
 
-	var structure_built: Dictionary = card.get("structure_built", {}) as Dictionary
-	if structure_built.is_empty():
-		push_error("[CardCatalogue] Card missing structure_built: %s" % card_id)
-		return {}
+	for effect in card.get("instant_effects", []):
+		if effect.get("type", "") == "placement":
+			return true
+	return false
 
-	var tile_name: String = structure_built.get("tile_name", "") as String
-	var build_def: Dictionary = TileCatalogue.get_tile(tile_name)
-	if build_def.is_empty():
-		push_error("[CardCatalogue] Missing build definition for tile: %s" % tile_name)
-		return {}
 
-	return {
-		"layer": build_def.get("build_layer", "") as String,
-		"tile_name": tile_name,
-		"source_id": int(build_def.get("source_id", -1)),
-		"atlas_coords": build_def.get("tiles", [])[0] as Vector2i,
-		"amount": int(structure_built.get("place_amount", 1)),
-		"cost": card.get("cost", {}) as Dictionary
-	}
+#as above, useful for handling inner phase changes
+func has_instant_removal(card_id: String) -> bool:
+	var card := get_card_by_id(card_id)
+	if card.is_empty():
+		push_error("[CardCatalogue] Card not found: " + card_id)
+		return false
+
+	for effect in card.get("instant_effects", []):
+		if effect.get("type", "") == "removal":
+			return true
+	return false

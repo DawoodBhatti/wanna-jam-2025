@@ -1,19 +1,23 @@
-res://main.tscn
+res://scenes/HUD/hud.tscn
+res://scripts/card manager/border_shader.gdshader
+res://scripts/HUD manager/draw_pile.gd
 res://tilesets/structures.tres
 res://tilesets/ground.tres
 res://tilesets/water.tres
-res://scripts/card manager/border_shader.gdshader
-res://scripts/HUD manager/draw_pile.gd
-res://singletons/tile_state.gd
-res://scenes/levels/basegrid.tscn
-res://scripts/effects manager/effects_manager.gd
-res://scripts/tile manager/tile_manager.gd
+res://main.tscn
+res://scenes/game controller/game control.tscn
+res://scenes/cards/card manager.tscn
 res://scripts/card manager/card_manager.gd
-res://scenes/tiles/tile manager.tscn
-res://singletons/game_state.gd
-res://singletons/tile_catalogue.gd
-res://scripts/effects manager/effects_runner.gd
-res://scripts/effects manager/custom_effects.gd
 res://scenes/effects/effects manager.tscn
+res://scripts/construction manager/construction_manager.gd
+res://scripts/effects manager/effects_manager.gd
 res://singletons/card_catalogue.gd
-res://scripts/construction manager/placement shapes/placement_square.gd
+res://scripts/game controller/game_state.gd
+res://scripts/game controller/game_controller.gd
+res://scripts/HUD manager/hand_display.gd
+res://scripts/game controller/resolution_watcher.gd
+res://singletons/resource_state.gd
+res://singletons/signal_bus.gd
+res://singletons/effects_queue.gd
+res://scripts/effects manager/effects_runner.gd
+res://scripts/HUD manager/hud.gd

@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnd8byg3gwx5r"]
+
+[ext_resource type="Script" uid="uid://c37yn458yggqx" path="res://scripts/game controller/game_controller.gd" id="1_06dji"]
+[ext_resource type="Script" uid="uid://kp4x6lp3r32l" path="res://scripts/game controller/game_state.gd" id="2_b5er6"]
+[ext_resource type="Script" uid="uid://rdnvpex4a4rc" path="res://scripts/game controller/resolution_watcher.gd" id="3_b5er6"]
+
+[node name="GameController" type="Node2D"]
+script = ExtResource("1_06dji")
+
+[node name="GameState" type="Node" parent="."]
+script = ExtResource("2_b5er6")
+
+[node name="ResolutionWatcher" type="Node" parent="."]
+script = ExtResource("3_b5er6")
