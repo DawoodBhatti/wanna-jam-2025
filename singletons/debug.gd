@@ -11,10 +11,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if Input.is_action_just_pressed("test_build_mode"):
 		#bm.start_placement_mode("StoneTile")  # or "Medusa"
-		cm.placement("StoneTile", 5)  # or bm.start_placement_mode("StoneTile")
+		cm.placement("StoneTile", 50)  # or bm.start_placement_mode("StoneTile")
 	
 	if Input.is_action_just_pressed("test_removal_mode"):
-		cm.removal("StoneTile", 5) # target_type, limit
+		cm.removal("StoneTile", 50) # target_type, limit
 
 	if Input.is_action_just_pressed("test_square_placement"):
 		cm.square_placement("StoneTile", 3, true)

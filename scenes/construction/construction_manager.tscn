@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://25lncjnfe0cc" path="res://scripts/construction manager/removal support/removal_service.gd" id="6_s41s1"]
 [ext_resource type="Script" uid="uid://b2p8lr67yam25" path="res://scripts/construction manager/removal support/removal_rules.gd" id="7_kowrh"]
 
-[node name="BuildingManager" type="Node"]
+[node name="ConstructionManager" type="Node"]
 script = ExtResource("1_a6l47")
 
 [node name="Placement" type="Node" parent="."]
